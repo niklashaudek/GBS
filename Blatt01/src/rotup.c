@@ -46,4 +46,6 @@ int main(int argc, char **argv) {
     // printf("%d" ,sizeof(string));
     // printf("%d" ,sizeof(coded));
     printf("Hallo: %s -- %s\n", buf, coded);
+
+    return 0;
 }

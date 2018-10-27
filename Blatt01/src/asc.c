@@ -29,4 +29,6 @@ int main(int argc, char **argv) {
         i++;
     }
     while(i<=127);
+
+    return 0;
 }
