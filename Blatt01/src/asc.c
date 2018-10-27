@@ -10,8 +10,6 @@ int main(int argc, char **argv) {
         printf("0%#o\t%d\t0%x\t%c\n",i,i,i,i);
         i++;
     }
-
-    
     while(i<=7);
     do
     {
@@ -31,7 +29,4 @@ int main(int argc, char **argv) {
         i++;
     }
     while(i<=127);
-
-    // test
-
 }
