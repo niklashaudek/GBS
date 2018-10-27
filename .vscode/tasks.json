@@ -1,0 +1,37 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build Blatt01 hw",
+            "type": "shell",
+            "command": "gcc -g Blatt01/src/hw.c -o Blatt01/bin/hw",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": "$gcc"
+        },
+        {
+            "label": "Build Blatt01 asc",
+            "type": "shell",
+            "command": "gcc -g Blatt01/src/asc.c -o Blatt01/bin/asc",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": "$gcc"
+        },
+        {
+            "label": "Build Blatt01 rotup",
+            "type": "shell",
+            "command": "gcc -g Blatt01/src/rotup.c -o Blatt01/bin/rotup",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": "$gcc"
+        }
+    ]
+}
