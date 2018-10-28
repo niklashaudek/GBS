@@ -55,6 +55,19 @@
             "environment": [],
             "externalConsole": true,
             "MIMode": "lldb"
-        }        
+        },
+        {
+            "name": "Launch Blatt02 xy",
+            "type": "cppdbg",
+            "request": "launch",
+            "preLaunchTask": "Build Blatt02 xy",
+            "program": "${workspaceFolder}/Blatt02/bin/xy",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "lldb"
+        }     
     ]
 }
