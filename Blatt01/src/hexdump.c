@@ -1,12 +1,14 @@
-#include "hexdump.h"
+#include <stdio.h>
 #include <unistd.h>
+
+void hexdump (FILE *output, char *buffer, int length);
 
 void hexdump (FILE *output, char *buffer, int length) 
 {
     char test[100];
     for (int pufferOffset = 0; pufferOffset < length; pufferOffset+=16)
     {
-        fprintf(output, "%08x : ", pufferOffset);
+        fprintf(output, "%06x : ", pufferOffset);
         for (int pufferZeichen = pufferOffset; pufferZeichen < pufferOffset + 16; pufferZeichen++)
         {
             if (pufferZeichen < length)
