@@ -42,6 +42,19 @@
             "environment": [],
             "externalConsole": true,
             "MIMode": "lldb"
-        }
+        },
+        {
+            "name": "Launch Blatt01 hd",
+            "type": "cppdbg",
+            "request": "launch",
+            "preLaunchTask": "Build Blatt01 hd",
+            "program": "${workspaceFolder}/Blatt01/bin/hd",
+            "args": ["Test für die Kommandozeile!", "Und dies ist der zweite Puffer!"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "lldb"
+        }        
     ]
 }

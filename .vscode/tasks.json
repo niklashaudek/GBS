@@ -32,6 +32,16 @@
                 "isDefault": true
             },
             "problemMatcher": "$gcc"
+        },
+        {
+            "label": "Build Blatt01 hd",
+            "type": "shell",
+            "command": "gcc -g Blatt01/src/hd.c Blatt01/src/hexdump.c  -o Blatt01/bin/hd",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": "$gcc"
         }
     ]
 }
