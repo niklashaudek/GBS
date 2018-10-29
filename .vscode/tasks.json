@@ -44,9 +44,19 @@
             "problemMatcher": "$gcc"
         },
         {
-            "label": "Build Blatt02 xy",
+            "label": "Build Blatt02 shellsim",
             "type": "shell",
-            "command": "gcc -g Blatt02/src/xy.c  -o Blatt02/bin/xy",
+            "command": "gcc -g Blatt02/src/shellsim.c  -o Blatt02/bin/shellsim",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": "$gcc"
+        },
+        {
+            "label": "Build Blatt02 lt",
+            "type": "shell",
+            "command": "gcc -g Blatt02/src/lt.c  -o Blatt02/bin/lt",
             "group": {
                 "kind": "build",
                 "isDefault": true

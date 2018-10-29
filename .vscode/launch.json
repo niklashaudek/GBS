@@ -57,17 +57,30 @@
             "MIMode": "lldb"
         },
         {
-            "name": "Launch Blatt02 xy",
+            "name": "Launch Blatt02 lt",
             "type": "cppdbg",
             "request": "launch",
-            "preLaunchTask": "Build Blatt02 xy",
-            "program": "${workspaceFolder}/Blatt02/bin/xy",
+            "preLaunchTask": "Build Blatt02 lt",
+            "program": "${workspaceFolder}/Blatt02/bin/lt",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
             "externalConsole": true,
             "MIMode": "lldb"
-        }     
+        },
+        {
+            "name": "Launch Blatt02 shellsim",
+            "type": "cppdbg",
+            "request": "launch",
+            "preLaunchTask": "Build Blatt02 shellsim",
+            "program": "${workspaceFolder}/Blatt02/bin/shelsim",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "lldb"
+        }          
     ]
 }
