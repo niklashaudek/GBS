@@ -5,7 +5,7 @@ void hexdump (FILE *output, char *buffer, int length);
 
 void hexdump (FILE *output, char *buffer, int length) 
 {
-    char test[100];
+    //char test[100];
     for (int pufferOffset = 0; pufferOffset < length; pufferOffset+=16)
     {
         fprintf(output, "%06x : ", pufferOffset);
@@ -13,7 +13,7 @@ void hexdump (FILE *output, char *buffer, int length)
         {
             if (pufferZeichen < length)
             {
-                sprintf(test, "%2x ", (unsigned char)buffer[pufferZeichen]);
+                //sprintf(test, "%2x ", (unsigned char)buffer[pufferZeichen]);
                 fprintf(output, "%02x ", (unsigned char)buffer[pufferZeichen]);
             }
             else

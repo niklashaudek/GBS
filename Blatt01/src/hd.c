@@ -11,9 +11,9 @@ int main(int argc, char **argv)
     }
     else
     {
-        char szBuffer[256] = "Grundlagen Betriebssystem und Systemsoftware.";
+        //char szBuffer[256] = "Grundlagen Betriebssystem und Systemsoftware.";
 
-        strcpy( szBuffer, argv[1]);
+        //strcpy( szBuffer, argv[1]);
 
         //hexdump(stdout, szBuffer, strlen(szBuffer)+1);
         for( int iIdx = 1; iIdx < argc; iIdx++ )
