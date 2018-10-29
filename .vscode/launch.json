@@ -74,7 +74,7 @@
             "type": "cppdbg",
             "request": "launch",
             "preLaunchTask": "Build Blatt02 shellsim",
-            "program": "${workspaceFolder}/Blatt02/bin/shelsim",
+            "program": "${workspaceFolder}/Blatt02/bin/shellsim",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
