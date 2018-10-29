@@ -11,7 +11,7 @@ int main(int argc, char **argv) {
     while (1)
     {
         //int counter = read(0, buf, sizeof(buf)) - 1;
-        fgets(buf, sizeof(buf), argv);
+        fgets(buf, sizeof(buf), buf);
 
         if (!strncmp(buf, exitString, 4))
         {
