@@ -1,3 +1,5 @@
+// Hier soll die Datenstruktur und die Funktionsprototypen definiert werden
+
 struct list_elem {
     struct list_elem *next;	// Zeiger auf das naechste Element
     char	     *data;	// Zeiger auf ein Datenobject
