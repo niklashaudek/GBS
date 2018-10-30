@@ -6,6 +6,8 @@
 
 // #include funktioniert bei mir nicht
 // hier soll die Main Funktion geschrieben werden
+
+// diese Main ist ein Test vom Sheet
 int main (int argc, char *argv[] , char *envp[] ) {
 list_t *li;
 i f (( li = list_init()) == NULL) {
