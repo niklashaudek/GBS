@@ -39,9 +39,6 @@ while(strcmp(*list->last, data_comp_1) == 0){
     *data_comp_1 = *comp->data; // erneut Daten zwischenspeichern
 } 
 return -1; // Objekt wurde nicht gefunden
-
-
-
 }
 
 void list_finit (list_t *list){
@@ -55,7 +52,7 @@ list_elem *comp = *list->first; // Anfang der Liste ermitteln
 char *data_comp_1 = *comp->data; // Daten des Anfangs ermitteln
 char *data_comp_2 = *elem->data; // Daten des gesuchten Elementes ermitteln
 
-while(strcmp(*list->last, data_comp_1) == 0){ 
+while(strncmp(*list->last, data_comp_1, ) == 0){ 
     if((*data_comp_1, *data_comp_2)){
         //remove object
         return 0;
@@ -70,7 +67,11 @@ void list_print (list_t *list, char (*print_elem) (char *)){
 
 }
 
+void print_string (char *data){
+
+}
+
 int (*cmp_elem) (const char *, const char*){
-    
+
 }
 
