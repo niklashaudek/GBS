@@ -70,3 +70,7 @@ void list_print (list_t *list, char (*print_elem) (char *)){
 
 }
 
+int (*cmp_elem) (const char *, const char*){
+    
+}
+
