@@ -1,10 +1,5 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <list.h>
+#include "list.h"
 
-
-// #include funktioniert bei mir nicht
 // hier soll die Main Funktion geschrieben werden
 
 // diese Main ist ein Test vom Sheet
