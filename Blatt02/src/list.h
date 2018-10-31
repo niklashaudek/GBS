@@ -1,13 +1,13 @@
 // Hier soll die Datenstruktur und die Funktionsprototypen definiert werden
 
 struct list_elem {
-    struct list_elem *next;	// Zeiger auf das naechste Element
-    char	     *data;	// Zeiger auf ein Datenobject
+    struct list_elem    *next;  // Zeiger auf das naechste Element
+    char	            *data;  // Zeiger auf ein Datenobject
 };
 
 typedef struct list {
-	struct list_elem *first;// erstes Element in der Liste
-	struct list_elem *last;	// letztes Element in der Liste
+	struct list_elem *first;    // erstes Element in der Liste
+	struct list_elem *last;     // letztes Element in der Liste
 } list_t;
 
 /* function prototypes */

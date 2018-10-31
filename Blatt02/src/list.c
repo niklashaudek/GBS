@@ -2,7 +2,7 @@
 // hier sollen die Funktionen implementiert werden
 
 list_t *list_init (){
-list_t l;
+    list_t l;
 }
 
 struct list_elem *list_insert (list_t *list, char *data){
