@@ -2,7 +2,6 @@
 #include <string.h>
 #include <stdlib.h>
 
-
 // fertig, bitte nichts ändern
 int main(int argc, char **argv) {
     char buf[128] = {0};
