@@ -56,7 +56,7 @@
         {
             "label": "Build Blatt02 lt",
             "type": "shell",
-            "command": "gcc -g Blatt02/src/lt.c  -o Blatt02/bin/lt",
+            "command": "gcc -g Blatt02/src/lt.c Blatt02/src/list.c  -o Blatt02/bin/lt",
             "group": {
                 "kind": "build",
                 "isDefault": true

@@ -75,7 +75,7 @@
             "request": "launch",
             "preLaunchTask": "Build Blatt02 lt",
             "program": "${workspaceFolder}/Blatt02/bin/lt",
-            "args": [],
+            "args": ["-i", "Happy", "-i", "GBS", "-i", "Everyone", "-r", "GBS", "-a", "Now"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
