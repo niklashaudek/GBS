@@ -4,6 +4,7 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+        
         {
             "name": "Launch Blatt01 hw",
             "type": "cppdbg",
@@ -76,6 +77,19 @@
             "preLaunchTask": "Build Blatt02 lt",
             "program": "${workspaceFolder}/Blatt02/bin/lt",
             "args": ["-i", "Happy", "-i", "GBS", "-i", "Everyone", "-r", "GBS", "-a", "Now"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "lldb"
+        },
+        {
+            "name": "Launch Blatt03 forkone",
+            "type": "cppdbg",
+            "request": "launch",
+            "preLaunchTask": "Build Blatt03 forkone",
+            "program": "${workspaceFolder}/Blatt03/bin/forkone",
+            "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],

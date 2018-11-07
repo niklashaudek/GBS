@@ -62,6 +62,16 @@
                 "isDefault": true
             },
             "problemMatcher": "$gcc"
+        },
+        {
+            "label": "Build Blatt03 forkone",
+            "type": "shell",
+            "command": "gcc -g Blatt03/src/forkone.c -o Blatt03/bin/forkone",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": "$gcc"
         }
     ]
 }
