@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <pthread.h>
-#include <date.h>
 
 static void* thread_func(void *arg) {
     
