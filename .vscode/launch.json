@@ -89,7 +89,7 @@
             "request": "launch",
             "preLaunchTask": "Build Blatt03 forkone",
             "program": "${workspaceFolder}/Blatt03/bin/forkone",
-            "args": [],
+            "args": ["10"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],

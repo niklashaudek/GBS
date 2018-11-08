@@ -21,6 +21,45 @@ static void* set_time(void *arg) {
 
 
 int main(int argc, char *argv[]) {
+    
+    int newProcessPid = fork();
+
+    
+
+    // hier muss Eingabe auf Integer geprüft werden
+    // if ()
+
+    // int k = (int*) argv[1];
+    int k = 10;
+    switch(newProcessPid)
+    {
+    case -1:
+        perror ("fork () failed");
+        break;
+
+    case 0:
+        printf("I'm your child! pid: %i, ppid: %i\n", getpid(), getppid());
+        for (int i = 1; i <= k; i++)
+        {
+            sleep(1);
+            printf("%d %d %d\n", getpid(), getppid(), i);
+        }
+        printf("Child finished.\n");
+        break;
+
+    default:
+        printf("I am your father! pid: %i, ppid: %i\n", getpid(), getppid());
+        waitpid(newProcessPid, NULL, 0); // Make sure we wait on the child process to prevent it from getting a Zombie process
+        printf("Child %i terminated.\n", newProcessPid);
+        break;
+    }
+
+    
+
+    // Diese Lösung ist mit Threads, aber wir sollen doch die Prozesse forken, das ist ein Unterschied
+
+    
+    /*
     pthread_t thread;
     void *res; 
 
@@ -34,5 +73,7 @@ int main(int argc, char *argv[]) {
 
     printf("Thread returned %ld\n",(long)res);
     //Threads beenden sich mit Ende der main automatisch
+    */
+
 }
 
