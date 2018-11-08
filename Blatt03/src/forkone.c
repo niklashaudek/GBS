@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <pthread.h>
+#define EXIT_SUCCESS 0
 
 // static void* thread_func(void *arg) {
     
