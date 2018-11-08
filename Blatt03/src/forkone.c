@@ -1,13 +1,16 @@
 #include <stdio.h>
 #include <string.h>
 #include <pthread.h>
+#include <time.h>
 #define EXIT_SUCCESS 0
 
 static void* thread_func(void *arg) {
     
-    time_t now; 
+    time_t now;
 	now = time(0);
 	printf("%s\n", ctime(&now)); // unsicher aus dem Internet
+    void *t;
+    return t;
     } 
 
 
