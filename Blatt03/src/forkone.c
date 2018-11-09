@@ -24,10 +24,14 @@ int main(int argc, char *argv[]) {
 	printf("Start: %s", ctime(&now));
     
     int newProcessPid = fork();
+
     // hier muss Eingabe auf Integer geprüft werden
     // if ()
     // int k = (int*) argv[1];
+    
     int k = 10;
+
+    int exitCode = (int) (newProcessPid+k)%100; // hier wird schon der Exit-Code berechnet
 
     switch(newProcessPid) {
             case -1:
@@ -43,12 +47,10 @@ int main(int argc, char *argv[]) {
                 break;
             default:
                 waitpid(newProcessPid, NULL, 0); // Make sure we wait on the child process to prevent it from getting a Zombie process
-                printf("Exit-Code: %d\n", (((int) getpid())+k)%100);
-                //printf("Child %i terminated.\n", newProcessPid);
+                printf("Exit-Code: %d\n", exitCode);
+                now = time(0);
+	            printf("Ende: %s", ctime(&now));
                 break;
         }
-    
-	now = time(0);
-	printf("Ende: %s", ctime(&now));
 }
 
