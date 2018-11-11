@@ -10,12 +10,16 @@
 
 int main(int argc, char *argv[]) {
 
+    int newProcessPid = 1;
+    int exitCode = 0;
+    int processIDparent = getpid();
+
+    list_t *li;
+
     int opt = 0;
     int iKparam = 10; // default
     int iNparam = 1;  // default
     int iRparam = 0;  // default
-
-    opterr = 0; // wofür?
 
     while ((opt = getopt (argc, argv, "-k:-n:-r")) != -1)
     {
@@ -26,8 +30,8 @@ int main(int argc, char *argv[]) {
             {
                 if (isdigit(*pChr) == 0)
                 {
-                    perror ("Parameter K is no integer.");
-                    exit (-2);
+                    printf ("Parameter K is no integer.");
+                    exit (-1);
                 }
             }
             iKparam = atoi(optarg);
@@ -37,8 +41,8 @@ int main(int argc, char *argv[]) {
             {
                 if (isdigit(*pChr) == 0)
                 {
-                    perror ("Parameter N is no integer.");
-                    exit (-3);
+                    printf ("Parameter N is no integer.");
+                    exit (-2);
                 }
             }
             iNparam = atoi(optarg);
@@ -47,59 +51,73 @@ int main(int argc, char *argv[]) {
             iRparam = 1;
             break;
         default:
-            abort();
-        } // wofür?
+            printf ("Error!");
+            exit (-3);
+        }
     }
 
-
-    // Bis hier her funktiert alles
-
-/*
-    int iRandom = (double) iKparam;
-    if(iRparam == 1){ // muss noch gestestet werden oder vereinfacht 
-        double iPlaceholder = 1.5 * iRandom;
-        iRandom = (rand () % ((iPlaceholder + 1) - (iKparam/2)) + (iKparam/2); // wie machen wir *1.5?
-        iKparam = iRandom;
+    if( optind != argc )
+    {
+        printf ("Invalid Parameter!");
+        exit (-4);
     }
-*/
 
+    // Berechnung der random variable
+    double upper = (double) iKparam * 1.5;
+    double lower = (double) iKparam / 2;
+    if(iRparam == 1){
+        iKparam = (rand() % (int) (upper - lower + 1.0)) + lower; 
+    }
+
+    if (( li = list_init()) == NULL)
+    {
+        printf ("Cannot allocate memory" );
+        exit(-5);
+    }
+
+    // Zeit Ausgabe
     time_t now;
 	now = time(0);
 	printf("Start: %s", ctime(&now));
 
 
-    // Kindprozesse erzeugen und in Liste speichern
-    int newProcessPid = 0;
-    int processIDfather = getpid();
-    int numberOfForks = log(iNparam)/log(2);
-    list_t *li;
-    if (( li = list_init()) == NULL)
+    for (int nIndex = 0; nIndex < iNparam; nIndex++)
+    {
+        if (getpid() == processIDparent)
         {
-            perror ("Cannot allocate memory " );
-            exit(1);
+            newProcessPid = fork();
+            if (newProcessPid > 0)
+            {
+                struct list_elem* pElement = list_append (li, newProcessPid);
+            }
+            if( newProcessPid == 0 )
+            {
+                for (int i = 1; i <= iKparam; i++)
+                {
+                    sleep(1);
+                    printf("%d %d %d\n", getpid(), getppid(), i);
+                }
+            }
         }
-    for (int nIndex = 0; nIndex < numberOfForks; nIndex++)
-    {
-        newProcessPid = fork();
-        list_append (li, &newProcessPid);
     }
 
-    waitpid(processIDfather, NULL, 0);
-
-    for (int i = 1; i <= iKparam; i++)
+    if (getpid() == processIDparent)
     {
-        sleep(1);
-        printf("%d %d %d\n", getpid(), getppid(), i);
+        struct list_elem* thisElem = li->first;
+        while (thisElem != NULL)
+        {        
+            waitpid(thisElem->data, NULL, 0);
+            exitCode = (int) (thisElem->data+iKparam)%100;
+            printf("Exit-Code: %d\n", exitCode);
+            thisElem = thisElem->next;
+        }
     }
 
-    struct list_elem* thisElem = li->first;
-    while (thisElem != NULL)
+    if (getpid() == processIDparent)
     {
-        exit(-1);
-        thisElem = thisElem->next;
+        now = time(0);
+        printf("Ende: %s", ctime(&now));
     }
-        
-    now = time(0);
-    printf("Ende: %s", ctime(&now));
-
+    
+    exit(0);
 }

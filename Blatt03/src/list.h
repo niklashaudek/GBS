@@ -6,7 +6,7 @@
 
 struct list_elem {
     struct list_elem    *next;  // Zeiger auf das naechste Element
-    int	                *data;  // Zeiger auf ein Datenobject
+    int	                data;  // Zeiger auf ein Datenobject
 };
 
 typedef struct list {
@@ -16,4 +16,4 @@ typedef struct list {
 
 /* function prototypes */
 list_t           *list_init ();
-struct list_elem *list_append (list_t *list, int *data);
+struct list_elem *list_append (list_t *list, int data);
