@@ -49,6 +49,10 @@ int main(int argc, char *argv[]) {
         }
     }
 
+
+    // Bis hier her funktiert alles
+    
+
     int iRand = 0;
     if(iRparam == 0){
         double iPlaceholder = 1.5 * (double) iKparam;
