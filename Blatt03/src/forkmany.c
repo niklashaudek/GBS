@@ -61,6 +61,11 @@ int main(int argc, char *argv[]) {
         iRandom = (rand () % ((iPlaceholder + 1) - (iKparam/2)) + (iKparam/2); // wie machen wir *1.5?
         iKparam = iRandom;
     }
+
+    int rand(int min, int max) // Pseudo Code aus dem Internet
+        {
+            return rand() % (max - min) + min;
+        }
 */
 
     time_t now;
