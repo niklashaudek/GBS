@@ -10,6 +10,7 @@
 
 int main(int argc, char *argv[]) {
     
+    // von forkone übernommen
     if (argc < 2)
     {
         perror ("Missing parameter K.");
@@ -26,8 +27,31 @@ int main(int argc, char *argv[]) {
         }
     }
 */
+    // Was wird hier gemacht?
+       extern char *optarg;
+       extern int optind, opterr, optopt;
+       int iN = 1; // default
+       int iK = 10; // default
+       int iR = -1; // default
+       int opt = 0; // gibt -1 aus wenn kein Argument mehr vorhanden ist
 
-    for( char* pChr = argv[1]; *pChr != 0; pChr++ )
+    while((opt = getopt(argc, argv, "nkr:")) != -1){
+        switch(opt){
+        case 'n': iN = atoi(optarg); // müssen wir hier prüfen ob die Eingabe sinnvoll war ?
+
+        case 'k': iK = atoi(optarg);
+
+        case 'r': iR = 0;
+
+        default: perror("Something went wrong"); break;
+    }
+    }
+
+    printf("%i, %i, %i", iN, iK, iR); // Test
+   
+   /* 
+   // von forkone
+   for( char* pChr = argv[1]; *pChr != 0; pChr++ )
     {
         if (isdigit(*pChr) == 0)
         {
@@ -35,6 +59,21 @@ int main(int argc, char *argv[]) {
             exit (-2);
         }
     }
+    */
+
+    
+   int iRand = 0;
+    if(iR == 0){
+        double iPlaceholder = 1.5 * (double) iK;
+        iRand = (rand () % ((((int) iPlaceholder * iK) + 1) - (iK/2))) + (iK/2); // wie machen wir *1.5?
+        iK = iRand;
+    }
+
+    // Liste erstellen
+    list_t list;
+    list.first = NULL;
+    list.last = NULL;
+
 
     time_t now;
 	now = time(0);
@@ -42,10 +81,12 @@ int main(int argc, char *argv[]) {
     
     int k = atoi(argv[1]);
 
-    // Bestimmen wie viele Kindprozesse es gibt: Eingabe in der Console als zweites drittes arg?
+/*
+    // Consti
+    // Bestimmen wie viele Kindprozesse es gibt: Eingabe in der Console als drittes arg?
     int n = atoi(argv[2]);
 
-    // List erstellen
+    // Liste erstellen
     struct list = *list_init();
 
     // N Prozesse starten und in Liste speichern
@@ -55,7 +96,14 @@ int main(int argc, char *argv[]) {
     }
     
     int exitCode = (int) (newProcessPid+k)%100; // hier wird schon der Exit-Code berechnet
+*/
 
+    // int k = atoi(argv[1]); k wird bei getopt geparst
+
+    // von forkone
+    int newProcessPid = fork();
+    
+    int exitCode = (int) (newProcessPid + iK) % 100; // hier wird schon der Exit-Code berechnet
 
     switch(newProcessPid) {
             case -1:
@@ -63,7 +111,8 @@ int main(int argc, char *argv[]) {
                 break;
 
             case 0:
-                for (int i = 1; i <= k; i++)
+                // for (int i = 1; i <= k; i++) - change from k to iK
+                for (int i = 1; i <= iK; i++)
                 {
                     sleep(1);
                     printf("%d %d %d\n", getpid(), getppid(), i);

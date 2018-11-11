@@ -1,7 +1,11 @@
 #include "list.h"
 // hier sollen die Funktionen implementiert werden
 
+<<<<<<< HEAD
 list_t *list_init () // noch unsicher
+=======
+list_t *list_init () 
+>>>>>>> f478dea019ec77467212767cd90b212a63b0ebea
 {
     list_t* pListe = (list_t*) malloc (sizeof(list_t*));
     pListe->first = NULL;
