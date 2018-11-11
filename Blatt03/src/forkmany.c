@@ -8,16 +8,16 @@
 
 int main(int argc, char *argv[]) {
 
-    int c;
+    int opt;
     int iKparam = 10;
     int iNparam = 1;
     int iRparam = 0;
 
     opterr = 0;
 
-    while ((c = getopt (argc, argv, "-k:-n:-r")) != -1)
+    while ((opt = getopt (argc, argv, "-k:-n:-r")) != -1)
     {
-        switch (c)
+        switch (opt)
         {
         case 'k':
             for( char* pChr = optarg; *pChr != 0; pChr++ )
@@ -49,13 +49,20 @@ int main(int argc, char *argv[]) {
         }
     }
 
+    int iRand = 0;
+    if(iRparam == 0){
+        double iPlaceholder = 1.5 * (double) iKparam;
+        iRand = (rand () % ((((int) iPlaceholder * iKparam) + 1) - (iKparam/2))) + (iKparam/2); // wie machen wir *1.5?
+        iKparam = iRand;
+    }
+
     time_t now;
 	now = time(0);
 	printf("Start: %s", ctime(&now));
 
     int newProcessPid = fork();
     
-    int exitCode = (int) (newProcessPid+iKparam)%100; // hier wird schon der Exit-Code berechnet
+    int exitCode = (int) (newProcessPid + iKparam) % 100; // hier wird schon der Exit-Code berechnet
 
     switch(newProcessPid) {
             case -1:
@@ -63,6 +70,8 @@ int main(int argc, char *argv[]) {
                 break;
 
             case 0:
+                for (int i = 1; i <= iKparam; i++)
+                // for (int i = 1; i <= k; i++) - change from k to iK
                 for (int i = 1; i <= iKparam; i++)
                 {
                     sleep(1);
