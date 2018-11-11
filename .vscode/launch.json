@@ -102,7 +102,7 @@
             "request": "launch",
             "preLaunchTask": "Build Blatt03 forkmany",
             "program": "${workspaceFolder}/Blatt03/bin/forkmany",
-            "args": ["-k", "11", "-n", "4", "-r"],
+            "args": ["-k", "11", "-n", "8", "-r"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],

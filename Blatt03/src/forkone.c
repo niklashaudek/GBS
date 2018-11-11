@@ -14,16 +14,6 @@ int main(int argc, char *argv[]) {
         exit (-1);
     }
 
-/*
-    for (int idx = 0; idx < strlen(argv[1]); idx++)
-    {
-        if (isdigit(argv[1][idx]) == 0)
-        {
-            perror ("Parameter K is no integer.");
-            exit (-2);
-        }
-    }
-*/
     for( char* pChr = argv[1]; *pChr != 0; pChr++ )
     {
         if (isdigit(*pChr) == 0)
@@ -64,4 +54,3 @@ int main(int argc, char *argv[]) {
                 break;
         }
 }
-
