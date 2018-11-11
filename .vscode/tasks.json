@@ -72,6 +72,16 @@
                 "isDefault": true
             },
             "problemMatcher": "$gcc"
+        },
+        {
+            "label": "Build Blatt03 forkmany",
+            "type": "shell",
+            "command": "gcc -g Blatt03/src/forkmany.c -o Blatt03/bin/forkmany",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": "$gcc"
         }
     ]
 }
