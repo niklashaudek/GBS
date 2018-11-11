@@ -118,6 +118,6 @@ int main(int argc, char *argv[]) {
         now = time(0);
         printf("Ende: %s", ctime(&now));
     }
-    
+
     exit(0);
 }
