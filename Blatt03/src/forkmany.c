@@ -26,6 +26,8 @@ int main(int argc, char *argv[]) {
         default: perror("Something went wrong"); break;
     }
     }
+
+    printf("%i, %i, %i", iN, iK, iR); // Test
    /* for( char* pChr = argv[1]; *pChr != 0; pChr++ )
     {
         if (isdigit(*pChr) == 0)
@@ -36,9 +38,13 @@ int main(int argc, char *argv[]) {
     }
     */
 
+   int iRand = 0;
+    if(iR == 0){
+        double iPlaceholder = 1.5 * (double) iK;
+        iRand = (rand () % ((((int) iPlaceholder * iK) + 1) - (iK/2))) + (iK/2); // wie machen wir *1.5?
+        iK = iRand;
+    }
 
-
-    int iRand = (rand () % (((2 * iK) + 1) - (iK/2))) + (iK/2); // wie machen wir *1.5?
     list_t list;
     list.first = NULL;
     list.last = NULL;
@@ -60,7 +66,7 @@ int main(int argc, char *argv[]) {
                 break;
 
             case 0:
-                for (int i = 1; i <= k; i++)
+                for (int i = 1; i <= iK; i++)
                 {
                     sleep(1);
                     printf("%d %d %d\n", getpid(), getppid(), i);
