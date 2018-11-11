@@ -95,6 +95,19 @@
             "environment": [],
             "externalConsole": true,
             "MIMode": "lldb"
+        },
+        {
+            "name": "Launch Blatt03 forkmany",
+            "type": "cppdbg",
+            "request": "launch",
+            "preLaunchTask": "Build Blatt03 forkmany",
+            "program": "${workspaceFolder}/Blatt03/bin/forkmany",
+            "args": ["ghg", "-k", "11"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "lldb"
         }
     ]
 }
