@@ -38,21 +38,21 @@ int main(int argc, char *argv[]) {
 
 
 
-   int iRand = (rand () % (((2 * iK) + 1) - (iK/2))) + (iK/2); // wie machen wir *1.5?
-   list_t list;
-   list.first = NULL;
-   list.last = NULL;
+    int iRand = (rand () % (((2 * iK) + 1) - (iK/2))) + (iK/2); // wie machen wir *1.5?
+    list_t list;
+    list.first = NULL;
+    list.last = NULL;
 
 
     time_t now;
 	now = time(0);
 	printf("Start: %s", ctime(&now));
     
-    int k = atoi(argv[1]);
+    // int k = atoi(argv[1]);
 
     int newProcessPid = fork();
     
-    int exitCode = (int) (newProcessPid+k)%100; // hier wird schon der Exit-Code berechnet
+    int exitCode = (int) (newProcessPid+ iK)%100; // hier wird schon der Exit-Code berechnet
 
     switch(newProcessPid) {
             case -1:
