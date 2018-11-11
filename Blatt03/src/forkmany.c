@@ -48,11 +48,11 @@ int main(int argc, char *argv[]) {
 	now = time(0);
 	printf("Start: %s", ctime(&now));
     
-    // int k = atoi(argv[1]);
+    // int k = atoi(argv[1]); k wird bei getopt geparst
 
     int newProcessPid = fork();
     
-    int exitCode = (int) (newProcessPid+ iK)%100; // hier wird schon der Exit-Code berechnet
+    int exitCode = (int) (newProcessPid + iK) % 100; // hier wird schon der Exit-Code berechnet
 
     switch(newProcessPid) {
             case -1:
