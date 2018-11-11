@@ -6,6 +6,7 @@
 #include <errno.h>
 #include <ctype.h>
 #include "list.h"
+#include <math.h>
 
 int main(int argc, char *argv[]) {
 
@@ -69,47 +70,36 @@ int main(int argc, char *argv[]) {
 
     // Kindprozesse erzeugen und in Liste speichern
     int newProcessPid = 0;
+    int processIDfather = getpid();
+    int numberOfForks = log(iNparam)/log(2);
     list_t *li;
-    li->first = NULL;
-    li->last = NULL;
-    for (int nIndex = 0; nIndex < (sqrt(iNparam)); nIndex++)
-    {
-        if (newProcessPid == 0)
-        {
-            newProcessPid = fork();
-        }
-        if (( li = list_init()) == NULL)
+    if (( li = list_init()) == NULL)
         {
             perror ("Cannot allocate memory " );
             exit(1);
         }
-
+    for (int nIndex = 0; nIndex < numberOfForks; nIndex++)
+    {
+        newProcessPid = fork();
         list_append (li, &newProcessPid);
     }
 
+    waitpid(processIDfather, NULL, 0);
 
+    for (int i = 1; i <= iKparam; i++)
+    {
+        sleep(1);
+        printf("%d %d %d\n", getpid(), getppid(), i);
+    }
 
-    // int exitCode = (int) (newProcessPid + iKparam) % 100; // hier wird schon der Exit-Code berechnet
+    struct list_elem* thisElem = li->first;
+    while (thisElem != NULL)
+    {
+        exit(-1);
+        thisElem = thisElem->next;
+    }
+        
+    now = time(0);
+    printf("Ende: %s", ctime(&now));
 
-    switch(newProcessPid) {
-            case -1:
-                perror ("fork () failed");
-                break;
-            case 0:
-                for (int i = 1; i <= iKparam; i++)
-                // for (int i = 1; i <= k; i++) - change from k to iK
-                for (int i = 1; i <= iKparam; i++)
-                {
-                    sleep(1);
-                    printf("%d %d %d\n", getpid(), getppid(), i);
-                }
-                break;
-            default:
-                // printf("vor wait\n");
-                waitpid(newProcessPid, NULL, 0); // Make sure we wait on the child process to prevent it from getting a Zombie process
-                // printf("Exit-Code: %d\n", exitCode); 
-                now = time(0);
-	            printf("Ende: %s", ctime(&now));
-                break;
-        }
 }
