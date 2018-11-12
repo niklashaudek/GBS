@@ -12,8 +12,9 @@
 static void* thread_func (void *arg) // Thread Routine
 {     
     int *iTest = (int*) arg;
-    for(int i = 1; i <= *iTest; i++ ){
-    printf("%10u\t%d\t%ld\n", (unsigned int) pthread_self(), getpid(), (long) i); // Ausgabe vom Sheet nicht ändern
+    for(int i = 1; i <= *iTest; i++ )
+    {
+        printf("%10u\t%d\t%ld\n", (unsigned int) pthread_self(), getpid(), (long) i); // Ausgabe vom Sheet nicht ändern
     }
     pthread_exit((void*) iTest);
     return arg;
@@ -73,7 +74,7 @@ int main(int argc, char *argv[]) {
         exit (-4);
     }
 
-        pthread_t threadStore[4];
+    pthread_t threadStore[iNparam];
 
 
     // Berechnung der random variable
@@ -94,14 +95,6 @@ int main(int argc, char *argv[]) {
 	now = time(0);
 	printf("Start: %s", ctime(&now));
 
-    /*
-    int iNumber = pthread_create(&mainThread, NULL, thread_func, &iKparam); // wie übergeben wir am Besten?
-    if(iNumber != 0)
-    {
-        perror("Beim Erstellen des Threads ist ein Fehler aufgetreten.");
-        exit(-1);
-    }
-    */
     
     for(int nIndex = 0; nIndex < iNparam; nIndex++){
         int threadNum = pthread_create(&threadStore[nIndex], NULL, thread_func, &iKparam);
@@ -110,12 +103,16 @@ int main(int argc, char *argv[]) {
             perror("Thread creation went wrong.");
         }
         list_append(li, pthread_self());
-        if(nIndex > 0)
-        {
-            pthread_join(threadStore[nIndex-1], NULL);
-        }
     }
     
+    
+
+    if (getpid() == processIDparent)
+    {
+        now = time(0);
+        printf("Ende: %s", ctime(&now));
+    }
+
     /*
     for (int nIndex = 0; nIndex < iNparam; nIndex++)
     {
@@ -151,12 +148,6 @@ int main(int argc, char *argv[]) {
         }
     }
     */
-
-    if (getpid() == processIDparent)
-    {
-        now = time(0);
-        printf("Ende: %s", ctime(&now));
-    }
 
     exit(0);
 }
