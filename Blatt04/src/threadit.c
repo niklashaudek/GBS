@@ -7,14 +7,23 @@
 #include <ctype.h>
 #include "list.h"
 #include <math.h>
+#include <pthread.h>
+
+static void* thread_func (void *arg){
+    void* hello;
+    return hello;
+}
 
 int main(int argc, char *argv[]) {
 
-    int newProcessPid = 1;
-    int exitCode = 0;
+    int newThreadId = 1;
+    //int exitCode = 0;
     int processIDparent = getpid();
 
     list_t *li;
+    pthread_t mainThread;
+    int iQuestion = pthread_create(&mainThread, NULL, thread_func, "hello");
+    printf("System.out.print: %i", iQuestion);
 
     int opt = 0;
     int iKparam = 10; // default
@@ -80,7 +89,11 @@ int main(int argc, char *argv[]) {
 	now = time(0);
 	printf("Start: %s", ctime(&now));
 
+    for(int nIndex = 0; nIndex < iNparam; nIndex++){
+        int threadNum = pthread_create(&mainThread, NULL, thread_func, "hello world");
+    }
 
+    /*
     for (int nIndex = 0; nIndex < iNparam; nIndex++)
     {
         if (getpid() == processIDparent)
@@ -100,6 +113,7 @@ int main(int argc, char *argv[]) {
             }
         }
     }
+    */
 
     /* Exit Code wird nicht mehr gebraucht
     if (getpid() == processIDparent)
