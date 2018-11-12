@@ -9,21 +9,23 @@
 #include <math.h>
 #include <pthread.h>
 
-static void* thread_func (void *arg){
-    void* hello;
-    return hello;
+static void* thread_func (void *arg) // Thread Routine
+{     
+    int *iTest = (int*) arg;
+    for(int i = 1; i <= *iTest; i++ ){
+    printf("%10u\t%d\t%ld\n", (unsigned int) pthread_self(), getpid(), (long) i); // Ausgabe vom Sheet nicht ändern
+    }
+    pthread_exit((void*) iTest);
+    return arg;
 }
 
 int main(int argc, char *argv[]) {
-
-    int newThreadId = 1;
+    
     //int exitCode = 0;
+    int newProcessId = 1;
     int processIDparent = getpid();
 
     list_t *li;
-    pthread_t mainThread;
-    int iQuestion = pthread_create(&mainThread, NULL, thread_func, "hello");
-    printf("System.out.print: %i", iQuestion);
 
     int opt = 0;
     int iKparam = 10; // default
@@ -71,6 +73,9 @@ int main(int argc, char *argv[]) {
         exit (-4);
     }
 
+        pthread_t threadStore[4];
+
+
     // Berechnung der random variable
     double upper = (double) iKparam * 1.5;
     double lower = (double) iKparam / 2;
@@ -89,10 +94,28 @@ int main(int argc, char *argv[]) {
 	now = time(0);
 	printf("Start: %s", ctime(&now));
 
-    for(int nIndex = 0; nIndex < iNparam; nIndex++){
-        int threadNum = pthread_create(&mainThread, NULL, thread_func, "hello world");
+    /*
+    int iNumber = pthread_create(&mainThread, NULL, thread_func, &iKparam); // wie übergeben wir am Besten?
+    if(iNumber != 0)
+    {
+        perror("Beim Erstellen des Threads ist ein Fehler aufgetreten.");
+        exit(-1);
     }
-
+    */
+    
+    for(int nIndex = 0; nIndex < iNparam; nIndex++){
+        int threadNum = pthread_create(&threadStore[nIndex], NULL, thread_func, &iKparam);
+        if(threadNum != 0)
+        {
+            perror("Thread creation went wrong.");
+        }
+        list_append(li, pthread_self());
+        if(nIndex > 0)
+        {
+            pthread_join(threadStore[nIndex-1], NULL);
+        }
+    }
+    
     /*
     for (int nIndex = 0; nIndex < iNparam; nIndex++)
     {

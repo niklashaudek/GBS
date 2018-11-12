@@ -1,4 +1,5 @@
 #include "list.h"
+#include <pthread.h>
 // hier sollen die Funktionen implementiert werden
 
 list_t *list_init () 
@@ -9,7 +10,7 @@ list_t *list_init ()
     return pListe;
 }
 
-struct list_elem *list_append (list_t *list, int data) // fertig
+struct list_elem *list_append (list_t *list, pthread_t data) // fertig
 {
     struct list_elem* pElement = (struct list_elem*) malloc(sizeof(struct list_elem));
     pElement->data = data;
