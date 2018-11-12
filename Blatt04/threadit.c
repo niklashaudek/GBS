@@ -21,7 +21,7 @@ int main(int argc, char *argv[]) {
     int iNparam = 1;  // default
     int iRparam = 0;  // default
 
-    while ((opt = getopt (argc, argv, "-k:-n:-r")) != -1)
+    while ((opt = getopt (argc, argv, "-k:-n:-r")) != -1) // diese Funktion verändert sich nicht
     {
         switch (opt)
         {
@@ -101,6 +101,7 @@ int main(int argc, char *argv[]) {
         }
     }
 
+    /* Exit Code wird nicht mehr gebraucht
     if (getpid() == processIDparent)
     {
         struct list_elem* thisElem = li->first;
@@ -112,6 +113,7 @@ int main(int argc, char *argv[]) {
             thisElem = thisElem->next;
         }
     }
+    */
 
     if (getpid() == processIDparent)
     {
