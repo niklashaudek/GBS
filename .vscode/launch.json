@@ -108,6 +108,19 @@
             "environment": [],
             "externalConsole": true,
             "MIMode": "lldb"
+        },
+        {
+            "name": "Launch Blatt04 threadit",
+            "type": "cppdbg",
+            "request": "launch",
+            "preLaunchTask": "Build Blatt04 threadit",
+            "program": "${workspaceFolder}/Blatt04/bin/threadit",
+            "args": ["-k", "4", "-n", "3"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "lldb"
         }
 
     ]

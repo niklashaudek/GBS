@@ -82,6 +82,16 @@
                 "isDefault": true
             },
             "problemMatcher": "$gcc"
+        },
+        {
+            "label": "Build Blatt04 threadit",
+            "type": "shell",
+            "command": "gcc -g Blatt04/src/threadit.c Blatt04/src/list.c -o Blatt04/bin/threadit",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": "$gcc"
         }
     ]
 }
