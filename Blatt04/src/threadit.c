@@ -16,6 +16,8 @@ static void* thread_func (void *arg) // Thread Routine
     {
         printf("%10u\t%d\t%ld\n", (unsigned int) pthread_self(), getpid(), (long) i); // Ausgabe vom Sheet nicht ändern
     }
+    int threadId = (int) pthread_self();
+    printf("Meine ThreadID ist: %i\n", threadId);
     pthread_exit((void*) iTest);
     return arg;
 }
@@ -24,7 +26,7 @@ int main(int argc, char *argv[]) {
     
     //int exitCode = 0;
     int newProcessId = 1;
-    int processIDparent = getpid();
+    int threadIDparent = (int) pthread_self();
 
     list_t *li;
 
@@ -97,17 +99,23 @@ int main(int argc, char *argv[]) {
 
     
     for(int nIndex = 0; nIndex < iNparam; nIndex++){
-        int threadNum = pthread_create(&threadStore[nIndex], NULL, thread_func, &iKparam);
-        if(threadNum != 0)
-        {
-            perror("Thread creation went wrong.");
-        }
-        list_append(li, pthread_self());
-    }
-    
-    
+            int threadNum = pthread_create(&li->last->next, NULL, thread_func, &iKparam);
+            list_append(li, (int) pthread_self());
+            if(threadNum != 0)
+            {
+                perror("Thread creation went wrong.");
+            }
+            if(pthread_self() == threadIDparent){
 
-    if (getpid() == processIDparent)
+            }
+    }
+
+    void* iPoint;
+    for(int nIndex = 0; nIndex < iNparam; nIndex++){
+        int iRight = pthread_join(threadStore[nIndex], &iPoint);
+    }
+
+    if (pthread_self() == threadIDparent)
     {
         now = time(0);
         printf("Ende: %s", ctime(&now));
