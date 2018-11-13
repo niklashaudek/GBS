@@ -16,8 +16,8 @@ static void* thread_func (void *arg) // Thread Routine
     {
         printf("%10u\t%d\t%ld\n", (unsigned int) pthread_self(), getpid(), (long) i); // Ausgabe vom Sheet nicht ändern
     }
-    int threadId = (int) pthread_self();
-    printf("Meine ThreadID ist: %i\n", threadId);
+    long unsigned threadId = pthread_self();
+    printf("Meine ThreadID ist: %lu\n", threadId);
     pthread_exit((void*) iTest);
     return arg;
 }
