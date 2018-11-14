@@ -26,6 +26,12 @@ int main(int argc, char *argv[]) {
 
     list_t *li;
 
+    if (( li = list_init()) == NULL)
+    {
+        printf ("Cannot allocate memory" );
+        exit(-5);
+    }
+
     int opt = 0;
     int iNparam = 10; // default
 
@@ -73,60 +79,75 @@ int main(int argc, char *argv[]) {
 
     // die länge des char arrays sollte so angepasst werden, dass der die Eingabe auf ihm platz findet (zum beispiel durch eine Rechnung oder so)
     // int arrayLength = ;
-    char str[1000];
+    char str[1000] = {0};
     gets(str);
-
     int iStringIterator = 0;
-    int category = 1; // Kategorie ob Prio=1, Startzeit=2 oder Laufzeit=3
-    while (str[iStringIterator])
+    /*
+    int lengthCounter = 0;
+    while (str[iStringIterator] != '\0')
     {
-        while (str[iStringIterator] != 32)
+        lengthCounter++;
+    }
+    iStringIterator = 0;
+    */
+    int threadNumber = 1;
+    
+    while (1)
+    {
+        while (str[iStringIterator] != '\n')
         {
-            switch (category)
+            // Prio
+            char dummyPrioArray[5] = {0};
+            int dummycharPrioArrayIterator = 0;
+            while (str[iStringIterator] != ' ')
             {
-            case 1:
-                category = 2;
-                break;
-            case 2:
-                category = 3;
-                break;
-            case 3:
-                category = 1;
+                dummyPrioArray[dummycharPrioArrayIterator] = str[iStringIterator];
+                dummycharPrioArrayIterator++;
+                iStringIterator++;
+            }
+            int thisPrio = atoi(dummyPrioArray);
+            // mit thisPrio was machen!!
+            iStringIterator++;
+
+            // Startzeit
+            char dummyStarttimeArray[10] = {0};
+            int dummyStarttimeArrayIterator = 0;
+            while (str[iStringIterator] != ' ')
+            {
+                dummyStarttimeArray[dummyStarttimeArrayIterator] = str[iStringIterator];
+                dummyStarttimeArrayIterator++;
+                iStringIterator++;
+            }
+            int thisStarttime = atoi(dummyStarttimeArray);
+            // mit thisStarttime was machen!!
+            iStringIterator++;
+
+            // Laufzeit
+            char dummyLaufzeitArray[10] = {0};
+            int dummyLaufzeitArrayIterator = 0;
+            while (str[iStringIterator] != '\n')
+                {
+                    dummyLaufzeitArray[dummyLaufzeitArrayIterator] = str[iStringIterator];
+                    dummyLaufzeitArrayIterator++;
+                    iStringIterator++;
+                }
+            int thisLaufzeit = atoi(dummyLaufzeitArray);
+            // mit thisLaufzeit was machen!!
+            iStringIterator++;
+
+
+            // Thread mit allen Attributen irgendwie in einer Liste speichern
+
+
+            threadNumber++;
+            if (threadNumber > iNparam) {
                 break;
             }
         }
-        switch (category)
-        {
-            case 1:
-                category = 2;
-                break;
-            case 2:
-                category = 3;
-                break;
-            case 3:
-                category = 1;
-                break;
-        }
-
     }
 
 
-
-
-
-
-    // Berechnung der random variable
-    double upper = (double) iKparam * 1.5;
-    double lower = (double) iKparam / 2;
-    if(iRparam == 1){
-        iKparam = (rand() % (int) (upper - lower + 1.0)) + lower; 
-    }
-
-    if (( li = list_init()) == NULL)
-    {
-        printf ("Cannot allocate memory" );
-        exit(-5);
-    }
+    
 
     // Zeit Ausgabe
     time_t now;
