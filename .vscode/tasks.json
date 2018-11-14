@@ -92,6 +92,16 @@
                 "isDefault": true
             },
             "problemMatcher": "$gcc"
+        },
+        {
+            "label": "Build Blatt04 threadsched",
+            "type": "shell",
+            "command": "gcc -g Blatt04/src/threadsched.c Blatt04/src/list.c -o Blatt04/bin/threadsched",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": "$gcc"
         }
     ]
 }

@@ -121,6 +121,19 @@
             "environment": [],
             "externalConsole": true,
             "MIMode": "lldb"
+        },
+        {
+            "name": "Launch Blatt04 threadsched",
+            "type": "cppdbg",
+            "request": "launch",
+            "preLaunchTask": "Build Blatt04 threadsched",
+            "program": "${workspaceFolder}/Blatt04/bin/threadsched",
+            "args": ["-n", "3", "-t", "10", "-q", "50", "-a", "RR"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "lldb"
         }
 
     ]

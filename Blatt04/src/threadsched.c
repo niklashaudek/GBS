@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) {
     int iQparam = 0; // default
     int iAlgorithm = 0; // default
 
-    while ((opt = getopt (argc, argv, "-n:-t:-q:-a")) != -1) // diese Funktion verändert sich nicht
+    while ((opt = getopt (argc, argv, "-n:-t:-q:-a:")) != -1) // diese Funktion verändert sich nicht
     {
         switch (opt)
         {
@@ -119,17 +119,17 @@ int main(int argc, char *argv[]) {
             // char* pChr = optarg;
             for( char* pChr = optarg; *pChr != 0; pChr++ )
             {
-                if (strcmp(pChr, "R") == 0 && strcmp(pChr+1, "R") == 0) 
+                if (*pChr == 'R' && *(pChr+1) == 'R') 
                 {
                     iAlgorithm = 1; // Nummer 1 = Round Robin
                     break;
                 }
-                else if (strcmp(pChr, "P") == 0 && strcmp(pChr+1, "R") == 0 && strcmp(pChr+2, "R") == 0) 
+                else if (*pChr == 'P' && *(pChr+1) == 'R' && *(pChr+2) == 'R') 
                 {
                     iAlgorithm = 2; // Nummer 2 = Priority Round Robin
                     break;
                 }
-                else if (strcmp(pChr, "P") == 0 && strcmp(pChr+1, "R") == 0 && strcmp(pChr+2, "R") == 0) 
+                else if (*pChr == 'S' && *(pChr+1) == 'R' && *(pChr+2) == 'T' && *(pChr+3) == 'N') 
                 {
                     iAlgorithm = 3; // Nummer 3 = Shortest Remaining Time Next
                     break;
@@ -140,6 +140,7 @@ int main(int argc, char *argv[]) {
                     exit(-1);
                 }
             }
+            break;
         default:
             printf ("Error!");
             exit (-3);
@@ -152,75 +153,58 @@ int main(int argc, char *argv[]) {
         exit (-4);
     }
 
-
-
-    // hier kommt der wichtigste Teil:
-    // das korrekte Einlesen aus der STDIN
-
-    // die länge des char arrays sollte so angepasst werden, dass der die Eingabe auf ihm platz findet (zum beispiel durch eine Rechnung oder so)
-    // int arrayLength = ;
-    char str[1000] = {0};
-    gets(str);
-    int iStringIterator = 0;
-    /*
-    int lengthCounter = 0;
-    while (str[iStringIterator] != '\0')
-    {
-        lengthCounter++;
-    }
-    iStringIterator = 0;
-    */
     int thisThreadNumber = 1;
     
-    while (1)
+    for (int inputLine = 1; inputLine <= iNparam; inputLine++)
     {
-        while (str[iStringIterator] != '\n')
+        int iStringIterator = 0;
+        char commandLineInput[100] = {0};
+        gets(commandLineInput);
+
+        // Prio
+        char dummyPrioArray[5] = {0};
+        int dummycharPrioArrayIterator = 0;
+        while (commandLineInput[iStringIterator] != ' ')
         {
-            // Prio
-            char dummyPrioArray[5] = {0};
-            int dummycharPrioArrayIterator = 0;
-            while (str[iStringIterator] != ' ')
+            dummyPrioArray[dummycharPrioArrayIterator] = commandLineInput[iStringIterator];
+            dummycharPrioArrayIterator++;
+            iStringIterator++;
+        }
+        int thisPrio = atoi(dummyPrioArray);
+        iStringIterator++;
+
+        // Startzeit
+        char dummyStarttimeArray[10] = {0};
+        int dummyStarttimeArrayIterator = 0;
+        while (commandLineInput[iStringIterator] != ' ')
+        {
+            dummyStarttimeArray[dummyStarttimeArrayIterator] = commandLineInput[iStringIterator];
+            dummyStarttimeArrayIterator++;
+            iStringIterator++;
+        }
+        int thisStarttime = atoi(dummyStarttimeArray);
+        iStringIterator++;
+
+        // Laufzeit
+        char dummyLaufzeitArray[10] = {0};
+        int dummyLaufzeitArrayIterator = 0;
+        while (commandLineInput[iStringIterator] != '\0')
             {
-                dummyPrioArray[dummycharPrioArrayIterator] = str[iStringIterator];
-                dummycharPrioArrayIterator++;
+                dummyLaufzeitArray[dummyLaufzeitArrayIterator] = commandLineInput[iStringIterator];
+                dummyLaufzeitArrayIterator++;
                 iStringIterator++;
             }
-            int thisPrio = atoi(dummyPrioArray);
-            iStringIterator++;
-
-            // Startzeit
-            char dummyStarttimeArray[10] = {0};
-            int dummyStarttimeArrayIterator = 0;
-            while (str[iStringIterator] != ' ')
-            {
-                dummyStarttimeArray[dummyStarttimeArrayIterator] = str[iStringIterator];
-                dummyStarttimeArrayIterator++;
-                iStringIterator++;
-            }
-            int thisStarttime = atoi(dummyStarttimeArray);
-            iStringIterator++;
-
-            // Laufzeit
-            char dummyLaufzeitArray[10] = {0};
-            int dummyLaufzeitArrayIterator = 0;
-            while (str[iStringIterator] != '\n')
-                {
-                    dummyLaufzeitArray[dummyLaufzeitArrayIterator] = str[iStringIterator];
-                    dummyLaufzeitArrayIterator++;
-                    iStringIterator++;
-                }
-            int thisLaufzeit = atoi(dummyLaufzeitArray);
-            iStringIterator++;
+        int thisLaufzeit = atoi(dummyLaufzeitArray);
+        iStringIterator++;
 
 
-            // Thread mit allen Attributen irgendwie in einer Liste speichern
-            struct list_elem* thisThread = list_append_thread(li, thisThreadNumber, thisPrio, thisStarttime, thisLaufzeit);
+        // Thread mit allen Attributen irgendwie in einer Liste speichern
+        struct list_elem* thisThread = list_append_thread(li, thisThreadNumber, thisPrio, thisStarttime, thisLaufzeit);
 
 
-            thisThreadNumber++;
-            if (thisThreadNumber > iNparam) {
-                break;
-            }
+        thisThreadNumber++;
+        if (thisThreadNumber > iNparam) {
+            break;
         }
     }
 
