@@ -70,7 +70,7 @@ int main(int argc, char *argv[]) {
             }
             else 
             {
-                printf("TimneStamp out of range.");
+                printf("TimneStep out of range.");
                 exit(-1);
             }
             break;
@@ -233,7 +233,7 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    void    print_time_step ( int time , int thread_num) { 
+    void print_time_step ( int time , int thread_num) { 
         static int first_time = 1;
         int i;
         
