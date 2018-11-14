@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <pthread.h>
+
 // Hier soll die Datenstruktur und die Funktionsprototypen definiert werden
 
 struct list_elem {

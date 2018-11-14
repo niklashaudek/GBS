@@ -3,7 +3,6 @@
 #include <time.h>
 #include <unistd.h>
 #include <stdlib.h>
-#include <errno.h>
 #include <ctype.h>
 #include "list.h"
 #include <math.h>
@@ -24,10 +23,6 @@ static void* thread_func (void* data) // Thread Routine
 }
 
 int main(int argc, char *argv[]) {
-    
-    //int exitCode = 0;
-    int newProcessId = 1;
-    int threadIDparent = (int) pthread_self();
 
     list_t *li;
 
@@ -76,9 +71,6 @@ int main(int argc, char *argv[]) {
         printf ("Invalid Parameter!");
         exit (-4);
     }
-
-    pthread_t threadStore[iNparam];
-
 
     // Berechnung der random variable
     double upper = (double) iKparam * 1.5;
