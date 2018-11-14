@@ -10,7 +10,9 @@ struct list_elem {
     pthread_t	                data;  // Zeiger auf ein Datenobject
     int                         iThreadNum;
     int                         iThreadPrio;
-    
+    int                         iTimeStep;
+    int                         i
+
 };
 
 typedef struct list {
