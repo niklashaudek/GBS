@@ -52,5 +52,5 @@ struct list_elem *list_append_thread (list_t *list, int iThreadNumber, int iThre
 
 int list_remove_thread (list_t *list, struct list_elem *elem) // fertig
 {
-    
+    return -1;
 }
