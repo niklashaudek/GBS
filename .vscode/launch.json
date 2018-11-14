@@ -115,7 +115,7 @@
             "request": "launch",
             "preLaunchTask": "Build Blatt04 threadit",
             "program": "${workspaceFolder}/Blatt04/bin/threadit",
-            "args": ["-k", "7", "-n", "4"],
+            "args": ["-k", "13", "-n", "5"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],

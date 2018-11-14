@@ -9,18 +9,18 @@
 #include <math.h>
 #include <pthread.h>
 
-static void* thread_func (void *arg) // Thread Routine
-{     
-    int *iTest = (int*) arg;
-    for(int i = 1; i <= *iTest; i++ )
+static void* thread_func (void* data) // Thread Routine
+{
+    int* threadKvalue = (int*) data;
+    for(int i = 1; i <= *threadKvalue; i++ )
     {
         printf("%10u\t%d\t%ld\n", (unsigned int) pthread_self(), getpid(), (long) i); // Ausgabe vom Sheet nicht ändern
         sleep(1);
     }
-    long unsigned threadId = pthread_self();
-    printf("Meine ThreadID ist: %lu\n", threadId);
-    pthread_exit((void*) iTest);
-    return arg;
+    // long unsigned threadId = pthread_self();
+    // printf("Meine ThreadID ist: %lu\n", threadId);
+    pthread_exit((void*) threadKvalue);
+    return data;
 }
 
 int main(int argc, char *argv[]) {
@@ -100,63 +100,41 @@ int main(int argc, char *argv[]) {
 
     
     for(int nIndex = 0; nIndex < iNparam; nIndex++){
-            int threadNum = pthread_create(&li->last->next, NULL, thread_func, &iKparam);
-            list_append(li, (int) pthread_self());
-            if(threadNum != 0)
-            {
-                perror("Thread creation went wrong.");
-            }
-            if(pthread_self() == threadIDparent){
-
-            }
+        pthread_t my_thread;
+        int threadNum = pthread_create(&my_thread, NULL, &thread_func, &iKparam);
+        if(threadNum) {
+            perror("pthread_create(...) failed");
+            return -1;
+        }
+        list_append(li, my_thread);
     }
 
-    void* iPoint;
-    for(int nIndex = 0; nIndex < iNparam; nIndex++){
-        int iRight = pthread_join(threadStore[nIndex], &iPoint);
-    }
-
-    if (pthread_self() == threadIDparent)
+    void* sResult = NULL;
+    for(int nIndex = 0; nIndex < iNparam; nIndex++)
     {
-        now = time(0);
-        printf("Ende: %s", ctime(&now));
-    }
-
-    /*
-    for (int nIndex = 0; nIndex < iNparam; nIndex++)
-    {
-        if (getpid() == processIDparent)
+        pthread_t thisThreadID = 0;
+        struct list_elem* threadElem = li->first;
+        if (nIndex == 0)
         {
-            newProcessPid = fork();
-            if (newProcessPid > 0)
+            thisThreadID = threadElem->data;
+        }
+        else
+        {
+            for (int listIDX = 0; listIDX < nIndex; listIDX++)
             {
-                struct list_elem* pElement = list_append (li, newProcessPid);
+                threadElem = threadElem->next;
             }
-            if( newProcessPid == 0 )
-            {
-                for (int i = 1; i <= iKparam; i++)
-                {
-                    sleep(1);
-                    printf("%d %d %d\n", getpid(), getppid(), i);
-                }
-            }
+            thisThreadID = threadElem->data;
+        }
+        int result = pthread_join(thisThreadID, &sResult);
+        if(result) {
+            perror("pthread_join(...) failed");
+            return -1;
         }
     }
-    */
 
-    /* Exit Code wird nicht mehr gebraucht
-    if (getpid() == processIDparent)
-    {
-        struct list_elem* thisElem = li->first;
-        while (thisElem != NULL)
-        {        
-            waitpid(thisElem->data, NULL, 0);
-            exitCode = (int) (thisElem->data+iKparam)%100;
-            printf("Exit-Code: %d\n", exitCode);
-            thisElem = thisElem->next;
-        }
-    }
-    */
+    now = time(0);
+    printf("Ende: %s", ctime(&now));
 
-    exit(0);
+    return 0;
 }
