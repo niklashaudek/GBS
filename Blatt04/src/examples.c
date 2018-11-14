@@ -167,16 +167,3 @@ void exampleFileRead() {
 
     printf("Read: i=%i\n", i);
 }
-
-/**
- * Starts a fork bomb: https://de.wikipedia.org/wiki/Forkbomb
- * 
- * MAKE SURE YOU SAVE ALL YOUR WORK BEFORE YOU RUN THIS!
- * USE AT YOUR OWN RISK!
- * 
- **/
-void forkBomb() {
-    while(1) {
-        fork();
-    }
-}
