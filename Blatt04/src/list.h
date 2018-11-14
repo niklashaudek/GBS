@@ -8,11 +8,10 @@
 struct list_elem {
     struct list_elem            *next;  // Zeiger auf das naechste Element
     pthread_t	                data;  // Zeiger auf ein Datenobject
-    int                         iThreadNum;
+    int                         iThreadNumber;
     int                         iThreadPrio;
-    int                         iTimeStep;
-    int                         i
-
+    int                         iThreadStarttime;
+    int                         iThreadLaufzeit;
 };
 
 typedef struct list {
@@ -23,3 +22,4 @@ typedef struct list {
 /* function prototypes */
 list_t           *list_init ();
 struct list_elem *list_append (list_t *list, pthread_t data);
+struct list_elem *list_append_thread (list_t *list, int iThreadNumber, int iThreadPrio, int iThreadStarttime, int iThreadLaufzeit);

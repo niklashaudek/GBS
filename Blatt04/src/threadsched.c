@@ -47,7 +47,8 @@ int main(int argc, char *argv[]) {
 
     int opt = 0;
     int iNparam = 10; // default
-
+    int iTparam = 0; // default
+    int iQparam = 0; // default
     int iAlgorithm = 0; // default
 
     while ((opt = getopt (argc, argv, "-n:-t:-q:-a")) != -1) // diese Funktion verändert sich nicht
@@ -63,7 +64,7 @@ int main(int argc, char *argv[]) {
                     exit (-1);
                 }
             }
-            if(atoi(optarg) <= 10)
+            if(atoi(optarg) <= 10 && atoi(optarg) > 0)
             {
                 iNparam = atoi(optarg);
             }
@@ -85,7 +86,7 @@ int main(int argc, char *argv[]) {
             }
             if(atoi(optarg) <= 100000)
             {
-                iNparam = atoi(optarg);
+                iTparam = atoi(optarg);
             }
             else 
             {
@@ -105,7 +106,7 @@ int main(int argc, char *argv[]) {
             }
             if(atoi(optarg)<= 30000)
             {
-                iNparam = atoi(optarg);
+                iQparam = atoi(optarg);
             }
             else 
             {
@@ -115,19 +116,20 @@ int main(int argc, char *argv[]) {
             break;
         case 'a':
             // algorithm
+            // char* pChr = optarg;
             for( char* pChr = optarg; *pChr != 0; pChr++ )
             {
-                if (strcmp( *pChr, 'R') == 0 && strcmp(*pChr + 1, 'R') == 0) 
+                if (strcmp(pChr, "R") == 0 && strcmp(pChr+1, "R") == 0) 
                 {
                     iAlgorithm = 1; // Nummer 1 = Round Robin
                     break;
                 }
-                else if (strcmp( *pChr, 'P') == 0 && strcmp(*pChr + 1, 'R') == 0 && strcmp( *pChr, 'R') == 0) 
+                else if (strcmp(pChr, "P") == 0 && strcmp(pChr+1, "R") == 0 && strcmp(pChr+2, "R") == 0) 
                 {
                     iAlgorithm = 2; // Nummer 2 = Priority Round Robin
                     break;
                 }
-                else if (strcmp( *pChr, 'P') == 0 && strcmp(*pChr + 1, 'R') == 0 && strcmp( *pChr + 2, 'R') == 0) 
+                else if (strcmp(pChr, "P") == 0 && strcmp(pChr+1, "R") == 0 && strcmp(pChr+2, "R") == 0) 
                 {
                     iAlgorithm = 3; // Nummer 3 = Shortest Remaining Time Next
                     break;
