@@ -8,23 +8,36 @@
 #include <math.h>
 #include <pthread.h>
 
-static void* thread_func (void* data) // Thread Routine
-{
-    int* threadKvalue = (int*) data;
-    for(int i = 1; i <= *threadKvalue; i++ )
+
+void print_time_step ( int time , int thread_num) { 
+    static int first_time = 1;
+    int i;
+    
+    if (first_time) 
     {
-        printf("%10u\t%d\t%ld\n", (unsigned int) pthread_self(), getpid(), (long) i); // Ausgabe vom Sheet nicht ändern
-        sleep(1);
+        printf (" Time | 1 2 3 4 5 6 7 8 9 10\n"); 
+        printf ("−−−−−−−+−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−\n " ); 
+        first_time = 0;
     }
-    // long unsigned threadId = pthread_self();
-    // printf("Meine ThreadID ist: %lu\n", threadId);
-    pthread_exit((void*) threadKvalue);
-    return data;
+    printf ("%06d |", time); 
+    
+    if ( thread_num ) 
+    {
+        for (i = 1; i < thread_num; i++)  
+        {  
+            printf (" ");
+        }
+        printf (" %d\n" , thread_num); 
+    } 
+    else
+    {
+        printf ("\n");
+    }
 }
 
 int main(int argc, char *argv[]) {
 
-    list_t *li;
+    list_t* li;
 
     if (( li = list_init()) == NULL)
     {
@@ -210,78 +223,5 @@ int main(int argc, char *argv[]) {
             }
         }
     }
-
-
-    
-
-    // Zeit Ausgabe
-    time_t now;
-	now = time(0);
-	printf("Start: %s", ctime(&now));
-
-    
-    for(int nIndex = 0; nIndex < iNparam; nIndex++){
-        pthread_t my_thread;
-        int threadNum = pthread_create(&my_thread, NULL, &thread_func, &iKparam);
-        if(threadNum) {
-            perror("pthread_create(...) failed");
-            return -1;
-        }
-        list_append(li, my_thread);
-    }
-
-    void* sResult = NULL;
-    for(int nIndex = 0; nIndex < iNparam; nIndex++)
-    {
-        pthread_t thisThreadID = 0;
-        struct list_elem* threadElem = li->first;
-        if (nIndex == 0)
-        {
-            thisThreadID = threadElem->data;
-        }
-        else
-        {
-            for (int listIDX = 0; listIDX < nIndex; listIDX++)
-            {
-                threadElem = threadElem->next;
-            }
-            thisThreadID = threadElem->data;
-        }
-        int result = pthread_join(thisThreadID, &sResult);
-        if(result) {
-            perror("pthread_join(...) failed");
-            return -1;
-        }
-    }
-
-    void    print_time_step ( int time , int thread_num) { 
-        static int first_time = 1;
-        int i;
-        
-        if (first_time) 
-        {
-            printf (" Time | 1 2 3 4 5 6 7 8 9 10\n"); 
-            printf ("−−−−−−−+−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−\n " ); 
-            first_time = 0;
-        }
-        printf ("%06d |", time); 
-        
-        if ( thread_num ) 
-        {
-            for (i = 1; i < thread_num; i++)  
-            {  
-                printf (" ");
-            }
-            printf (" %d\n" , thread_num); 
-        } 
-        else
-        {
-            printf ("\n");
-        }
-    }
-
-    // now = time(0);
-    // printf("Ende: %s", ctime(&now));
-
     return 0;
 }
