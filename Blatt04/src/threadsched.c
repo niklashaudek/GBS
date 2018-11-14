@@ -225,7 +225,7 @@ int main(int argc, char *argv[]) {
                     int iTimeQuantLeft = iQparam;
                     while(currentThread->iThreadLaufzeit > 0 && iTimeQuantLeft >= iTparam) // Thread noch nicht abgeschlossen & Quantum noch nicht abgelaufen
                     {
-                        print_time_step(time, currentThread->iThreadNumber); // Ausgabe
+                        print_time_step(time, currentThread->iThreadNumber); // Ausgabe führende Nullen
                         time += iTparam; // Zeit läuft weiter
                         currentThread->iThreadLaufzeit -= iTparam; // Laufzeit nimmt ab
                     }    
