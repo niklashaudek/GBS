@@ -50,16 +50,81 @@ int main(int argc, char *argv[]) {
                     exit (-1);
                 }
             }
-            iNparam = atoi(optarg);
+            if(atoi(optarg) <= 10)
+            {
+                iNparam = atoi(optarg);
+            }
+            else 
+            {
+                printf("Number of threads out of range.");
+                exit(-1);
+            }
             break;
         case 't':
             // time step
+            for( char* pChr = optarg; *pChr != 0; pChr++ )
+            {
+                if (isdigit(*pChr) == 0)
+                {
+                    printf ("Parameter N is no integer.");
+                    exit (-1);
+                }
+            }
+            if(atoi(optarg) <= 100000)
+            {
+                iNparam = atoi(optarg);
+            }
+            else 
+            {
+                printf("TimneStamp out of range.");
+                exit(-1);
+            }
             break;
         case 'q':
             // time quantum
+            for( char* pChr = optarg; *pChr != 0; pChr++ )
+            {
+                if (isdigit(*pChr) == 0)
+                {
+                    printf ("Parameter N is no integer.");
+                    exit (-1);
+                }
+            }
+            if(atoi(optarg)<= 30000)
+            {
+                iNparam = atoi(optarg);
+            }
+            else 
+            {
+                printf("Time Quantum out of range.");
+                exit(-1);
+            }
             break;
         case 'a':
             // algorithm
+            for( char* pChr = optarg; *pChr != 0; pChr++ )
+            {
+                if (strcmp( *pChr, 'R') == 0 && strcmp(*pChr + 1, 'R') == 0) 
+                {
+                    iAlgorithm = 1; // Nummer 1 = Round Robin
+                    break;
+                }
+                else if (strcmp( *pChr, 'P') == 0 && strcmp(*pChr + 1, 'R') == 0 && strcmp( *pChr, 'R') == 0) 
+                {
+                    iAlgorithm = 2; // Nummer 2 = Priority Round Robin
+                    break;
+                }
+                else if (strcmp( *pChr, 'P') == 0 && strcmp(*pChr + 1, 'R') == 0 && strcmp( *pChr + 2, 'R') == 0) 
+                {
+                    iAlgorithm = 3; // Nummer 3 = Shortest Remaining Time Next
+                    break;
+                }
+                else 
+                {
+                    printf("Algorithm could not be found.");
+                    exit(-1);
+                }
+            }
         default:
             printf ("Error!");
             exit (-3);
@@ -189,8 +254,34 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    now = time(0);
-    printf("Ende: %s", ctime(&now));
+    void    print_time_step ( int time , int thread_num) { 
+        static int first_time = 1;
+        int i;
+        
+        if (first_time) 
+        {
+            printf (" Time | 1 2 3 4 5 6 7 8 9 10\n"); 
+            printf ("−−−−−−−+−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−\n " ); 
+            first_time = 0;
+        }
+        printf ("%06d |", time); 
+        
+        if ( thread_num ) 
+        {
+            for (i = 1; i < thread_num; i++)  
+            {  
+                printf (" ");
+            }
+            printf (" %d\n" , thread_num); 
+        } 
+        else
+        {
+            printf ("\n");
+        }
+    }
+
+    // now = time(0);
+    // printf("Ende: %s", ctime(&now));
 
     return 0;
 }

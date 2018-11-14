@@ -8,6 +8,9 @@
 struct list_elem {
     struct list_elem            *next;  // Zeiger auf das naechste Element
     pthread_t	                data;  // Zeiger auf ein Datenobject
+    int                         iThreadNum;
+    int                         iThreadPrio;
+    
 };
 
 typedef struct list {
