@@ -9,7 +9,7 @@
 #include <pthread.h>
 
 
-void print_time_step ( int time , int thread_num) { 
+void print_time_step (int time , int thread_num) { 
     static int first_time = 1;
     int i;
     
@@ -170,7 +170,7 @@ int main(int argc, char *argv[]) {
     }
     iStringIterator = 0;
     */
-    int threadNumber = 1;
+    int thisThreadNumber = 1;
     
     while (1)
     {
@@ -186,7 +186,6 @@ int main(int argc, char *argv[]) {
                 iStringIterator++;
             }
             int thisPrio = atoi(dummyPrioArray);
-            // mit thisPrio was machen!!
             iStringIterator++;
 
             // Startzeit
@@ -199,7 +198,6 @@ int main(int argc, char *argv[]) {
                 iStringIterator++;
             }
             int thisStarttime = atoi(dummyStarttimeArray);
-            // mit thisStarttime was machen!!
             iStringIterator++;
 
             // Laufzeit
@@ -212,18 +210,65 @@ int main(int argc, char *argv[]) {
                     iStringIterator++;
                 }
             int thisLaufzeit = atoi(dummyLaufzeitArray);
-            // mit thisLaufzeit was machen!!
             iStringIterator++;
 
 
             // Thread mit allen Attributen irgendwie in einer Liste speichern
+            struct list_elem* thisThread = list_append_thread(li, thisThreadNumber, thisPrio, thisStarttime, thisLaufzeit);
 
 
-            threadNumber++;
-            if (threadNumber > iNparam) {
+            thisThreadNumber++;
+            if (thisThreadNumber > iNparam) {
                 break;
             }
         }
     }
+
+
+
+
+    // Hier kommt nun die Ausgabe bzw. die Implementierung der Algorithmen
+
+    // Round Robin
+    if (iAlgorithm == 1)
+    {
+        int time = 0;
+        struct list_elem* currentThread = li->first;
+        while (currentThread != NULL)
+        {
+            if(currentThread->iThreadStarttime <= time){
+                int iTimeQuantLeft = iQparam;
+                while(currentThread->iThreadLaufzeit >= 0 && iTimeQuantLeft >= iTparam)
+                {
+                    print_time_step(time, currentThread->iThreadNumber);
+                    time += iTparam;
+                    currentThread->iThreadLaufzeit -= iTparam;
+                }    
+            }
+
+
+        }
+    }
+
+    // Priority Round Robin
+    else if (iAlgorithm == 2)
+    {
+
+    }
+
+    // Shortest Remaining Time Next
+    else if (iAlgorithm == 3)
+    {
+
+    }
+
+
+
+
+
+
+
+
+
     return 0;
 }
