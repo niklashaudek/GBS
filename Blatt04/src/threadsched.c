@@ -277,7 +277,7 @@ int main(int argc, char *argv[]) {
         {   
             for(int iCounter = 1; iCounter <= iNparam; iCounter++) // Listenelemente von 1 bis iNparam durchgehen
             {
-                if(currentThread->iThreadPrio == currentPrio) // Thread hat entsprechende Prio
+                if(currentThread->iThreadPrio == currentPrio && currentThread->iThreadStarttime <= time) // Thread hat entsprechende Prio
                 {
                     while(currentThread->iThreadLaufzeit > 0)
                     {
@@ -332,9 +332,51 @@ int main(int argc, char *argv[]) {
 
     // Shortest Remaining Time Next
     else if (iAlgorithm == 3)
-    {
-        
+    {   
+        int time = 0;
+        struct list_elem* currentThread = li->first;
+        struct list_elem* currentShortestThread = NULL;
+        int iCurrentShortestTime = 100001; 
+        /* 
+        Shortest Reaining Time = Max Available Time (100000) - 
+        Elemente werden der Reihe nach geprüft und 
+        bei geringerer Remaining Time geupdated
+        */
+        while(iNparam > 0) // Solange Threads in der Liste sind
+        {
+            for(int iCounter = 1; iCounter <= iNparam; iCounter++) // Liste durchsuchen
+            {
+                if(currentThread->iThreadStarttime <= time && currentThread->iThreadLaufzeit < iCurrentShortestTime) // wenn eine kürzere Remaining Time vorliegt
+                {
+                    iCurrentShortestTime = currentThread->iThreadLaufzeit;
+                    currentShortestThread = currentThread;
+                }
+                currentThread = currentThread->next;
+            }
+            while(currentShortestThread->iThreadLaufzeit > 0) // Quantum abarbeiten
+            {
+                int iTimeQuantLeft = iQparam;
+            
+                while(currentShortestThread->iThreadLaufzeit > 0 && iTimeQuantLeft >= iTparam) // Thread noch nicht abgeschlossen & Quantum noch nicht abgelaufen
+                {
+                    print_time_step(time, currentShortestThread->iThreadNumber); // Ausgabe
+                    time += iTparam; // Zeit läuft weiter
+                    currentShortestThread->iThreadLaufzeit -= iTparam; // Laufzeit nimmt ab
+                }
+            }
+            if(currentShortestThread->iThreadLaufzeit == 0) // Thread entfernen falls fertig
+            {
+                list_remove_thread(li, currentShortestThread);
+                iNparam -= 1;
+                iCurrentShortestTime = 100001;
+
+            }
+            currentThread = li->first;
+        }
     }
+    
+        
+    
 
 
 
