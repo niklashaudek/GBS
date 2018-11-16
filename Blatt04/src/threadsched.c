@@ -221,12 +221,13 @@ int main(int argc, char *argv[]) {
         while(iNparam > 0){
             for (int iCounter = 1; iNparam >= iCounter; iCounter++) // Liste noch nicht leer
             {
+                int iTimeQuantLeft = iQparam;
                 if(currentThread->iThreadStarttime <= time){ // Thread schon Vorhanden?
-                    int iTimeQuantLeft = iQparam;
                     while(currentThread->iThreadLaufzeit > 0 && iTimeQuantLeft >= iTparam) // Thread noch nicht abgeschlossen & Quantum noch nicht abgelaufen
                     {
                         print_time_step(time, currentThread->iThreadNumber); // Ausgabe
                         time += iTparam; // Zeit läuft weiter
+                        iTimeQuantLeft -= iTparam;
                         currentThread->iThreadLaufzeit -= iTparam; // Laufzeit nimmt ab
                     }    
                 }
@@ -251,18 +252,16 @@ int main(int argc, char *argv[]) {
                 {
                     if(iCounter == iNparam)// Ende der Liste?
                     {
-                            struct list_elem* deleteable = currentThread;
                             currentThread = li->first;
-                            list_remove_thread(li, deleteable);
-                            iNparam -= 1;
+                            print_time_step(time, 0);
+                            time += iTparam;
+                            iTimeQuantLeft -= iTparam;
+                            iCounter = 1;
                     }
                     else
                     {
-                            struct list_elem* deleteable = currentThread;
                             currentThread = currentThread->next;
-                            list_remove_thread(li, deleteable);
-                            iNparam -= 1;
-                    } 
+                    }
                 }
             }
         }
@@ -277,16 +276,17 @@ int main(int argc, char *argv[]) {
         {   
             for(int iCounter = 1; iCounter <= iNparam; iCounter++) // Listenelemente von 1 bis iNparam durchgehen
             {
+                int iTimeQuantLeft = iQparam;
                 if(currentThread->iThreadPrio == currentPrio) // Thread hat entsprechende Prio
                 {
                     while(currentThread->iThreadLaufzeit > 0)
                     {
-                        int iTimeQuantLeft = iQparam;
                     
                         while(currentThread->iThreadLaufzeit > 0 && iTimeQuantLeft >= iTparam) // Thread noch nicht abgeschlossen & Quantum noch nicht abgelaufen
                             {
                                 print_time_step(time, currentThread->iThreadNumber); // Ausgabe
                                 time += iTparam; // Zeit läuft weiter
+                                iTimeQuantLeft -= iTparam;
                                 currentThread->iThreadLaufzeit -= iTparam; // Laufzeit nimmt ab
                             }
                     }
@@ -311,17 +311,15 @@ int main(int argc, char *argv[]) {
                     {
                         if(iCounter == iNparam)// Nächstes Listenelement prüfen
                         {
-                            struct list_elem* deleteable = currentThread;
                             currentThread = li->first;
-                            list_remove_thread(li, deleteable);
-                            iNparam -= 1;
+                            print_time_step(time, 0);
+                            time += iTparam;
+                            iTimeQuantLeft -= iTparam;
+                            iCounter = 1;
                         }
                         else
                         {
-                            struct list_elem* deleteable = currentThread;
                             currentThread = currentThread->next;
-                            list_remove_thread(li, deleteable);
-                            iNparam -= 1;
                         } 
                     }
                 }
