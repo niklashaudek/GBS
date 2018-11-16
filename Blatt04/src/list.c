@@ -28,13 +28,14 @@ struct list_elem *list_append (list_t *list, pthread_t data) // fertig
     return pElement;
 }
 
-struct list_elem *list_append_thread (list_t *list, int iThreadNumber, int iThreadPrio, int iThreadStarttime, int iThreadLaufzeit)
+struct list_elem *list_append_thread (list_t *list, int iThreadNumber, int iThreadPrio, int iThreadStarttime, int iThreadLaufzeit, int state)
 {
     struct list_elem* pElement = (struct list_elem*) malloc(sizeof(struct list_elem));
     pElement->iThreadNumber = iThreadNumber;
     pElement->iThreadPrio = iThreadPrio;
     pElement->iThreadStarttime = iThreadStarttime;
     pElement->iThreadLaufzeit = iThreadLaufzeit;
+    pElement->state = state;
     if (list->last != NULL)
     {
         list->last->next = pElement;
@@ -52,5 +53,24 @@ struct list_elem *list_append_thread (list_t *list, int iThreadNumber, int iThre
 
 int list_remove_thread (list_t *list, struct list_elem *elem) // fertig
 {
-    return -1;
+    struct list_elem *toDeleteElement = list->first;
+    struct list_elem *prevElement = NULL;
+    do
+    {
+        if (toDeleteElement->iThreadNumber == elem->iThreadNumber)
+        {
+            if (prevElement != NULL) prevElement->next = toDeleteElement->next;
+            else
+            {
+                list->first = toDeleteElement->next;
+            }
+            free (toDeleteElement); // toDeleteElement löschen
+            return 0;
+        }
+        prevElement = toDeleteElement;
+        toDeleteElement = toDeleteElement->next;
+
+    } while (toDeleteElement != NULL);
+
+    return -1; // Objekt wurde nicht gefunden
 }

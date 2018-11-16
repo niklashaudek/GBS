@@ -16,7 +16,7 @@ void print_time_step (int time , int thread_num) {
     if (first_time) 
     {
         printf (" Time | 1 2 3 4 5 6 7 8 9 10\n"); 
-        printf ("−−−−−−−+−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−\n " ); 
+        printf ("−−−−−−−+−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−\n" ); 
         first_time = 0;
     }
     printf ("%06d |", time); 
@@ -199,7 +199,7 @@ int main(int argc, char *argv[]) {
 
 
         // Thread mit allen Attributen irgendwie in einer Liste speichern
-        struct list_elem* thisThread = list_append_thread(li, thisThreadNumber, thisPrio, thisStarttime, thisLaufzeit);
+        struct list_elem* thisThread = list_append_thread(li, thisThreadNumber, thisPrio, thisStarttime, thisLaufzeit, 3);
 
 
         thisThreadNumber++;
@@ -222,29 +222,33 @@ int main(int argc, char *argv[]) {
             for (int iCounter = 1; iNparam >= iCounter; iCounter++) // Liste noch nicht leer
             {
                 int iTimeQuantLeft = iQparam;
-                if(currentThread->iThreadStarttime <= time){ // Thread schon Vorhanden?
-                    while(currentThread->iThreadLaufzeit > 0 && iTimeQuantLeft >= iTparam) // Thread noch nicht abgeschlossen & Quantum noch nicht abgelaufen
+                if(currentThread->iThreadStarttime <= time) // Thread schon Vorhanden?
+                {
+                    currentThread->state = 1;
+                    while(currentThread->iThreadLaufzeit >= iTparam && iTimeQuantLeft >= iTparam) // Thread noch nicht abgeschlossen & Quantum noch nicht abgelaufen
                     {
+                        currentThread->state = 2;
                         print_time_step(time, currentThread->iThreadNumber); // Ausgabe führende Nullen
                         time += iTparam; // Zeit läuft weiter
                         iTimeQuantLeft -= iTparam;
                         currentThread->iThreadLaufzeit -= iTparam; // Laufzeit nimmt ab
-                    }    
+                    }
+                    if (currentThread->iThreadLaufzeit > 0) currentThread->state = 1;
+                    else currentThread->state = 3;
                 }
                 if(currentThread->iThreadLaufzeit == 0) // Thread entfernen falls fertig
                 {   
                     if(iCounter == iNparam)
                     {
-                        struct list_elem* deleteable = currentThread;
+                        list_remove_thread(li, currentThread);
                         currentThread = li->first;
-                        list_remove_thread(li, deleteable);
                         iNparam -= 1;
                     }
                     else
                     {
-                        struct list_elem* deleteable = currentThread;
-                        currentThread = currentThread->next;
-                        list_remove_thread(li, deleteable);
+                        struct list_elem* nextElem = currentThread->next;
+                        list_remove_thread(li, currentThread);
+                        currentThread = nextElem;
                         iNparam -= 1;
                     }
                 }
@@ -252,11 +256,19 @@ int main(int argc, char *argv[]) {
                 {
                     if(iCounter == iNparam)// Ende der Liste?
                     {
-                            currentThread = li->first;
-                            print_time_step(time, 0);
-                            time += iTparam;
-                            iTimeQuantLeft -= iTparam;
-                            iCounter = 1;
+                            if (currentThread->state == 1)
+                            {
+                                currentThread = li->first;
+                                iCounter = 1;
+                            }
+                            else
+                            {
+                                currentThread = li->first;
+                                print_time_step(time, 0);
+                                time += iTparam;
+                                iTimeQuantLeft -= iTparam;
+                                iCounter = 1;
+                            }
                     }
                     else
                     {
@@ -272,16 +284,12 @@ int main(int argc, char *argv[]) {
     {
         int time = 0;
         struct list_elem* currentThread = li->first;
+        int iTimeQuantLeft = iQparam;
         for(int currentPrio = 1; currentPrio <= 10; currentPrio++) // Prioritäten von 1 - 10 durchgehen
         {   
             for(int iCounter = 1; iCounter <= iNparam; iCounter++) // Listenelemente von 1 bis iNparam durchgehen
             {
-<<<<<<< HEAD
-                int iTimeQuantLeft = iQparam;
-                if(currentThread->iThreadPrio == currentPrio) // Thread hat entsprechende Prio
-=======
                 if(currentThread->iThreadPrio == currentPrio && currentThread->iThreadStarttime <= time) // Thread hat entsprechende Prio
->>>>>>> acf7c221eab48696f5ab14ecb345eb125202962e
                 {
                     while(currentThread->iThreadLaufzeit > 0)
                     {
