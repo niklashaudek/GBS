@@ -193,7 +193,8 @@ int main(int argc, char *argv[]) {
 
 
         // Thread mit allen Attributen irgendwie in einer Liste speichern
-        struct list_elem* thisThread = list_append_thread(li, thisThreadNumber, thisPrio, thisStarttime, thisLaufzeit, 1);
+        // struct list_elem* thisThread = 
+        list_append_thread(li, thisThreadNumber, thisPrio, thisStarttime, thisLaufzeit, 1);
 
 
         thisThreadNumber++;
