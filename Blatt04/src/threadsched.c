@@ -400,17 +400,8 @@ int main(int argc, char *argv[]) {
             linePrintInThisRun = 0;
         }
     }
+
+
     
-        
-    
-
-
-
-
-
-
-
-
-
     return 0;
 }
