@@ -353,6 +353,7 @@ int main(int argc, char *argv[]) {
         struct list_elem* currentThread = li->first;
         struct list_elem* currentShortestThread = NULL;
         int iCurrentShortestTime = __INT_MAX__; 
+        int linePrintInThisRun = 0;
         /* 
         Shortest Reaining Time = Max Available Time (100000) - 
         Elemente werden der Reihe nach geprüft und 
@@ -369,25 +370,31 @@ int main(int argc, char *argv[]) {
                 }
                 currentThread = currentThread->next;
             }
-            while(currentShortestThread->iThreadLaufzeit > 0) // Quantum abarbeiten
+            int iTimeQuantLeft = iQparam;
+        if(currentShortestThread!= NULL)
+        {        
+            while(currentShortestThread != NULL && currentShortestThread->iThreadLaufzeit > 0 && iTimeQuantLeft >= iTparam) // Thread noch nicht abgeschlossen & Quantum noch nicht abgelaufen
             {
-                int iTimeQuantLeft = iQparam;
-            
-                while(currentShortestThread->iThreadLaufzeit > 0 && iTimeQuantLeft >= iTparam) // Thread noch nicht abgeschlossen & Quantum noch nicht abgelaufen
-                {
-                    print_time_step(time, currentShortestThread->iThreadNumber); // Ausgabe
-                    time += iTparam; // Zeit läuft weiter
-                    currentShortestThread->iThreadLaufzeit -= iTparam; // Laufzeit nimmt ab
-                }
+                print_time_step(time, currentShortestThread->iThreadNumber); // Ausgabe führende Nullen
+                time += iTparam; // Zeit läuft weiter
+                iTimeQuantLeft -= iTparam;
+                currentShortestThread->iThreadLaufzeit -= iTparam; // Laufzeit nimmt ab
+                linePrintInThisRun = 1;
             }
-            if(currentShortestThread->iThreadLaufzeit == 0) // Thread entfernen falls fertig
+            if (currentShortestThread->iThreadLaufzeit == 0) 
             {
-                list_remove_thread(li, currentShortestThread);
+                currentShortestThread = list_remove_thread(li, currentShortestThread);
                 iNparam -= 1;
-                iCurrentShortestTime = 100001;
-
             }
+            else if (currentShortestThread->next != NULL)    {currentShortestThread = currentShortestThread->next;}
+            else                                             {currentShortestThread = li->first;}
+        }
+            
+            iCurrentShortestTime = __INT_MAX__;
             currentThread = li->first;
+            currentShortestThread = NULL;
+            if (linePrintInThisRun == 0) {print_time_step(time, 0); time += iTparam;}
+            linePrintInThisRun = 0;
         }
     }
     
