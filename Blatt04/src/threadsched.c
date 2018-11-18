@@ -355,7 +355,7 @@ int main(int argc, char *argv[]) {
         int iCurrentShortestTime = __INT_MAX__; 
         int linePrintInThisRun = 0;
         /* 
-        Shortest Reaining Time = Max Available Time (100000) - 
+        Shortest Reaining Time = Max Available Time - 
         Elemente werden der Reihe nach geprüft und 
         bei geringerer Remaining Time geupdated
         */
@@ -371,29 +371,32 @@ int main(int argc, char *argv[]) {
                 currentThread = currentThread->next;
             }
             int iTimeQuantLeft = iQparam;
-        if(currentShortestThread!= NULL)
-        {        
-            while(currentShortestThread != NULL && currentShortestThread->iThreadLaufzeit > 0 && iTimeQuantLeft >= iTparam) // Thread noch nicht abgeschlossen & Quantum noch nicht abgelaufen
-            {
-                print_time_step(time, currentShortestThread->iThreadNumber); // Ausgabe führende Nullen
-                time += iTparam; // Zeit läuft weiter
-                iTimeQuantLeft -= iTparam;
-                currentShortestThread->iThreadLaufzeit -= iTparam; // Laufzeit nimmt ab
-                linePrintInThisRun = 1;
+            if(currentShortestThread!= NULL)
+            {        
+                while(currentShortestThread != NULL && currentShortestThread->iThreadLaufzeit > 0 && iTimeQuantLeft >= iTparam) // Thread noch nicht abgeschlossen & Quantum noch nicht abgelaufen
+                {
+                    print_time_step(time, currentShortestThread->iThreadNumber); // Ausgabe führende Nullen
+                    time += iTparam; // Zeit läuft weiter
+                    iTimeQuantLeft -= iTparam;
+                    currentShortestThread->iThreadLaufzeit -= iTparam; // Laufzeit nimmt ab
+                    linePrintInThisRun = 1;
+                }
+                if (currentShortestThread->iThreadLaufzeit == 0) 
+                {
+                    currentShortestThread = list_remove_thread(li, currentShortestThread);
+                    iNparam -= 1;
+                }
+                else if (currentShortestThread->next != NULL)    {currentShortestThread = currentShortestThread->next;}
+                else                                             {currentShortestThread = li->first;}
             }
-            if (currentShortestThread->iThreadLaufzeit == 0) 
-            {
-                currentShortestThread = list_remove_thread(li, currentShortestThread);
-                iNparam -= 1;
-            }
-            else if (currentShortestThread->next != NULL)    {currentShortestThread = currentShortestThread->next;}
-            else                                             {currentShortestThread = li->first;}
-        }
             
             iCurrentShortestTime = __INT_MAX__;
             currentThread = li->first;
             currentShortestThread = NULL;
-            if (linePrintInThisRun == 0) {print_time_step(time, 0); time += iTparam;}
+            if (linePrintInThisRun == 0) 
+            {
+                print_time_step(time, 0); time += iTparam;
+            }
             linePrintInThisRun = 0;
         }
     }
