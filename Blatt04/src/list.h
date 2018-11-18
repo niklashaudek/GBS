@@ -12,7 +12,7 @@ struct list_elem {
     int                         iThreadPrio;
     int                         iThreadStarttime;
     int                         iThreadLaufzeit;
-    int                         state; // 1=ready 2=running 3=notready
+    int                         state; // 1=ready 2=ready+inList 3=notready
 };
 
 typedef struct list {
