@@ -38,7 +38,7 @@ void print_time_step (int time , int thread_num) {
 int main(int argc, char *argv[]) {
 
     list_t* li = list_init();
-    list_t* readyList = list_init();
+    list_t* newList = list_init();
 
     if (( li = list_init()) == NULL)
     {
@@ -217,12 +217,81 @@ int main(int argc, char *argv[]) {
     // Round Robin
     if (iAlgorithm == 1)
     {
-        int time = 0;
+        // Liste nach Ankuftszeiten sortieren
         struct list_elem* currentThread = li->first;
-        struct list_elem* lastThreadRunning = NULL;
-
-        while(1)
+        struct list_elem* threadWithSmallestStarttime = NULL;
+        while(li->first != NULL)
         {
+            int starttimeMinimum = __INT_MAX__;
+            while (currentThread != NULL)
+            {
+                if (currentThread->iThreadStarttime < starttimeMinimum)
+                {
+                    starttimeMinimum = currentThread->iThreadStarttime;
+                    threadWithSmallestStarttime = currentThread;
+                }
+                currentThread = currentThread->next;
+            }
+            threadWithSmallestStarttime = list_append_thread(newList, threadWithSmallestStarttime->iThreadNumber, threadWithSmallestStarttime->iThreadPrio,
+                                                                            threadWithSmallestStarttime->iThreadStarttime, threadWithSmallestStarttime->iThreadLaufzeit,
+                                                                            threadWithSmallestStarttime->state);
+            list_remove_thread(li, threadWithSmallestStarttime);
+            currentThread = li->first;
+        }
+
+
+        int time = 0;
+        int iTimeQuantLeft = iQparam;
+        currentThread = newList->first;
+        int linePrintInThisRun = 0;
+
+
+        while (newList->first != NULL)
+        {
+            iTimeQuantLeft = iQparam;
+            if(currentThread->iThreadStarttime <= time) // Thread schon Vorhanden?
+            {
+                while(currentThread->iThreadLaufzeit >= iTparam && iTimeQuantLeft >= iTparam) // Thread noch nicht abgeschlossen & Quantum noch nicht abgelaufen
+                {
+                    print_time_step(time, currentThread->iThreadNumber); // Ausgabe führende Nullen
+                    time += iTparam; // Zeit läuft weiter
+                    iTimeQuantLeft -= iTparam;
+                    currentThread->iThreadLaufzeit -= iTparam; // Laufzeit nimmt ab
+                    linePrintInThisRun = 1;
+                }
+                if (currentThread->iThreadLaufzeit == 0) {currentThread = list_remove_thread(newList, currentThread);}
+                else if (currentThread->next != NULL)    {currentThread = currentThread->next;}
+                else                                     {currentThread = newList->first;}
+            }
+            else if (currentThread == newList->last)
+            {
+                currentThread = newList->first;
+                if (linePrintInThisRun == 0) {print_time_step(time, 0); time += iTparam;}
+                linePrintInThisRun = 0;
+            }
+            else
+            {
+                currentThread = currentThread->next;
+            }
+        }
+
+
+/*
+            // wähle den richtigen Thread aus
+            while (currentThread != NULL)
+            {
+                if (currentThread->iThreadStarttime <= time && lastThreadRunning != currentThread && lastThreadRunning->iThreadStarttime <= currentThread->iThreadStarttime)
+                {
+                    break;
+                }
+                currentThread = currentThread->next;
+            }
+
+            // print
+
+
+
+
             // Liste mit Threads füllen, die ready sind
             currentThread = li->first;
             while (currentThread != NULL)
@@ -231,7 +300,7 @@ int main(int argc, char *argv[]) {
                 {
                     currentThread->state = 2;
                     struct list_elem* runningThread = list_append_thread(readyList, currentThread->iThreadNumber, currentThread->iThreadPrio, currentThread->iThreadStarttime, currentThread->iThreadLaufzeit, currentThread->state);
-                    lastThreadRunning = currentThread;
+                    // lastThreadRunning = currentThread;
                 }
                 currentThread = currentThread->next;
             }
@@ -272,6 +341,8 @@ int main(int argc, char *argv[]) {
                 time += iTparam;
             }
         }
+
+*/        
 
 /*
 

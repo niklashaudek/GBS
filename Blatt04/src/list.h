@@ -24,4 +24,4 @@ typedef struct list {
 list_t           *list_init ();
 struct list_elem *list_append (list_t *list, pthread_t data);
 struct list_elem *list_append_thread (list_t *list, int iThreadNumber, int iThreadPrio, int iThreadStarttime, int iThreadLaufzeit, int state);
-int              list_remove_thread (list_t *list, struct list_elem *elem);
+struct list_elem *list_remove_thread (list_t *list, struct list_elem *elem);
