@@ -3,9 +3,8 @@
 #include <time.h>
 #include <unistd.h>
 #include <stdlib.h>
-#include <ctype.h>
+// #include <ctype.h>
 #include "list.h"
-#include <math.h>
 #include <pthread.h>
 
 static void* thread_func (void* data) // Thread Routine
