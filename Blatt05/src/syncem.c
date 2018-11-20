@@ -41,35 +41,19 @@ static void* thread_func (void* data) // Thread Routine
 
     int runningNumberI = 0;
     char fileInput[64] = {0};
-    char finalInputFile[64] = {0};
-
+    
     while (1)
     {
-        int higherNumber = runningNumberI+1;
-        char finalInputFile[higherNumber*64];
-        if (runningNumberI > 0)
-        {
-            for (int i = 0; i < runningNumberI*64; i++)
-            {
-                finalInputFile[i] = fileInput[i];
-            }
-        }
-        char fileInput[higherNumber*64];
+        printf("[%02d] %03d\t", cont->kValue, runningNumberI);
         fgets(fileInput, 64, &fd);
-        for (int i = 0; i < higherNumber*64; i++)
-            {
-                finalInputFile[i] = fileInput[i];
-            }
+        printf("%s", fileInput);
+        printf("\n");
         if (fileInput[63] == '\0')
         {
             break;
         }
         runningNumberI++;
     }
-
-    printf("[%02d] %03d\t", cont->kValue, runningNumberI);
-    printf("%s", finalInputFile);
-    printf("\n");
 
     // char* text = "Hallo 42\n";
     // write(fd, text, 9); // Write text into file.
