@@ -128,7 +128,7 @@
             "request": "launch",
             "preLaunchTask": "Build Blatt04 threadsched",
             "program": "${workspaceFolder}/Blatt04/bin/threadsched",
-            "args": ["-n", "3", "-t", "10", "-q", "50", "-a", "RR"],
+            "args": ["-n", "4", "-t", "10", "-q", "20", "-a", "PRR"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
