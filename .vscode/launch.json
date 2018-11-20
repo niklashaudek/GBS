@@ -139,7 +139,7 @@
             "name": "Launch Blatt05 syncem",
             "type": "cppdbg",
             "request": "launch",
-            "preLaunchTask": "Build Blatt04 syncem",
+            "preLaunchTask": "Build Blatt05 syncem",
             "program": "${workspaceFolder}/Blatt05/bin/syncem",
             "args": ["-n", "10"],
             "stopAtEntry": false,
