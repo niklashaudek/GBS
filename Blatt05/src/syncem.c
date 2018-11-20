@@ -3,7 +3,7 @@
 #include <time.h>
 #include <unistd.h>
 #include <stdlib.h>
-// #include <ctype.h>
+#include <ctype.h>
 #include "list.h"
 #include <pthread.h>
 #include <fcntl.h> // For open(...)
@@ -20,21 +20,33 @@ static void* thread_func (void* data) // Thread Routine
 
     pthread_mutex_lock(&cont->mutex);
 
-    int fd = open("%d.txt", cont->kValue, O_WRONLY | O_CREAT); // Open the file in write only and create it if it does not exist.
+    char* textFile = NULL;
+    int fd = 0;
+    switch (cont->kValue)
+    {
+        case 0: fd = open("0.txt", O_WRONLY | O_CREAT); break;
+        case 1: fd = open("1.txt", O_WRONLY | O_CREAT); break;
+        case 2: fd = open("2.txt", O_WRONLY | O_CREAT); break;
+        case 3: fd = open("3.txt", O_WRONLY | O_CREAT); break;
+        default: printf ("No such file found!\n"); exit (-7);
+    }
+    cont->kValue++;
     if(fd <= 0) // On success open(...) returns a file descriptor greater than zero.
     {
-        printf ("Failed to open file \"%d.txt\"\n", cont->kValue);
+        printf ("Failed to open file number %i\n", cont->kValue);
         exit (-6);
     }
 
+    printf("Thread for file %i is running!\n", cont->kValue);
+
     int runningNumberI = 0;
-    char fileInput[64];
-    char finalInputFile[64];
+    char fileInput[64] = {0};
+    char finalInputFile[64] = {0};
 
     while (1)
     {
         int higherNumber = runningNumberI+1;
-        finalInputFile[higherNumber*64];
+        char finalInputFile[higherNumber*64];
         if (runningNumberI > 0)
         {
             for (int i = 0; i < runningNumberI*64; i++)
@@ -42,8 +54,8 @@ static void* thread_func (void* data) // Thread Routine
                 finalInputFile[i] = fileInput[i];
             }
         }
-        fileInput[higherNumber*64];
-        fgets(fileInput, 64, fd);
+        char fileInput[higherNumber*64];
+        fgets(fileInput, 64, &fd);
         for (int i = 0; i < higherNumber*64; i++)
             {
                 finalInputFile[i] = fileInput[i];
@@ -63,9 +75,9 @@ static void* thread_func (void* data) // Thread Routine
     // write(fd, text, 9); // Write text into file.
     close(fd); // Close file again and free the file descriptor.
 
-    pthread_exit((void*) cont->kValue);
-
     pthread_mutex_unlock(&cont->mutex);
+
+    pthread_exit(data);
 
     return data;
 }
@@ -123,7 +135,7 @@ int main(int argc, char *argv[]) {
 
     for(int nIndex = 0; nIndex < iNparam; nIndex++){
         pthread_t my_thread;
-        int threadNum = pthread_create(&my_thread, NULL, &thread_func, &nIndex);
+        int threadNum = pthread_create(&my_thread, NULL, &thread_func, cont);
         if(threadNum) {
             perror("pthread_create(...) failed\n");
             return -1;
