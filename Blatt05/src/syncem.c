@@ -23,8 +23,8 @@ static void* thread_func (void* data) // Thread Routine
     int fd = open("%d.txt", cont->kValue, O_WRONLY | O_CREAT); // Open the file in write only and create it if it does not exist.
     if(fd <= 0) // On success open(...) returns a file descriptor greater than zero.
     {
-        perror("Failed to open file \"file.txt\"");
-        return;
+        printf ("Failed to open file \"%d.txt\"\n", cont->kValue);
+        exit (-6);
     }
 
     int runningNumberI = 0;
@@ -88,32 +88,32 @@ int main(int argc, char *argv[]) {
             {
                 if (isdigit(*pChr) == 0)
                 {
-                    printf ("Parameter N is no integer.");
+                    printf ("Parameter N is no integer.\n");
                     exit (-1);
                 }
             }
             iNparam = atoi(optarg);
             if (iNparam > 10)
             {
-                printf ("Parameter N should be at maximum 10.");
+                printf ("Parameter N should be at maximum 10.\n");
                 exit (-2);
             }
             break;
         default:
-            printf ("You have to put in Parameter N");
+            printf ("You have to put in Parameter N.\n");
             exit (-3);
         }
     }
 
     if( optind != argc )
     {
-        printf ("Invalid Parameter!");
+        printf ("Invalid Parameter!\n");
         exit (-4);
     }
 
     if (( li = list_init()) == NULL)
     {
-        printf ("Cannot allocate memory" );
+        printf ("Cannot allocate memory\n");
         exit(-5);
     }
 
@@ -125,7 +125,7 @@ int main(int argc, char *argv[]) {
         pthread_t my_thread;
         int threadNum = pthread_create(&my_thread, NULL, &thread_func, &nIndex);
         if(threadNum) {
-            perror("pthread_create(...) failed");
+            perror("pthread_create(...) failed\n");
             return -1;
         }
         list_append(li, my_thread, nIndex);
@@ -150,7 +150,7 @@ int main(int argc, char *argv[]) {
         }
         int result = pthread_join(thisThreadID, &sResult);
         if(result) {
-            perror("pthread_join(...) failed");
+            perror("pthread_join(...) failed\n");
             return -1;
         }
     }
