@@ -24,13 +24,12 @@ static void* thread_func (void* data) // Thread Routine
     int fd = 0;
     switch (cont->kValue)
     {
-        case 0: fd = open("0.txt", O_WRONLY | O_CREAT); break;
+        case 0: fd = open("O.txt", O_WRONLY | O_CREAT); break; // !!!! ACHTUNG: irgenwie scheint es nur mit O anstatt 0(null) zu funktionieren!!!!
         case 1: fd = open("1.txt", O_WRONLY | O_CREAT); break;
         case 2: fd = open("2.txt", O_WRONLY | O_CREAT); break;
         case 3: fd = open("3.txt", O_WRONLY | O_CREAT); break;
         default: printf ("No such file found!\n"); exit (-7);
     }
-    cont->kValue++;
     if(fd <= 0) // On success open(...) returns a file descriptor greater than zero.
     {
         printf ("Failed to open file number %i\n", cont->kValue);
@@ -55,13 +54,12 @@ static void* thread_func (void* data) // Thread Routine
         runningNumberI++;
     }
 
-    // char* text = "Hallo 42\n";
-    // write(fd, text, 9); // Write text into file.
     close(fd); // Close file again and free the file descriptor.
 
-    pthread_mutex_unlock(&cont->mutex);
-
     pthread_exit(data);
+    cont->kValue++;
+    
+    pthread_mutex_unlock(&cont->mutex);
 
     return data;
 }
