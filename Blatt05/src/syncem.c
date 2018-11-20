@@ -21,19 +21,21 @@ static void* thread_func (void* data) // Thread Routine
     pthread_mutex_lock(&cont->mutex);
 
     char* textFile = NULL;
-    int fd = 0;
+    FILE* fd = NULL;
+    char* mode = "r"; // we will read from the file
     switch (cont->kValue)
     {
-        case 0: fd = open("O.txt", O_WRONLY | O_CREAT); break; // !!!! ACHTUNG: irgenwie scheint es nur mit O anstatt 0(null) zu funktionieren!!!!
-        case 1: fd = open("1.txt", O_WRONLY | O_CREAT); break;
-        case 2: fd = open("2.txt", O_WRONLY | O_CREAT); break;
-        case 3: fd = open("3.txt", O_WRONLY | O_CREAT); break;
+        case 0: fd = fopen("O.txt", mode); break; // !!!! ACHTUNG: irgenwie scheint es nur mit O anstatt 0(null) zu funktionieren!!!!
+        case 1: fd = fopen("1.txt", mode); break;
+        case 2: fd = fopen("2.txt", mode); break;
+        case 3: fd = fopen("3.txt", mode); break;
         default: printf ("No such file found!\n"); exit (-7);
     }
-    if(fd <= 0) // On success open(...) returns a file descriptor greater than zero.
+
+    if (fd == NULL)
     {
-        printf ("Failed to open file number %i\n", cont->kValue);
-        exit (-6);
+        printf ("Error opening file number %d.\n", cont->kValue);
+        exit (-7);
     }
 
     printf("Thread for file %i is running!\n", cont->kValue);
@@ -44,8 +46,10 @@ static void* thread_func (void* data) // Thread Routine
     while (1)
     {
         printf("[%02d] %03d\t", cont->kValue, runningNumberI);
-        fgets(fileInput, 64, &fd);
-        printf("%s", fileInput);
+        if (fgets(fileInput, 64, fd) != NULL)
+        {
+            printf("%s", fileInput);
+        }
         printf("\n");
         if (fileInput[63] == '\0')
         {
@@ -54,7 +58,7 @@ static void* thread_func (void* data) // Thread Routine
         runningNumberI++;
     }
 
-    close(fd); // Close file again and free the file descriptor.
+    fclose(fd); // Close file again and free the file descriptor.
 
     pthread_exit(data);
     cont->kValue++;
