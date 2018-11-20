@@ -134,6 +134,19 @@
             "environment": [],
             "externalConsole": true,
             "MIMode": "lldb"
+        },
+        {
+            "name": "Launch Blatt05 syncem",
+            "type": "cppdbg",
+            "request": "launch",
+            "preLaunchTask": "Build Blatt04 syncem",
+            "program": "${workspaceFolder}/Blatt05/bin/syncem",
+            "args": ["-n", "10"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "lldb"
         }
 
     ]

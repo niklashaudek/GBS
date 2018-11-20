@@ -1,23 +1,72 @@
 #include <stdio.h>
-#include <string.h>
+// #include <string.h>
 #include <time.h>
 #include <unistd.h>
 #include <stdlib.h>
 // #include <ctype.h>
 #include "list.h"
 #include <pthread.h>
+#include <fcntl.h> // For open(...)
+
+
+struct Container {
+    int kValue;
+    pthread_mutex_t mutex;
+};
 
 static void* thread_func (void* data) // Thread Routine
 {
-    int* threadKvalue = (int*) data;
-    for(int i = 1; i <= *threadKvalue; i++ )
+    struct Container* cont = (struct Container*) data;
+
+    pthread_mutex_lock(&cont->mutex);
+
+    int fd = open("%d.txt", cont->kValue, O_WRONLY | O_CREAT); // Open the file in write only and create it if it does not exist.
+    if(fd <= 0) // On success open(...) returns a file descriptor greater than zero.
     {
-        printf("%10u\t%d\t%ld\n", (unsigned int) pthread_self(), getpid(), (long) i); // Ausgabe vom Sheet nicht ändern
-        sleep(1);
+        perror("Failed to open file \"file.txt\"");
+        return;
     }
-    // long unsigned threadId = pthread_self();
-    // printf("Meine ThreadID ist: %lu\n", threadId);
-    pthread_exit((void*) threadKvalue);
+
+    int runningNumberI = 0;
+    char fileInput[64];
+    char finalInputFile[64];
+
+    while (1)
+    {
+        int higherNumber = runningNumberI+1;
+        finalInputFile[higherNumber*64];
+        if (runningNumberI > 0)
+        {
+            for (int i = 0; i < runningNumberI*64; i++)
+            {
+                finalInputFile[i] = fileInput[i];
+            }
+        }
+        fileInput[higherNumber*64];
+        fgets(fileInput, 64, fd);
+        for (int i = 0; i < higherNumber*64; i++)
+            {
+                finalInputFile[i] = fileInput[i];
+            }
+        if (fileInput[63] == '\0')
+        {
+            break;
+        }
+        runningNumberI++;
+    }
+
+    printf("[%02d] %03d\t", cont->kValue, runningNumberI);
+    printf("%s", finalInputFile);
+    printf("\n");
+
+    // char* text = "Hallo 42\n";
+    // write(fd, text, 9); // Write text into file.
+    close(fd); // Close file again and free the file descriptor.
+
+    pthread_exit((void*) cont->kValue);
+
+    pthread_mutex_unlock(&cont->mutex);
+
     return data;
 }
 
@@ -26,32 +75,21 @@ int main(int argc, char *argv[]) {
     list_t *li;
 
     int opt = 0;
-    int iKparam = 10; // default
+    // int iKparam = 10; // default
     int iNparam = 1;  // default
-    int iRparam = 0;  // default
+    // int iRparam = 0;  // default
 
-    while ((opt = getopt (argc, argv, "-k:-n:-r")) != -1) // diese Funktion verändert sich nicht
+    while ((opt = getopt (argc, argv, "-n:")) != -1) // diese Funktion verändert sich nicht
     {
         switch (opt)
         {
-        case 'k':
-            for( char* pChr = optarg; *pChr != 0; pChr++ )
-            {
-                if (isdigit(*pChr) == 0)
-                {
-                    printf ("Parameter K is no integer.");
-                    exit (-1);
-                }
-            }
-            iKparam = atoi(optarg);
-            break;
         case 'n':
             for( char* pChr = optarg; *pChr != 0; pChr++ )
             {
                 if (isdigit(*pChr) == 0)
                 {
                     printf ("Parameter N is no integer.");
-                    exit (-2);
+                    exit (-1);
                 }
             }
             iNparam = atoi(optarg);
@@ -61,11 +99,8 @@ int main(int argc, char *argv[]) {
                 exit (-2);
             }
             break;
-        case 'r':
-            iRparam = 1;
-            break;
         default:
-            printf ("Error!");
+            printf ("You have to put in Parameter N");
             exit (-3);
         }
     }
@@ -76,28 +111,19 @@ int main(int argc, char *argv[]) {
         exit (-4);
     }
 
-    // Berechnung der random variable
-    double upper = (double) iKparam * 1.5;
-    double lower = (double) iKparam / 2;
-    if(iRparam == 1){
-        iKparam = (rand() % (int) (upper - lower + 1.0)) + lower; 
-    }
-
     if (( li = list_init()) == NULL)
     {
         printf ("Cannot allocate memory" );
         exit(-5);
     }
 
-    // Zeit Ausgabe
-    time_t now;
-	now = time(0);
-	printf("Start: %s", ctime(&now));
+    struct Container* cont = malloc(sizeof(struct Container));
+    cont->kValue = 0;
+    pthread_mutex_init(&cont->mutex, NULL);
 
-    
     for(int nIndex = 0; nIndex < iNparam; nIndex++){
         pthread_t my_thread;
-        int threadNum = pthread_create(&my_thread, NULL, &thread_func, &iKparam);
+        int threadNum = pthread_create(&my_thread, NULL, &thread_func, &nIndex);
         if(threadNum) {
             perror("pthread_create(...) failed");
             return -1;
@@ -129,8 +155,7 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    now = time(0);
-    printf("Ende: %s", ctime(&now));
+    pthread_mutex_destroy(&cont->mutex);
 
     return 0;
 }

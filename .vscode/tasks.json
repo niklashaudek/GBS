@@ -102,6 +102,16 @@
                 "isDefault": true
             },
             "problemMatcher": "$gcc"
+        },
+        {
+            "label": "Build Blatt05 syncem",
+            "type": "shell",
+            "command": "gcc -g Blatt05/src/syncem.c Blatt05/src/list.c -o Blatt05/bin/syncem",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": "$gcc"
         }
     ]
 }
