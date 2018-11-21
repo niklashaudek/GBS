@@ -10,7 +10,7 @@
 
 
 struct Container {
-    list_t* threadList;
+    struct list_elem* threadListElem;
     pthread_mutex_t mutex;
 };
 
@@ -21,7 +21,7 @@ static void* thread_func (void* data) // Thread Routine
 
     pthread_mutex_lock(&cont->mutex);
 
-    int kValue = cont->threadList->last->iThreadNumber;
+    int kValue = cont->threadListElem->iThreadNumber;
 
     char* textFile = NULL;
     FILE* fd = NULL;
@@ -79,7 +79,7 @@ static void* thread_func_opL (void* data) // Thread Routine Option l
 
     pthread_mutex_lock(&cont->mutex);
 
-    int kValue = cont->threadList->last->iThreadNumber;
+    int kValue = cont->threadListElem->iThreadNumber;
 
     char* textFile = NULL;
     FILE* fd = NULL;
@@ -139,7 +139,7 @@ static void* thread_func_opF (void* data) // Thread Routine Option f
 
     pthread_mutex_lock(&cont->mutex);
 
-    int kValue = cont->threadList->last->iThreadNumber;
+    int kValue = cont->threadListElem->iThreadNumber;
 
     char* textFile = NULL;
     FILE* fd = NULL;
@@ -263,18 +263,21 @@ int main(int argc, char *argv[]) {
     
     pthread_mutex_init(&cont->mutex, NULL);
 
+    struct list_elem* thisThreadElem = NULL;
+
     for(int nIndex = 0; nIndex < iNparam; nIndex++){
         pthread_t my_thread;
         int threadNum = 0;
         // Optionen werden ausgewählt
         if(option == 0) 
         {
-            list_append_threadNum(threadList, nIndex);
             threadNum = pthread_create(&my_thread, NULL, &thread_func, cont);
         } 
         else if (option == 1)
         {
             // pthread_mutex_lock(&cont->mutex);
+            list_append_threadNum(threadList, nIndex);
+            
             threadNum = pthread_create(&my_thread, NULL, &thread_func_opL, cont);
             // pthread_mutex_unlock(&cont->mutex);
         } 
