@@ -19,8 +19,8 @@ int main(int argC, char** argV) {
     // examplePthreadNoMutex();
     // examplePthreadMutex();
 
-    // exampleFileWrite();
-    example_sprintf();
+    exampleFileWrite();
+    // example_sprintf();
 }
 
 /**
