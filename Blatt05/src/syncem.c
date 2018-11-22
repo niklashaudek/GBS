@@ -10,7 +10,7 @@
 
 
 struct Container {
-    struct list_elem* threadListElem;
+    int i;
     pthread_mutex_t mutex;
 };
 
@@ -21,7 +21,7 @@ static void* thread_func (void* data) // Thread Routine
 
     pthread_mutex_lock(&cont->mutex);
 
-    int kValue = cont->threadListElem->iThreadNumber;
+    int kValue = cont->i;
 
     char* textFile = NULL;
     FILE* fd = NULL;
@@ -79,28 +79,29 @@ static void* thread_func_opL (void* data) // Thread Routine Option l
 
     pthread_mutex_lock(&cont->mutex);
 
-    int kValue = cont->threadListElem->iThreadNumber;
+    int kValue = cont->i;
 
     char* textFile = NULL;
-    FILE* fd = NULL;
+    int fd = 0;
+    //FILE* fd = NULL;
     char* mode = "r"; // we will read from the file
     switch (kValue)
     {
         // fopen() oder open()?
-        case 0: fd = fopen("0.txt", mode);
-            if (fd == NULL)
-            {
-                perror ("Error opening file 0\n");
-                // exit (-7);
-            }
-            break; // !!!! ACHTUNG: irgenwie scheint es nur mit O anstatt 0(null) zu funktionieren!!!!
-        case 1: fd = fopen("1.txt", mode); break;
-        case 2: fd = fopen("2.txt", mode); break;
-        case 3: fd = fopen("3.txt", mode); break;
+        case 0: printf("Try to open file 0:\n"); fd = open("0.txt", O_WRONLY); break; // !!!! ACHTUNG: irgenwie scheint es nur mit O(buchstabe) anstatt 0(zahl) zu funktionieren!!!!
+        case 1: printf("Try to open file 1:\n"); fd = open("1.txt", O_WRONLY); break;
+        case 2: printf("Try to open file 2:\n"); fd = open("2.txt", O_WRONLY); break;
+        case 3: printf("Try to open file 3:\n"); fd = open("3.txt", O_WRONLY); break;
         default: printf ("No such file found!\n"); exit (-7);
     }
 
-    
+    if (fd == -1)
+    {
+        printf("Error in -l\n");
+        printf ("Error opening file number %d.\n", kValue);
+        exit (-7);
+    }
+
 
     printf("Thread for file %i is running!\n", kValue);
 
@@ -110,7 +111,7 @@ static void* thread_func_opL (void* data) // Thread Routine Option l
     while (1)
     {
         printf("[%02d] %03d\t", kValue, runningNumberI);
-        if (fgets(fileInput, 64, fd) != NULL)
+        if (gets(fileInput) != NULL)
         {
             printf("%s", fileInput);
         }
@@ -125,7 +126,7 @@ static void* thread_func_opL (void* data) // Thread Routine Option l
     fclose(fd); // Close file again and free the file descriptor.
 
     pthread_exit(data);
-    // cont->kValue++;
+    cont->i++;
     
     pthread_mutex_unlock(&cont->mutex);
 
@@ -139,7 +140,7 @@ static void* thread_func_opF (void* data) // Thread Routine Option f
 
     pthread_mutex_lock(&cont->mutex);
 
-    int kValue = cont->threadListElem->iThreadNumber;
+    int kValue = cont->i;
 
     char* textFile = NULL;
     FILE* fd = NULL;
@@ -260,10 +261,8 @@ int main(int argc, char *argv[]) {
     }
 
     struct Container* cont = malloc(sizeof(struct Container));
-    
+    cont->i = 1;
     pthread_mutex_init(&cont->mutex, NULL);
-
-    struct list_elem* thisThreadElem = NULL;
 
     for(int nIndex = 0; nIndex < iNparam; nIndex++){
         pthread_t my_thread;
@@ -275,11 +274,7 @@ int main(int argc, char *argv[]) {
         } 
         else if (option == 1)
         {
-            // pthread_mutex_lock(&cont->mutex);
-            list_append_threadNum(threadList, nIndex);
-            
             threadNum = pthread_create(&my_thread, NULL, &thread_func_opL, cont);
-            // pthread_mutex_unlock(&cont->mutex);
         } 
         else if(option == 2) 
         {
