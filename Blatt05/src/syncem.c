@@ -7,7 +7,7 @@
 #include "list.h"
 #include <pthread.h>
 #include <fcntl.h> // For open(...)
-
+#include<errno.h>
 
 struct Container {
     int i;
@@ -84,7 +84,8 @@ static void* thread_func_opL (void* data) // Thread Routine Option l
     char* textFile = NULL;
     int fd = 0;
     //FILE* fd = NULL;
-    char* mode = "r"; // we will read from the file
+    // char* mode = "r"; // we will read from the file
+    
     switch (kValue)
     {
         // fopen() oder open()?
@@ -95,9 +96,12 @@ static void* thread_func_opL (void* data) // Thread Routine Option l
         default: printf ("No such file found!\n"); exit (-7);
     }
 
-    if (fd == -1)
+    printf("fd = %i\n", fd);
+
+    if (fd <= 0)
     {
         printf("Error in -l\n");
+        printf("Error Number: %d\n", errno);
         printf ("Error opening file number %d.\n", kValue);
         exit (-7);
     }
@@ -123,7 +127,7 @@ static void* thread_func_opL (void* data) // Thread Routine Option l
         runningNumberI++;
     }
 
-    fclose(fd); // Close file again and free the file descriptor.
+    close(fd); // Close file again and free the file descriptor.
 
     pthread_exit(data);
     cont->i++;
