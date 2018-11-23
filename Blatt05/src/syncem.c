@@ -96,8 +96,6 @@ static void* thread_func_opL (void* data) // Thread Routine Option l
         default: printf ("No such file found!\n"); exit (-7);
     }
 
-    printf("fd = %i\n", fd);
-
     if (fd <= 0)
     {
         printf("Error in -l\n");
