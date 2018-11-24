@@ -91,10 +91,10 @@ static void* thread_func_opL (void* data) // Thread Routine Option l
     switch (kValue)
     {
         // fopen() oder open()?
-        case 0: printf("Try to open file 0:\n"); fd = open("0.txt", O_WRONLY); break; // !!!! ACHTUNG: irgenwie scheint es nur mit O(buchstabe) anstatt 0(zahl) zu funktionieren!!!!
-        case 1: printf("Try to open file 1:\n"); fd = open("1.txt", O_WRONLY); break;
-        case 2: printf("Try to open file 2:\n"); fd = open("2.txt", O_WRONLY); break;
-        case 3: printf("Try to open file 3:\n"); fd = open("3.txt", O_WRONLY); break;
+        case 0: printf("Try to open file 0:\n"); fd = open("0.txt", O_RDONLY); break; // !!!! ACHTUNG: irgenwie scheint es nur mit O(buchstabe) anstatt 0(zahl) zu funktionieren!!!!
+        case 1: printf("Try to open file 1:\n"); fd = open("1.txt", O_RDONLY); break;
+        case 2: printf("Try to open file 2:\n"); fd = open("2.txt", O_RDONLY); break;
+        case 3: printf("Try to open file 3:\n"); fd = open("3.txt", O_RDONLY); break;
         default: printf ("No such file found!\n"); exit (-7);
     }
 
