@@ -112,6 +112,16 @@
                 "isDefault": true
             },
             "problemMatcher": "$gcc"
+        },
+        {
+            "label": "Build Blatt05 syncorder",
+            "type": "shell",
+            "command": "gcc -g Blatt05/src/syncorder.c Blatt05/src/list.c -o Blatt05/bin/syncorder",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": "$gcc"
         }
     ]
 }

@@ -148,5 +148,19 @@
             "externalConsole": true,
             "MIMode": "lldb"
         }
+        ,
+        {
+            "name": "Launch Blatt05 syncorder",
+            "type": "cppdbg",
+            "request": "launch",
+            "preLaunchTask": "Build Blatt05 syncorder",
+            "program": "${workspaceFolder}/Blatt05/bin/syncorder",
+            "args": ["-n", "6", "-l"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/Blatt05/src",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "lldb"
+        }
     ]
 }
