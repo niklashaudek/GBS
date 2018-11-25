@@ -101,7 +101,8 @@ static void* thread_func_opL (void* data) // Thread Routine Option l
 
     // printf("Thread for file %i is running!\n", kValue);s
     int runningNumberI = 0;
-    
+
+ 
     while (1)
     {
         // printf("vor Mutex Lock \n");
@@ -113,8 +114,10 @@ static void* thread_func_opL (void* data) // Thread Routine Option l
         int iRead = fread( fileInput, 1, 64, fd );
         if (iRead <= 0)
         {
+            pthread_mutex_unlock(&myMutex);
             break;
         }
+
         printf("[%02d] %03d\t", kValue, runningNumberI);
         printf("%s", fileInput);
         printf("\n");
@@ -125,8 +128,8 @@ static void* thread_func_opL (void* data) // Thread Routine Option l
 
     fclose(fd); // Close file again and free the file descriptor.
 
-    pthread_exit(data);
- 
+    pthread_exit(NULL);
+
     return data;
 }
 
@@ -173,6 +176,7 @@ static void* thread_func_opF (void* data) // Thread Routine Option f
         int iRead = fread( fileInput, 1, 64, fd );
         if (iRead <= 0)
         {
+            // pthread_mutex_unlock(&myMutex);
             break;
         }
         printf("[%02d] %03d\t", kValue, runningNumberI);
@@ -190,7 +194,8 @@ static void* thread_func_opF (void* data) // Thread Routine Option f
     return data;
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[]) 
+{
 
     list_t *li = list_init();
     // list_t *threadList = list_init();
@@ -293,6 +298,7 @@ int main(int argc, char *argv[]) {
             perror("pthread_create(...) failed\n");
             return -1;
         }
+        // sleep(1);
         list_append(li, my_thread, nIndex);
     }
 

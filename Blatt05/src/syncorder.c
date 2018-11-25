@@ -1,5 +1,5 @@
 #include <stdio.h>
-// #include <string.h>
+#include <string.h>
 #include <time.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -9,13 +9,14 @@
 #include <fcntl.h> // For open(...)
 // #include <sys/types.h>
 // #include <sys/stat.h>
-#include<errno.h>
+#include <errno.h>
 
 
 
 pthread_mutex_t myMutex;
 pthread_mutex_t condMutex;
 pthread_cond_t cond;
+long currentThreadID = 0;
 
 
 // ohne option l und f
@@ -138,10 +139,6 @@ static void* thread_func_opF (void* data) // Thread Routine Option f
     int kValue = *(int*)data;
     FILE* fd = NULL;
 
-    // printf("vor Mutex Lock \n");
-    pthread_mutex_lock(&myMutex);
-    // printf("nach Mutex Lock \n");
-
     switch (kValue)
     {
         case 0: fd = fopen("0.txt", "r"); break;
@@ -165,65 +162,9 @@ static void* thread_func_opF (void* data) // Thread Routine Option f
         exit (-7);
     }
 
-    // printf("Thread for file %i is running!\n", kValue);s
-    int runningNumberI = 0;
-
-    while (1)
-    {
-        char fileInput[65] = {0};
-
-        int iRead = fread( fileInput, 1, 64, fd );
-        if (iRead <= 0)
-        {
-            break;
-        }
-        printf("[%02d] %03d\t", kValue, runningNumberI);
-        printf("%s", fileInput);
-        printf("\n");
-        runningNumberI++;
-    }
-
-    fclose(fd); // Close file again and free the file descriptor.
-    pthread_mutex_unlock(&myMutex);
-
-
-    pthread_exit(data);
- 
-    return data;
-}
-
-// otion o
-static void* thread_func_opO (void* data) // Thread Routine Option o
-{
-    int kValue = *(int*)data;
-    FILE* fd = NULL;
-
     // printf("vor Mutex Lock \n");
     pthread_mutex_lock(&myMutex);
     // printf("nach Mutex Lock \n");
-
-    switch (kValue)
-    {
-        case 0: fd = fopen("0.txt", "r"); break;
-        case 1: fd = fopen("1.txt", "r"); break;
-        case 2: fd = fopen("2.txt", "r"); break;
-        case 3: fd = fopen("3.txt", "r"); break;
-        case 4: fd = fopen("4.txt", "r"); break;
-        case 5: fd = fopen("5.txt", "r"); break;
-        case 6: fd = fopen("6.txt", "r"); break;
-        case 7: fd = fopen("7.txt", "r"); break;
-        case 8: fd = fopen("8.txt", "r"); break;
-        case 9: fd = fopen("9.txt", "r"); break;
-        default: printf ("No such file found!\n"); exit (-7);
-    }
-
-    if (fd <= 0)
-    {
-        printf("Error in -l\n");
-        printf("Error Number: %d\n", errno);
-        printf ("Error opening file number %d.\n", kValue);
-        exit (-7);
-    }
 
     // printf("Thread for file %i is running!\n", kValue);s
     int runningNumberI = 0;
@@ -254,17 +195,98 @@ static void* thread_func_opO (void* data) // Thread Routine Option o
 
 int write_buffer (long thread, char *buffer, int len)
 {
-    /*
-    pthread_mutex_lock(&condMutex); //mutex lock
-    while(!cond){
+    if (buffer == NULL)
+    {
+        currentThreadID++;
+        pthread_cond_signal(&cond);
+        return 1;
+    }
+    
+    while (currentThreadID != thread)
+    {
+        pthread_mutex_lock(&condMutex); //mutex lock
         pthread_cond_wait(&cond, &condMutex); //wait for the condition
     }
 
-    pthread_mutex_unlock(&condMutex);
-    pthread_cond_signal(&cond);
+    write(1, buffer, len);
 
-    */
-   return 1;
+    pthread_mutex_unlock(&condMutex);
+    
+    return 1;
+}
+
+// otion o
+static void* thread_func_opO (void* data) // Thread Routine Option o
+{
+    int kValue = *(int*)data;
+    FILE* fd = NULL;
+
+    switch (kValue)
+    {
+        case 0: fd = fopen("0.txt", "r"); break;
+        case 1: fd = fopen("1.txt", "r"); break;
+        case 2: fd = fopen("2.txt", "r"); break;
+        case 3: fd = fopen("3.txt", "r"); break;
+        case 4: fd = fopen("4.txt", "r"); break;
+        case 5: fd = fopen("5.txt", "r"); break;
+        case 6: fd = fopen("6.txt", "r"); break;
+        case 7: fd = fopen("7.txt", "r"); break;
+        case 8: fd = fopen("8.txt", "r"); break;
+        case 9: fd = fopen("9.txt", "r"); break;
+        default: printf ("No such file found!\n"); exit (-7);
+    }
+
+    if (fd <= 0)
+    {
+        printf("Error in -l\n");
+        printf("Error Number: %d\n", errno);
+        printf ("Error opening file number %d.\n", kValue);
+        exit (-7);
+    }
+
+    // printf("vor Mutex Lock \n");
+    // pthread_mutex_lock(&myMutex);
+    // printf("nach Mutex Lock \n");
+
+    // printf("Thread for file %i is running!\n", kValue);s
+
+    // int writing = write_buffer(kValue, fd, 100);
+
+    int runningNumberI = 0;
+
+    while (1)
+    {
+        char fileInput[65] = {0};
+
+        int iRead = fread( fileInput, 1, 64, fd );
+        if (iRead <= 0)
+        {
+            break;
+        }
+
+        char szString[100] = {0};
+
+        sprintf(szString, "[%02d] %03d\t", kValue, runningNumberI);
+        write_buffer(kValue, szString, strlen(szString));
+
+        sprintf(szString, "%s", fileInput);
+        write_buffer(kValue, szString, strlen(szString));
+
+        sprintf(szString, "\n");
+        write_buffer(kValue, szString, strlen(szString));
+
+        runningNumberI++;
+    }
+
+    write_buffer(kValue, NULL, 0);
+
+    fclose(fd); // Close file again and free the file descriptor.
+    // pthread_mutex_unlock(&myMutex);
+
+
+    pthread_exit(data);
+ 
+    return data;
 }
 
 int main(int argc, char *argv[]) {
@@ -349,11 +371,21 @@ int main(int argc, char *argv[]) {
 
     if ( pthread_mutex_init(&myMutex, NULL) != 0 )
     {
-        printf("\n mutex init failed\n");
+        printf("\n mutex: myMutex init failed\n");
         return 1;
     }
 
-    pthread_cond_init(&cond, NULL);
+    if ( pthread_mutex_init(&condMutex, NULL) != 0 )
+    {
+        printf("\n mutex: condMutex init failed\n");
+        return 1;
+    }
+
+    if ( pthread_cond_init(&cond, NULL) != 0 )
+    {
+        printf("\n condition init failed\n");
+        return 1;
+    }
 
     int aiIndex[10] = {0};
 
@@ -385,6 +417,7 @@ int main(int argc, char *argv[]) {
             perror("pthread_create(...) failed\n");
             return -1;
         }
+        usleep(1000);
         list_append(li, my_thread, nIndex);
     }
 
