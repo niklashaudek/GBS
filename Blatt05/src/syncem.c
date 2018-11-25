@@ -140,9 +140,6 @@ static void* thread_func_opF (void* data) // Thread Routine Option f
     pthread_mutex_lock(&myMutex);
     // printf("nach Mutex Lock \n");
 
-    printf ("Opening file number %d.\n", kValue);
-
-
     switch (kValue)
     {
         case 0: fd = fopen("0.txt", "r"); break;

@@ -1,6 +1,6 @@
 all: syncem syncorder
 
-SOURCE=syncem.c hexdump.c list.c list.h syncorder.c
+SOURCE=syncem.c list.c list.h syncorder.c
 
 syncem: syncem.c list.c list.h
 	gcc -Wall syncem.c list.c -o $@ -lpthread
