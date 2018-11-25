@@ -141,7 +141,7 @@
             "request": "launch",
             "preLaunchTask": "Build Blatt05 syncem",
             "program": "${workspaceFolder}/Blatt05/bin/syncem",
-            "args": ["-n", "6", "-l"],
+            "args": ["-n", "6", "-f"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/Blatt05/src",
             "environment": [],

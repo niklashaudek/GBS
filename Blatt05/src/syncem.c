@@ -136,10 +136,6 @@ static void* thread_func_opF (void* data) // Thread Routine Option f
     int kValue = *(int*)data;
     FILE* fd = NULL;
 
-    // printf("vor Mutex Lock \n");
-    pthread_mutex_lock(&myMutex);
-    // printf("nach Mutex Lock \n");
-
     switch (kValue)
     {
         case 0: fd = fopen("0.txt", "r"); break;
@@ -162,6 +158,10 @@ static void* thread_func_opF (void* data) // Thread Routine Option f
         printf ("Error opening file number %d.\n", kValue);
         exit (-7);
     }
+
+    // printf("vor Mutex Lock \n");
+    pthread_mutex_lock(&myMutex);
+    // printf("nach Mutex Lock \n");
 
     // printf("Thread for file %i is running!\n", kValue);s
     int runningNumberI = 0;

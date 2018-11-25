@@ -264,6 +264,7 @@ int write_buffer (long thread, char *buffer, int len)
     pthread_cond_signal(&cond);
 
     */
+   return 1;
 }
 
 int main(int argc, char *argv[]) {
@@ -287,7 +288,7 @@ int main(int argc, char *argv[]) {
     int iNparam = 1;  // default
     int option = 0; //default
 
-    while ((opt = getopt (argc, argv, "-n:-l-f")) != -1) // diese Funktion verändert sich nicht
+    while ((opt = getopt (argc, argv, "-n:-l-f-o")) != -1) // diese Funktion verändert sich nicht
     {
         switch (opt)
         {
@@ -319,6 +320,15 @@ int main(int argc, char *argv[]) {
         case 'f':
             if(option == 0)
                 option = 2;
+            else 
+            {
+                printf("Only one option can be selected.\n");
+                exit(-4);
+            }
+            break;
+        case 'o':
+            if(option == 0)
+                option = 3;
             else 
             {
                 printf("Only one option can be selected.\n");
@@ -366,6 +376,10 @@ int main(int argc, char *argv[]) {
         else if(option == 2) 
         {
             threadNum = pthread_create(&my_thread, NULL, &thread_func_opF, &aiIndex[nIndex]);
+        }
+        else if(option == 3) 
+        {
+            threadNum = pthread_create(&my_thread, NULL, &thread_func_opO, &aiIndex[nIndex]);
         }
         if(threadNum) {
             perror("pthread_create(...) failed\n");
