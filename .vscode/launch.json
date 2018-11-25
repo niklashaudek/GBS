@@ -143,7 +143,7 @@
             "program": "${workspaceFolder}/Blatt05/bin/syncem",
             "args": ["-n", "6", "-l"],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}/Blatt05/src",
             "environment": [],
             "externalConsole": true,
             "MIMode": "lldb"
