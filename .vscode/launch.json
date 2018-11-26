@@ -147,8 +147,7 @@
             "environment": [],
             "externalConsole": true,
             "MIMode": "lldb"
-        }
-        ,
+        },
         {
             "name": "Launch Blatt05 syncorder",
             "type": "cppdbg",
@@ -158,6 +157,19 @@
             "args": ["-n", "6", "-o"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/Blatt05/src",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "lldb"
+        },
+        {
+            "name": "Launch Blatt06 parsertest",
+            "type": "cppdbg",
+            "request": "launch",
+            "preLaunchTask": "Build Blatt06 parsertest",
+            "program": "${workspaceFolder}/Blatt06/bin/parsertest",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
             "environment": [],
             "externalConsole": true,
             "MIMode": "lldb"

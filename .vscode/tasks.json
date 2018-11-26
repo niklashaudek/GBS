@@ -122,6 +122,16 @@
                 "isDefault": true
             },
             "problemMatcher": "$gcc"
+        },
+        {
+            "label": "Build Blatt06 parsertest",
+            "type": "shell",
+            "command": "gcc -g Blatt06/src/parser.c Blatt06/src/parsertest.c Blatt06/src/list.c -o Blatt06/bin/parsertest",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": "$gcc"
         }
     ]
 }
