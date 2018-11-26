@@ -1,6 +1,6 @@
 #include "list.h"
 
-int parser(char cmdLineInput[]);
+int parser(char cmdLineInput[], char *envp[]);
 
 
 int main (int argc, char *argv[] , char *envp[] )
@@ -17,7 +17,7 @@ int main (int argc, char *argv[] , char *envp[] )
             return 1;
         }
 
-        int parsing = parser(cmdLineInput);
+        parser(cmdLineInput, envp);
 
     }
 }
