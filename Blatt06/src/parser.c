@@ -40,7 +40,11 @@ int parser(char cmdLineInput[], char *envp[])
 
     int cmdLinePos = 0;
     int buildPos = 0;
-    int sonderFall = 0;
+    int sonderFall = 0; // Sonderfälle numerieren? 
+    // 1 ist ein $ also eine Variable
+    // 2 ist ""
+    // 3 ist ''
+    // 4 ist |
 
     while ('\n' != cmdLineInput[cmdLinePos]) // Bedingung kann auch 1 sein, da unten break vorkommt
     {
