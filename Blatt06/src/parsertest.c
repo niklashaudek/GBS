@@ -19,8 +19,13 @@ int main (int argc, char *argv[] , char *envp[] )
         while (NULL != thisListElem)
         {
             char* consArg = thisListElem->argument;
-            printf("%i:%s\n", elemCounter, consArg);
-
+            char* empty = "";
+            
+            if (strcmp(empty, consArg) != 0)
+            {
+                printf("%i:%s\n", elemCounter, consArg);
+            }
+            
             if (strcmp(consArg, "exit") == 0)
             {
                 return 1;

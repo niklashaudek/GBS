@@ -82,10 +82,13 @@ list_t* parser(char cmdLineInput[], char *envp[])
         if ('\\' == cmdLineInput[cmdLinePos]) // Kümmert sich direkt um das nächste Zeichen
         {
             cmdLinePos++;
-            buildingString[buildPos] = cmdLineInput[cmdLinePos];
-            buildingString = buildingStringErweitern(buildingString, strlen(buildingString));
-            buildPos++;
-            cmdLinePos++;
+            if('\n' != cmdLineInput[cmdLinePos])
+            {
+                buildingString[buildPos] = cmdLineInput[cmdLinePos];
+                buildingString = buildingStringErweitern(buildingString, strlen(buildingString));
+                buildPos++;
+                cmdLinePos++;
+            }
         }
 
         if ('"' == cmdLineInput[cmdLinePos]) // Sonderfall 1: " " (Doppelte Hochkomma)
