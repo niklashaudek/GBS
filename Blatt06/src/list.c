@@ -9,6 +9,7 @@ list_t *list_init ()
     return pListe;
 }
 
+/*
 struct list_elem *list_insert (list_t *list, char *data) // fertig
 {
     struct list_elem* pElement = (struct list_elem*) malloc(sizeof(struct list_elem));
@@ -26,6 +27,7 @@ struct list_elem *list_insert (list_t *list, char *data) // fertig
     
     return pElement;
 }
+*/
 
 struct list_elem *list_append (list_t *list, char *argument) // fertig
 {
@@ -44,6 +46,8 @@ struct list_elem *list_append (list_t *list, char *argument) // fertig
     }
     return pElement;
 }
+
+/*
 
 int list_remove (list_t *list, struct list_elem *elem) // fertig
 {
@@ -119,3 +123,5 @@ int cmp_elem (const char *str1, const char *str2) // fertig
 {
     return strcmp (str1, str2);
 }
+
+*/

@@ -1,6 +1,6 @@
 #include "list.h"
 
-int parser(char cmdLineInput[], char *envp[]);
+list_t* parser(char cmdLineInput[], char *envp[]);
 
 
 int main (int argc, char *argv[] , char *envp[] )
@@ -12,12 +12,23 @@ int main (int argc, char *argv[] , char *envp[] )
         char cmdLineInput[1024] = {0};
         fgets(cmdLineInput, 1024, stdin);
 
-        if (strcmp(cmdLineInput, "exit\n") == 0)
-        {
-            return 1;
-        }
+        list_t* li = parser(cmdLineInput, envp);
 
-        parser(cmdLineInput, envp);
+        struct list_elem* thisListElem = li->first;
+        int elemCounter = 1;
+        while (NULL != thisListElem)
+        {
+            char* consArg = thisListElem->argument;
+            printf("%i:%s\n", elemCounter, consArg);
+
+            if (strcmp(consArg, "exit") == 0)
+            {
+                return 1;
+            }
+
+            elemCounter++;
+            thisListElem = thisListElem->next;
+        }
 
     }
 }
