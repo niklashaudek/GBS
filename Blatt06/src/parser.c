@@ -127,7 +127,7 @@ list_t* parser(char cmdLineInput[], char *envp[])
                     break;
             }
         }
-        else if (1 == sonderFall || 2 == sonderFall)
+        else if ('$' != cmdLineInput[cmdLinePos] && '\\' != cmdLineInput[cmdLinePos] && (1 == sonderFall || 2 == sonderFall))
         {
             buildingString[buildPos] = cmdLineInput[cmdLinePos];
             buildingString = buildingStringErweitern(buildingString, strlen(buildingString));
@@ -146,6 +146,7 @@ list_t* parser(char cmdLineInput[], char *envp[])
     }
 
     // usleep(1000);
+
 
     if (0 != sonderFall)
     {
