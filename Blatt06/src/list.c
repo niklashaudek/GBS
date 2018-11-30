@@ -1,11 +1,13 @@
 #include "list.h"
 // hier sollen die Funktionen implementiert werden
 
+// Note: Elementcounter wurde hinzugefügt
 list_t *list_init () 
 {
     list_t* pListe = (list_t*) malloc (sizeof(list_t*));
     pListe->first = NULL;
     pListe->last = NULL;
+    pListe->elementCount = 0;
     return pListe;
 }
 
@@ -38,12 +40,15 @@ struct list_elem *list_append (list_t *list, char *argument) // fertig
         list->last->next = pElement;
         list->last = pElement;
         list->last->next = NULL;
+        list->elementCount++;
     } else
     {
         list->last = pElement;
         list->first = pElement;
         list->first->next = NULL;
+        list->elementCount++;
     }
+
     return pElement;
 }
 
