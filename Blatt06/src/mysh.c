@@ -68,16 +68,17 @@ if( newProcessPid == 0 )
 }
 
 // Wieder Einfangen
-if(processIDparent == getpid()) {
+if(processIDparent == getpid()) 
+{
     struct list_elem* thisElem = li->first;
-        while (thisElem != NULL)
-        {        
-            waitpid(thisElem->argument, NULL, 0);
-            exitCode = (int) (thisElem->argument)%100;
-            printf("Exit-Code: %d\n", exitCode);
-            thisElem = thisElem->next;
-        }
+    while (thisElem != NULL)
+    {        
+        waitpid(thisElem->argument, NULL, 0);
+        exitCode = (int) (thisElem->argument)%100;
+        printf("Exit-Code: %d\n", exitCode);
+        thisElem = thisElem->next;
     }
+}
 
 
 
