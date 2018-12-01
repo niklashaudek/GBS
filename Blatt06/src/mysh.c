@@ -4,11 +4,51 @@
 #include "parser.c"
 #include <unistd.h>
 #include <stdlib.h>
+#include <pthread.h>
+
+// liste in array überführen
+char* list_to_array(list_t* list) {
+
+    int listSize = list->elementCount;
+
+    if(listSize == 0) 
+    {
+        printf("No element in list.\n");
+        exit(-1);
+    }
+    char cmdArray [listSize + 1]; // = ( char* ) malloc ( 1 * sizeof(char) );
+    
+    for(int iCount = 0; iCount < listSize; iCount++)
+    {
+        cmdArray[iCount] = 0;
+    }
+    cmdArray[listSize + 1] = NULL;
+
+    for(int iCounter = 0; iCounter < listSize; iCounter++) {        
+        
+        char* pElement = list->first->argument;
+       // Wie finde ich raus wie viel char ein Element braucht?
+        if(pElement != NULL) {
+            for(int iNumber = 0; iNumber < sizeof(pElement); iNumber++) 
+            {
+                
+                //cmdArray[i][j] = ( char* ) realloc ( iCounter * sizeof(char) );
+            }
+        }
+
+        // charArray groß mit charArray klein erweitern
+        
+    }
+
+}
 
 // Prozess forken
-int newProcessPid = 1;
+// int newProcessPid = 1;
+
+int main(int argc, char **argv) {
+
 int exitCode = 0;
-int processIDparent = getpid();
+int processIDparent = NULL; // hier darf man noch kein getPid aufrufen
 
 
 list_t *li;
@@ -16,7 +56,7 @@ list_t *list_init();
 
 
 // Starten
-newProcessPid = fork();
+int newProcessPid = fork();
 if(processIDparent == getpid()) 
 {
     struct list_elem* pElement = list_append (li, newProcessPid);
@@ -32,49 +72,18 @@ if(processIDparent == getpid()) {
     struct list_elem* thisElem = li->first;
         while (thisElem != NULL)
         {        
-            waitpid(thisElem->data, NULL, 0);
-            exitCode = (int) (thisElem->data)%100;
+            waitpid(thisElem->argument, NULL, 0);
+            exitCode = (int) (thisElem->argument)%100;
             printf("Exit-Code: %d\n", exitCode);
             thisElem = thisElem->next;
         }
     }
-}
-
-
-// liste in array überführen
-char* list_to_array(list_t* list) {
-
-    int listSize = list->elementCount;
-
-    if(listSize == 0) {
-        printf("No element in list.\0");
-        exit(-1);
-    } else {
-        char* cmdArray = ( char* ) malloc ( 1 * sizeof(char) );
-    }
-    
-    for(int i = 0, i < listSize, i++) {        
-        
-        char* pElement = list->first->argument;
-       // Wie finde ich raus wie viel char ein Element braucht?
-        if(pElement != NULL) {
-            for(int j = 0, j < sizeof(pElement), j++) 
-            {
-                
-                cmdArray[i][j] = ( char* ) realloc ( i * sizeof(char) );
-            }
-        }
-
-        // charArray groß mit charArray klein erweitern
-        
-    }
 
 
 
-}
 
 
 
 // Ausführung execve(file, argv, envp)
-execve()
-
+//execve();
+}
