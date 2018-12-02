@@ -6,6 +6,7 @@
 struct list_elem {
     struct list_elem    *next;  // Zeiger auf das naechste Element
     char	            *argument;  // Zeiger auf ein Datenobject
+    int                 processID;
 };
 
 typedef struct list {
@@ -18,6 +19,7 @@ typedef struct list {
 list_t           *list_init ();
 // struct list_elem *list_insert (list_t *list, char *data);
 struct list_elem *list_append (list_t *list, char *data);
+struct list_elem *list_append_processID (list_t *list, int processID);
 // int              list_remove (list_t *list, struct list_elem *elem);
 // void             list_finit (list_t *list);
 // void             list_print (list_t *list, void (*print_elem) (char *));

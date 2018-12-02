@@ -132,6 +132,16 @@
                 "isDefault": true
             },
             "problemMatcher": "$gcc"
+        },
+        {
+            "label": "Build Blatt06 mysh",
+            "type": "shell",
+            "command": "gcc -g Blatt06/src/parser.c Blatt06/src/mysh.c Blatt06/src/list.c -o Blatt06/bin/mysh",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": "$gcc"
         }
     ]
 }

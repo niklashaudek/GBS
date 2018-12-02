@@ -52,6 +52,27 @@ struct list_elem *list_append (list_t *list, char *argument) // fertig
     return pElement;
 }
 
+struct list_elem *list_append_processID (list_t *list, int processID) // fertig
+{
+    struct list_elem* pElement = (struct list_elem*) malloc(sizeof(struct list_elem));
+    pElement->processID = processID;
+    if (list->last != NULL)
+    {
+        list->last->next = pElement;
+        list->last = pElement;
+        list->last->next = NULL;
+    } 
+    else
+    {
+        list->last = pElement;
+        list->first = pElement;
+        list->first->next = NULL;
+        
+    }
+    list->elementCount++;
+    return pElement;
+}
+
 /*
 
 int list_remove (list_t *list, struct list_elem *elem) // fertig
