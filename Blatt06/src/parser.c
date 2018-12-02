@@ -46,6 +46,7 @@ list_t* parser(char cmdLineInput[], char *envp[])
 
     while ('\n' != cmdLineInput[cmdLinePos]) // Bedingung kann auch 1 sein, da unten break vorkommt
     {
+        start: // für goto funktion
 
         if ('$' == cmdLineInput[cmdLinePos]) // Kümmert sich komplett um die Variable nach dem Zeichen: $
         {
@@ -77,6 +78,7 @@ list_t* parser(char cmdLineInput[], char *envp[])
                 posForBuild++;
             }
             // free(bufferStr);
+            // goto print;
         }
 
         if ('\\' == cmdLineInput[cmdLinePos]) // Kümmert sich direkt um das nächste Zeichen
@@ -89,6 +91,7 @@ list_t* parser(char cmdLineInput[], char *envp[])
                 buildPos++;
                 cmdLinePos++;
             }
+            goto start;
         }
 
         if ('"' == cmdLineInput[cmdLinePos]) // Sonderfall 1: " " (Doppelte Hochkomma)
@@ -96,12 +99,14 @@ list_t* parser(char cmdLineInput[], char *envp[])
             if (0 == sonderFall) {sonderFall = 1; cmdLinePos++;}
             else if (1 == sonderFall) {sonderFall = 0; cmdLinePos++;}
             // else printf("Achtung geschachtelte Sonderzeichen!\n");
+            // goto start;
         }
         else if ('\'' == cmdLineInput[cmdLinePos]) // Sonderfall 2: ' ' (Einfache Hochkomma)
         {
             if (0 == sonderFall) {sonderFall = 2; cmdLinePos++;}
             else if (2 == sonderFall) {sonderFall = 0; cmdLinePos++;}
             // else printf("Achtung geschachtelte Sonderzeichen!\n");
+            // goto start;
         }
 
         if (0 == sonderFall)
@@ -110,6 +115,7 @@ list_t* parser(char cmdLineInput[], char *envp[])
             switch (cmdLineInput[cmdLinePos])
             {
                 case ' ':
+                    // print:
                     if (0 != cmdLinePos) list_append(li, buildingString);
                     // printf("Argument: %s\n", buildingString); // Test Ausgabe
                     buildingString = buildingStringErweitern(NULL, 0); // new char array allcoation
@@ -129,6 +135,9 @@ list_t* parser(char cmdLineInput[], char *envp[])
                     cmdLinePos++;
                     break;
             }
+
+            // goto start;
+
         }
         else if ('$' != cmdLineInput[cmdLinePos] && '\\' != cmdLineInput[cmdLinePos] && (1 == sonderFall || 2 == sonderFall))
         {
