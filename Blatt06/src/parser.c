@@ -167,7 +167,7 @@ list_t* parser(char cmdLineInput[], char *envp[])
                 // printf("Last argument: %s\n", buildingString); // Test Ausgabe
                 break;
             }
-        }   
+        }
     }
 
     // usleep(1000);
