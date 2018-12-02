@@ -1,6 +1,5 @@
 #include <stdio.h>
-#include "list.h"
-#include "list.c"
+//#include "list.h"
 #include "parser.c"
 #include <unistd.h>
 #include <stdlib.h>
