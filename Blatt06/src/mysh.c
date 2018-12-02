@@ -31,7 +31,7 @@ char** list_to_array(list_t* list) {
         pElementArgument = pElement->argument;
     }
 
-    fprintf("arrayCounter: %i und listSize: %i\n", arrayCounter, listSize);
+    printf("arrayCounter: %i und listSize: %i\n", arrayCounter, listSize);
     * (cmdArray + arrayCounter) = NULL;
    
     return cmdArray;
@@ -45,7 +45,7 @@ int main(int argc, char **argv, char *envp[]) {
     list_t *li = list_init();
     if (( li = list_init()) == NULL)
     {
-        printf ("Cannot allocate memory\n");
+        printf ("Cannot allocate memory.\n");
         exit(-5);
     }
 
@@ -64,18 +64,14 @@ int main(int argc, char **argv, char *envp[]) {
                 break;
 
             case 0:
-                for (int i = 1; i <= k; i++)
+                for (int i = 1; i <= 10; i++)
                 {
                     sleep(1);
                     printf("%d %d %d\n", getpid(), getppid(), i);
                 }
                 break;
             default:
-                // printf("vor wait\n");
                 waitpid(newProcessPid, NULL, 0); // Make sure we wait on the child process to prevent it from getting a Zombie process
-                printf("Exit-Code: %d\n", exitCode); 
-                now = time(0);
-                printf("Ende: %s", ctime(&now));
                 break;
         }
 
@@ -87,18 +83,19 @@ int main(int argc, char **argv, char *envp[]) {
     }
 
     // Wieder Einfangen
+    /*
     if(processIDparent == getpid()) 
     {
         struct list_elem* thisElem = li->first;
         while (thisElem != NULL)
         {        
             waitpid(thisElem->argument, NULL, 0);
-            exitCode = (int) (thisElem->argument)%100;
-            printf("Exit-Code: %d\n", exitCode);
+            //exitCode = (int) (thisElem->argument)%100;
+            // printf("Exit-Code: %d\n", exitCode);
             thisElem = thisElem->next;
         }
     }
-
+    */
 
 
 
