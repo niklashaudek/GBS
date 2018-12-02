@@ -40,15 +40,15 @@ struct list_elem *list_append (list_t *list, char *argument) // fertig
         list->last->next = pElement;
         list->last = pElement;
         list->last->next = NULL;
-        list->elementCount++;
-    } else
+    } 
+    else
     {
         list->last = pElement;
         list->first = pElement;
         list->first->next = NULL;
-        list->elementCount++;
+        
     }
-
+    list->elementCount++;
     return pElement;
 }
 
