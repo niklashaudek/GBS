@@ -40,10 +40,44 @@ char** list_to_array(list_t* list) {
 
 
 
-int main(int argc, char **argv, char *envp[]) {
+int main(int argc, char **argv, char *envp[])
+{
 
-    list_t *li = list_init();
-    if (( li = list_init()) == NULL)
+    while (1)
+    {
+        printf("$ ");
+
+        char cmdLineInput[1024] = {0};
+        fgets(cmdLineInput, 1024, stdin);
+
+        list_t* cmdLineGeparst = parser(cmdLineInput, envp);
+
+        struct list_elem* thisListElem = cmdLineGeparst->first;
+        int elemCounter = 1;
+        while (NULL != thisListElem)
+        {
+            char* consArg = thisListElem->argument;
+            char* empty = "";
+            /*
+            if (strcmp(empty, consArg) != 0)
+            {
+                printf("%i:%s\n", elemCounter, consArg);
+            }
+            */
+            
+            if (strcmp(consArg, "exit") == 0)
+            {
+                return 1;
+            }
+
+            elemCounter++;
+            thisListElem = thisListElem->next;
+        }
+    }
+
+
+    list_t *threadList = list_init();
+    if (( threadList = list_init()) == NULL)
     {
         printf ("Cannot allocate memory.\n");
         exit(-5);
