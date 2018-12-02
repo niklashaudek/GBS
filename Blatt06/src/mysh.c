@@ -1,8 +1,5 @@
-#include <stdio.h>
-//#include "list.h"
-#include "parser.c"
+#include "list.h"
 #include <unistd.h>
-#include <stdlib.h>
 #include <pthread.h>
 
 // liste in array überführen
@@ -37,7 +34,7 @@ char** list_to_array(list_t* list) {
 
 }
 
-
+list_t* parser(char cmdLineInput[], char *envp[]);
 
 int main(int argc, char **argv, char *envp[])
 {
