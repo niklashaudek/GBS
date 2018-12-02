@@ -42,6 +42,12 @@ char** list_to_array(list_t* list) {
 
 int main(int argc, char **argv, char *envp[])
 {
+    list_t* cmdLineGeparst = list_init();
+    if (( cmdLineGeparst = list_init()) == NULL)
+    {
+        printf ("Cannot allocate memory.\n");
+        exit(-5);
+    }
 
     while (1)
     {
@@ -50,7 +56,7 @@ int main(int argc, char **argv, char *envp[])
         char cmdLineInput[1024] = {0};
         fgets(cmdLineInput, 1024, stdin);
 
-        list_t* cmdLineGeparst = parser(cmdLineInput, envp);
+        cmdLineGeparst = parser(cmdLineInput, envp);
 
         struct list_elem* thisListElem = cmdLineGeparst->first;
         int elemCounter = 1;
@@ -74,15 +80,9 @@ int main(int argc, char **argv, char *envp[])
             thisListElem = thisListElem->next;
         }
     }
-
-
-    list_t *threadList = list_init();
-    if (( threadList = list_init()) == NULL)
-    {
-        printf ("Cannot allocate memory.\n");
-        exit(-5);
-    }
-
+    
+    char** parseArray = list_to_array(cmdLineGeparst);
+    printf("Erstes Element: %s\n Zweites Element: %s", *(parseArray), *(parseArray+1));
 
     int newProcessPid = fork();
     /*
