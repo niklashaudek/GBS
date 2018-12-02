@@ -46,7 +46,7 @@ list_t* parser(char cmdLineInput[], char *envp[])
 
     while ('\n' != cmdLineInput[cmdLinePos]) // Bedingung kann auch 1 sein, da unten break vorkommt
     {
-        start: // für goto funktion
+        // start: // für goto funktion
 
         if ('$' == cmdLineInput[cmdLinePos]) // Kümmert sich komplett um die Variable nach dem Zeichen: $
         {
@@ -84,14 +84,24 @@ list_t* parser(char cmdLineInput[], char *envp[])
         if ('\\' == cmdLineInput[cmdLinePos]) // Kümmert sich direkt um das nächste Zeichen
         {
             cmdLinePos++;
-            if('\n' != cmdLineInput[cmdLinePos])
+            
+            if('\n' != cmdLineInput[cmdLinePos] && '\\' != cmdLineInput[cmdLinePos])
             {
-                buildingString[buildPos] = cmdLineInput[cmdLinePos];
-                buildingString = buildingStringErweitern(buildingString, strlen(buildingString));
-                buildPos++;
-                cmdLinePos++;
+                if ('"' == cmdLineInput[cmdLinePos] || '\'' == cmdLineInput[cmdLinePos])
+                {
+                    buildingString[buildPos] = cmdLineInput[cmdLinePos];
+                    buildingString = buildingStringErweitern(buildingString, strlen(buildingString));
+                    buildPos++;
+                    // cmdLinePos++;
+                }
+                else
+                {
+                    buildingString[buildPos] = cmdLineInput[cmdLinePos];
+                    buildingString = buildingStringErweitern(buildingString, strlen(buildingString));
+                    buildPos++;
+                    cmdLinePos++;
+                }
             }
-            goto start;
         }
 
         if ('"' == cmdLineInput[cmdLinePos]) // Sonderfall 1: " " (Doppelte Hochkomma)
@@ -149,12 +159,15 @@ list_t* parser(char cmdLineInput[], char *envp[])
 
 
         // Anhängen des letzten Command Line Arguments
-        if ('\n' == cmdLineInput[cmdLinePos] && ' ' != cmdLineInput[cmdLinePos-1])
+        if (cmdLinePos > 0)
         {
-            list_append(li, buildingString);
-            // printf("Last argument: %s\n", buildingString); // Test Ausgabe
-            break;
-        }
+            if ('\n' == cmdLineInput[cmdLinePos] && ' ' != cmdLineInput[cmdLinePos-1])
+            {
+                list_append(li, buildingString);
+                // printf("Last argument: %s\n", buildingString); // Test Ausgabe
+                break;
+            }
+        }   
     }
 
     // usleep(1000);
