@@ -75,11 +75,12 @@ int main(int argc, char **argv, char *envp[])
             elemCounter++;
             thisListElem = thisListElem->next;
         }
+
+        char** parseArray = list_to_array(cmdLineGeparst);
+        printf("Erstes Element: %s\n Zweites Element: %s", *(parseArray), *(parseArray+1));
+
     }
     
-    char** parseArray = list_to_array(cmdLineGeparst);
-    printf("Erstes Element: %s\n Zweites Element: %s", *(parseArray), *(parseArray+1));
-
     int newProcessPid = fork();
     /*
     if(processIDparent == getpid()) 
