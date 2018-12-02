@@ -16,30 +16,38 @@ char* list_to_array(list_t* list) {
         printf("No element in list.\n");
         exit(-1);
     }
-    char cmdArray [listSize + 1]; // = ( char* ) malloc ( 1 * sizeof(char) );
-    
-    for(int iCount = 0; iCount < listSize; iCount++)
-    {
-        cmdArray[iCount] = 0;
-    }
-    cmdArray[listSize + 1] = NULL;
+    char* cmdArray  = ( char* ) malloc ((listSize + 1) * sizeof(char));
 
-    for(int iCounter = 0; iCounter < listSize; iCounter++) {        
+    // for(int iCounter = 0; iCounter < listSize; iCounter++) {        
+    int listCounter = 1;
+
+    char* pElement = list->first->argument;
+    if(pElement != NULL) {
+            cmdArray = pElement;
+    }
         
-        char* pElement = list->first->argument;
+    while(pElement->next != NULL) {
+            pElement = pElement->next;
+            cmdArray[listCounter] = pElement;
+            listCounter++;
+    }
+
+    cmdArray[listSize] = NULL;
+
+
+        
        // Wie finde ich raus wie viel char ein Element braucht?
+        /*
         if(pElement != NULL) {
             for(int iNumber = 0; iNumber < sizeof(pElement); iNumber++) 
             {
-                
+                cmdArray[iCounter] = pElement;
                 //cmdArray[i][j] = ( char* ) realloc ( iCounter * sizeof(char) );
             }
         }
-
+        */
         // charArray groß mit charArray klein erweitern
-        
-    }
-
+    
 }
 
 // Prozess forken
