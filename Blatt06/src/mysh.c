@@ -23,8 +23,16 @@ char** list_to_array(list_t* list) {
     {
         * (cmdArray + arrayCounter) = pElementArgument;
         arrayCounter++;
+        if(pElement->next != NULL)
+        {
         pElement = pElement->next;
         pElementArgument = pElement->argument;
+        }
+        else 
+        {
+            perror("Something went wrong where the Panda expected it");
+            exit(-7);
+        }
     }
 
     printf("arrayCounter: %i und listSize: %i\n", arrayCounter, listSize);

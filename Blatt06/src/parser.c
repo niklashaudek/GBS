@@ -170,7 +170,7 @@ list_t* parser(char cmdLineInput[], char *envp[])
         }
     }
 
-    // usleep(1000);
+    // sleep(1000);
 
 
     if (0 != sonderFall)
