@@ -23,9 +23,6 @@ char** list_to_array(list_t* list) {
     {
         * (cmdArray + arrayCounter) = pElementArgument;
         arrayCounter++;
-        if(pElement->next != NULL)
-        {
-        pElement = pElement->next;
         if (pElement != NULL)
         {
             pElementArgument = pElement->argument;
