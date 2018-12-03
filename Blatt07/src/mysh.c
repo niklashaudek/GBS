@@ -12,34 +12,24 @@ char** list_to_array(list_t* list) {
         printf("No element in list.\n");
         exit(-1);
     }
-    char** cmdArray  = (char**) malloc((listSize + 1) * sizeof(char*));
+
+    char* cmdArray = (char*) malloc((listSize + 1) * sizeof(char*));
 
     int arrayCounter = 0;
 
     struct list_elem* pElement = list->first;
-    char* pElementArgument = pElement->argument;
+    // char* pElementArgument = pElement->argument;
         
     while (pElement != NULL)
     {
-        * (cmdArray + arrayCounter) = pElementArgument;
-        arrayCounter++;
-        if (pElement != NULL)
-        {
-            pElementArgument = pElement->argument;
-        pElementArgument = pElement->argument;
-        }
-        else 
-        {
-            perror("Something went wrong where the Panda expected it");
-            exit(-7);
-        }
+        cmdArray = pElement->argument;
+        pElement = pElement->next;
+        cmdArray++;
     }
-
-    // printf("arrayCounter: %i und listSize: %i\n", arrayCounter, listSize);
-    * (cmdArray + arrayCounter) = NULL;
+    printf("arrayCounter: %i und listSize: %i\n", arrayCounter, listSize);
+    cmdArray = NULL;
    
     return cmdArray;
-
 }
 
 list_t* parser(char cmdLineInput[], char *envp[]);
