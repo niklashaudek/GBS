@@ -26,18 +26,12 @@ char** list_to_array(list_t* list) {
         if(pElement->next != NULL)
         {
         pElement = pElement->next;
-<<<<<<< HEAD
-        if (pElement != NULL)
-        {
-            pElementArgument = pElement->argument;
-=======
         pElementArgument = pElement->argument;
         }
         else 
         {
             perror("Something went wrong where the Panda expected it");
             exit(-7);
->>>>>>> f7b0171f704ea75f950b7d4428d9412db8584da1
         }
     }
 
