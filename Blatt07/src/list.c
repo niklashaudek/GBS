@@ -50,7 +50,7 @@ struct list_elem *list_append (list_t *list, char *argument) // fertig
         
     }
     list->größe++;
-    printf("größe erhöht.\n");
+    // printf("größe erhöht.\n");
     return pElement;
 }
 

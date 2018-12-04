@@ -25,6 +25,7 @@ struct list_elem *list_append_processID (list_t *list, int processID);
 // void             list_print (list_t *list, void (*print_elem) (char *));
 // struct list_elem *list_find (list_t *list, char *data, int (*cmp_elem) (const char *, const char *));
 // void             print_string (char *data); // Muss die Deklaration auch hier stehen?
+int get_length (list_t *list);
 
 
 
