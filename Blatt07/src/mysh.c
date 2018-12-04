@@ -57,7 +57,7 @@ int main(int argc, char **argv, char *envp[])
 
         char cmdLineInput[1024] = {0};
         fgets(cmdLineInput, 1024, stdin);
-
+/*
         char* buildingString = ( char* ) malloc ( 4 * sizeof(char) );
         int buildPos = 0;
         int cmdLinePos = 0;
@@ -65,7 +65,7 @@ int main(int argc, char **argv, char *envp[])
         buildingString[buildPos++] = cmdLineInput[cmdLinePos++];
         buildingString[buildPos++] = cmdLineInput[cmdLinePos++];
         buildingString[buildPos++] = cmdLineInput[cmdLinePos++];
-
+*/
         cmdLineGeparst = parser(cmdLineInput, envp);
 
         struct list_elem* thisListElem = cmdLineGeparst->first;
