@@ -49,6 +49,7 @@ struct list_elem *list_append (list_t *list, char *argument) // fertig
         
     }
     list->elementCount++;
+    printf("Elemcounter erhöht.");
     return pElement;
 }
 

@@ -19,7 +19,7 @@ char** list_to_array(list_t* list) {
 
     for (int arrayIndex = 0; arrayIndex < arraySize; arrayIndex++)
     {
-        if (pElement != NULL)
+        if (NULL != pElement)
         {
             cmdArray[arrayIndex] = pElement->argument;
             pElement = pElement->next;
