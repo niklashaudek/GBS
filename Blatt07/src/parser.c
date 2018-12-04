@@ -34,7 +34,7 @@ list_t* parser(char cmdLineInput[], char *envp[])
         exit(1);
     }
 
-    char* buildingString = ( char* ) malloc ( 1 * sizeof(char) );
+    char* buildingString = ( char* ) malloc ( 2 * sizeof(char) );
 
     int cmdLinePos = 0;
     int buildPos = 0;
