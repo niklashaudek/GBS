@@ -162,4 +162,5 @@ int get_length (list_t *list)
         list_length++;
         search = search->next;
     }
+    return list_length;
 }
