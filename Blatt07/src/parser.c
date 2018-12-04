@@ -42,7 +42,8 @@ list_t* parser(char cmdLineInput[], char *envp[])
     buildingString[buildPos++] = cmdLineInput[cmdLinePos++];
     buildingString[buildPos++] = cmdLineInput[cmdLinePos++];
 */
-
+    int switchLeft = 0;
+    int switchRight = 0;
     while ('\n' != cmdLineInput[cmdLinePos])
     {
         switch (cmdLineInput[cmdLinePos])
@@ -58,6 +59,30 @@ list_t* parser(char cmdLineInput[], char *envp[])
                 }
                 break;
             case '\n':
+                break;
+            case '<':
+                if(switchLeft > 0)
+                {
+                    perror("Switch Left kommt zu häufig vor.");
+                    exit(-2);
+                }
+                switchLeft++;
+                buildingString[buildPos] = cmdLineInput[cmdLinePos];
+                buildingString = buildingStringErweitern(buildingString, strlen(buildingString));
+                buildPos++;
+                cmdLinePos++;
+                break;
+            case '>':
+                if(switchRight > 0)
+                {
+                    perror("Switch Right kommt zu häufig vor.");
+                    exit(-3);
+                }
+                switchRight++;
+                buildingString[buildPos] = cmdLineInput[cmdLinePos];
+                buildingString = buildingStringErweitern(buildingString, strlen(buildingString));
+                buildPos++;
+                cmdLinePos++;
                 break;
             default:
                 buildingString[buildPos] = cmdLineInput[cmdLinePos];
