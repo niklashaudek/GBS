@@ -5,7 +5,7 @@
 // liste in array überführen
 char** list_to_array(list_t* list) {
 
-    int arraySize = list->elementCount + 1;
+    int arraySize = (list->größe) + 1;
 
     if(arraySize == 0) 
     {

@@ -12,7 +12,7 @@ struct list_elem {
 typedef struct list {
 	struct list_elem *first;    // erstes Element in der Liste
 	struct list_elem *last;     // letztes Element in der Liste
-    int elementCount;           // zählt Elemente in der Liste
+    int größe;           // zählt Elemente in der Liste
 } list_t;
 
 /* function prototypes */
