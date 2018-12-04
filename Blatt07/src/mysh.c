@@ -1,5 +1,5 @@
 #include "list.h"
-//#include <unistd.h>
+#include <unistd.h>
 
 // liste in array überführen
 char** list_to_array(list_t* list) {
@@ -91,25 +91,16 @@ int main(int argc, char **argv, char *envp[])
                 // irgendwas
             }
         }
-/*
-        switch(newProcessPid) {
-                case -1:
-                    perror ("fork () failed");
-                    break;
 
-                case 0:
-                
-                    int test = execve(NULL, parseArray, envp);
-                    if (test == -1)
-                    {
-                        exit (-1);
-                    }
-                
-                    break;
-                default:
-                    waitpid(newProcessPid, NULL, 0); // Make sure we wait on the child process to prevent it from getting a Zombie process
-                    break;
+        if (getpid() == processIDparent)
+        {
+            struct list_elem* thisElem = prozessListe->first;
+            while (thisElem != NULL)
+            {        
+                waitpid(thisElem->processID, NULL, 0);
+                thisElem = thisElem->next;
+            }
         }
-*/
+
     }
 }
