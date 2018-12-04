@@ -5,29 +5,37 @@
 // liste in array überführen
 char** list_to_array(list_t* list) {
 
-    int listSize = list->elementCount;
+    int arraySize = list->elementCount + 1;
 
-    if(listSize == 0) 
+    if(arraySize == 0) 
     {
         printf("No element in list.\n");
         exit(-1);
     }
 
-    char* cmdArray = (char*) malloc((listSize + 1) * sizeof(char*));
-
-    int arrayCounter = 0;
+    char** cmdArray = (char**) malloc((arraySize) * sizeof(char*));
 
     struct list_elem* pElement = list->first;
-    // char* pElementArgument = pElement->argument;
-        
-    while (pElement != NULL)
+
+    for (int arrayIndex = 0; arrayIndex < arraySize; arrayIndex++)
     {
-        cmdArray = pElement->argument;
-        pElement = pElement->next;
-        cmdArray++;
+        if (pElement != NULL)
+        {
+            cmdArray[arrayIndex] = pElement->argument;
+            pElement = pElement->next;
+        }
+        else if (arrayIndex != arraySize - 1)
+        {
+            perror("Fehler: Liste nicht richtig in Array kopiert!");
+        }
     }
-    printf("arrayCounter: %i und listSize: %i\n", arrayCounter, listSize);
-    cmdArray = NULL;
+
+    cmdArray[arraySize-1] = NULL;
+
+    for (int arrayTest = 0; arrayTest < arraySize; arrayTest++)
+    {
+        printf("%i: %s\n", arrayTest, cmdArray[arrayTest]);
+    }
    
     return cmdArray;
 }
