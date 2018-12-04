@@ -1,6 +1,5 @@
 #include "list.h"
-#include <unistd.h>
-#include <pthread.h>
+//#include <unistd.h>
 
 // liste in array überführen
 char** list_to_array(list_t* list) {
@@ -44,29 +43,13 @@ list_t* parser(char cmdLineInput[], char *envp[]);
 
 int main(int argc, char **argv, char *envp[])
 {
-/*
-    list_t* cmdLineGeparst = list_init();
-    if (( cmdLineGeparst = list_init()) == NULL)
-    {
-        printf ("Cannot allocate memory.\n");
-        exit(-5);
-    }
-*/
     while (1)
     {
         printf("$ ");
 
         char cmdLineInput[1024] = {0};
         fgets(cmdLineInput, 1024, stdin);
-/*
-        char* buildingString = ( char* ) malloc ( 4 * sizeof(char) );
-        int buildPos = 0;
-        int cmdLinePos = 0;
-        buildingString[buildPos++] = cmdLineInput[cmdLinePos++];
-        buildingString[buildPos++] = cmdLineInput[cmdLinePos++];
-        buildingString[buildPos++] = cmdLineInput[cmdLinePos++];
-        buildingString[buildPos++] = cmdLineInput[cmdLinePos++];
-*/
+
         list_t* cmdLineGeparst = parser(cmdLineInput, envp);
 
         struct list_elem* thisListElem = cmdLineGeparst->first;
@@ -85,32 +68,48 @@ int main(int argc, char **argv, char *envp[])
         }
 
         char** parseArray = list_to_array(cmdLineGeparst);
-        // printf("Erstes Element: %s\n Zweites Element: %s", *(parseArray), *(parseArray+1));
-        int newProcessPid = fork();
-        /*
-        if(processIDparent == getpid()) 
-        {
-            struct list_elem* pElement = list_append_processID (li, newProcessPid);
-        }
-        */
 
+        list_t* prozessListe = list_init();
+        if (( prozessListe = list_init()) == NULL)
+        {
+            printf ("Cannot allocate memory for prozessListe" );
+            exit(-1);
+        }
+
+        int newProcessPid = 1;
+        int processIDparent = getpid();
+
+        if (getpid() == processIDparent)
+        {
+            newProcessPid = fork();
+            if (newProcessPid > 0)
+            {
+                struct list_elem* pElement = list_append_processID (prozessListe, newProcessPid);
+            }
+            if( newProcessPid == 0 )
+            {
+                // irgendwas
+            }
+        }
+/*
         switch(newProcessPid) {
                 case -1:
                     perror ("fork () failed");
                     break;
 
                 case 0:
-                /*
+                
                     int test = execve(NULL, parseArray, envp);
                     if (test == -1)
                     {
                         exit (-1);
                     }
-                */
+                
                     break;
                 default:
                     waitpid(newProcessPid, NULL, 0); // Make sure we wait on the child process to prevent it from getting a Zombie process
                     break;
         }
+*/
     }
 }
