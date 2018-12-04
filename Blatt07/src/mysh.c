@@ -44,13 +44,14 @@ list_t* parser(char cmdLineInput[], char *envp[]);
 
 int main(int argc, char **argv, char *envp[])
 {
+/*
     list_t* cmdLineGeparst = list_init();
     if (( cmdLineGeparst = list_init()) == NULL)
     {
         printf ("Cannot allocate memory.\n");
         exit(-5);
     }
-
+*/
     while (1)
     {
         printf("$ ");
@@ -66,7 +67,7 @@ int main(int argc, char **argv, char *envp[])
         buildingString[buildPos++] = cmdLineInput[cmdLinePos++];
         buildingString[buildPos++] = cmdLineInput[cmdLinePos++];
 */
-        cmdLineGeparst = parser(cmdLineInput, envp);
+        list_t* cmdLineGeparst = parser(cmdLineInput, envp);
 
         struct list_elem* thisListElem = cmdLineGeparst->first;
         int elemCounter = 1;

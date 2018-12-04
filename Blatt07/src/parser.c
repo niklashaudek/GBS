@@ -38,10 +38,10 @@ list_t* parser(char cmdLineInput[], char *envp[])
 
     int cmdLinePos = 0;
     int buildPos = 0;
-
+/*
     buildingString[buildPos++] = cmdLineInput[cmdLinePos++];
     buildingString[buildPos++] = cmdLineInput[cmdLinePos++];
-
+*/
 
     while ('\n' != cmdLineInput[cmdLinePos])
     {
