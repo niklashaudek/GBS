@@ -88,7 +88,7 @@ int main(int argc, char **argv, char *envp[])
             }
             if( newProcessPid == 0 )
             {
-                // irgendwas
+                // hier muss die Aufgabe implementiert werden
             }
         }
 
