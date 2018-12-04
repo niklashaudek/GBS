@@ -152,3 +152,13 @@ int cmp_elem (const char *str1, const char *str2) // fertig
 }
 
 */
+int get_length (list_t *list)
+{
+    int list_length = 0;
+    struct list_elem *search = list->first;
+    while(search != NULL)
+    {
+        list_length++;
+        search = search->next;
+    }
+}
