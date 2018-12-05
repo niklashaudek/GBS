@@ -40,6 +40,7 @@ char** list_to_array(list_t* list) {
 }
 
 list_t* parser(char cmdLineInput[], char *envp[]);
+char* buildingStringErweitern (char* oldStr, int oldStrLen);
 
 int main(int argc, char **argv, char *envp[])
 {
@@ -94,41 +95,36 @@ int main(int argc, char **argv, char *envp[])
 
                 char* envPath = getenv("PATH"); // Returns NULL if no variable with the given name exists
                 printf("PATH: %s\n", envPath);
-                
-                list_t* listPathElements = list_init();
-                if ( listPathElements == NULL)
+
+                // Array für die einzelenen Paths in der PATH Variable (maximal 10 möglich)
+                char** arrayPathElements = (char**) malloc(10 * sizeof(char*));
+
+                int pathCounter = 0;
+                int pathElementCounter = 0;
+                int singlePathCounter = 0;
+                char* charSinglePath = buildingStringErweitern(NULL, 0);
+                while ('\0' != envPath[pathCounter])
                 {
-                    printf ("Cannot allocate memory for prozessListe" );
-                    exit(-1);
+                    if (':' != envPath[pathCounter])
+                    {
+                        printf("x :\n");
+                        charSinglePath[singlePathCounter] = envPath[pathCounter];
+                        charSinglePath = buildingStringErweitern(charSinglePath, strlen(charSinglePath));
+                        singlePathCounter++;
+                    }
+                    else 
+                    {
+                        printf("-> :\n");
+                        arrayPathElements[pathElementCounter] = charSinglePath;
+                        pathElementCounter++;
+                        charSinglePath = buildingStringErweitern(NULL, 0);
+                    }
+                    pathCounter++;
                 }
 
-                char charThisPathElement[50] = {0};
-                // int intAllPathElemCounter = 0;
-                int pathElemCount = 0;
-
-                for (int parsePathVariable = 0; parsePathVariable < strlen(envPath); parsePathVariable++)
+                for (int cnt = 0; cnt < pathElementCounter; cnt++)
                 {
-                    char* charSinglePath = (char*) malloc(sizeof(char));
-                    charSinglePath[parsePathVariable] = envPath[parsePathVariable];
-                    while (':' != envPath[parsePathVariable])
-                    {
-                        charSinglePath = realloc(charSinglePath, strlen(charSinglePath) + 1 );
-                        char* pathChar = envPath + parsePathVariable;
-                        strcat(charSinglePath, pathChar);
-                        parsePathVariable++;
-                    }
-                    if (':' == envPath[parsePathVariable])
-                    {
-                        struct list_elem* elemSinglePath = list_append (listPathElements, charSinglePath);
-                        parsePathVariable++;
-                    }
-                }
-
-                struct list_elem* thisPathElem = listPathElements->first;
-                while (NULL != thisPathElem)
-                {
-                    printf("%s\n", thisPathElem->argument);
-                    thisPathElem = thisPathElem->next;
+                    printf("pathArrayElement: %s\n", arrayPathElements[cnt]);
                 }
 
 /*
