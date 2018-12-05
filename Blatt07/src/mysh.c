@@ -92,57 +92,82 @@ int main(int argc, char **argv, char *envp[])
 
                 // hier muss die Aufgabe implementiert werden
 
-                char* envName = "PATH";
-                char* env = getenv(envName); // Returns NULL if no variable with the given name exists
-
-                if (env) {
-                    printf("PATH: %s\n", env);
-                }
-                else {
-                    printf("PATH: NULL\n");
-                }
-
-                list_t* pathElements = list_init();
-                if ( pathElements == NULL)
+                char* envPath = getenv("PATH"); // Returns NULL if no variable with the given name exists
+                printf("PATH: %s\n", envPath);
+                
+                list_t* listPathElements = list_init();
+                if ( listPathElements == NULL)
                 {
                     printf ("Cannot allocate memory for prozessListe" );
                     exit(-1);
                 }
 
-                char thisPathElement[50] = {0};
-                int allPathElemCounter = 0;
+                char charThisPathElement[50] = {0};
+                // int intAllPathElemCounter = 0;
                 int pathElemCount = 0;
-                for (int parsePath = 0; parsePath < strlen(env); parsePath++)
+
+                for (int parsePathVariable = 0; parsePathVariable < strlen(envPath); parsePathVariable++)
+                {
+                    char* charSinglePath = (char*) malloc(sizeof(char));
+                    charSinglePath[parsePathVariable] = envPath[parsePathVariable];
+                    while (':' != envPath[parsePathVariable])
+                    {
+                        charSinglePath = realloc(charSinglePath, strlen(charSinglePath) + 1 );
+                        char* pathChar = envPath + parsePathVariable;
+                        strcat(charSinglePath, pathChar);
+                        parsePathVariable++;
+                    }
+                    if (':' == envPath[parsePathVariable])
+                    {
+                        struct list_elem* elemSinglePath = list_append (listPathElements, charSinglePath);
+                        parsePathVariable++;
+                    }
+                }
+
+                struct list_elem* thisPathElem = listPathElements->first;
+                while (NULL != thisPathElem)
+                {
+                    printf("%s\n", thisPathElem->argument);
+                    thisPathElem = thisPathElem->next;
+                }
+
+/*
+                struct list_elem* this = listPathElements->first;
+                for (int parsePath = 0; parsePath < strlen(envPath); parsePath++)
                 {
                     if (env[parsePath] == ':')
                     {
-                        struct list_elem* elem = list_append (pathElements, thisPathElement);
-                        printf("elem: %s\n", elem->argument);
-                        for (int i = 0; i < sizeof(thisPathElement); i++) thisPathElement[i] = '\0';
+                        struct list_elem* elem = list_append (listPathElements, charThisPathElement);
+                        printf("elem write: %s\n", elem->argument);
+                        printf("elem read: %s\n", this->argument);
+                        for (int i = 0; i < sizeof(charThisPathElement); i++) charThisPathElement[i] = '\0';
                         pathElemCount = 0;
-                        allPathElemCounter++;
+                        intAllPathElemCounter++;
+                        elem = this->next;
                     }
                     else
                     {
-                        thisPathElement[pathElemCount] = env[parsePath];
+                        charThisPathElement[pathElemCount] = env[parsePath];
                         pathElemCount++;
                     }
                 }
-                
-                struct list_elem* thisPathElem = pathElements->first;
-                for (int eachPath = 0; eachPath < allPathElemCounter; eachPath++)
+*/                
+                // struct list_elem* thisPathElem = listPathElements->first;
+                // char* path = thisPathElem->argument;
+/*                for (int eachPath = 0; eachPath < intAllPathElemCounter; eachPath++)
                 {
-                    char* path = thisPathElem->argument;
-                    char* args[] = {"ls", "-l", "/bin/", NULL}; // A list of arguments has to end with NULL
-                    int result = execve(path, args, NULL); // Returns -1 on error
+                    printf("This is the path before strcat(): %s\n", thisPathElem->argument);
+                    strcat(thisPathElem->argument, "/");
+                    strcat(thisPathElem->argument, parseArray[0]);
+                    printf("This is the path after strcat(): %s\n", thisPathElem->argument);
+                    //char* args[] = {"", "-l", "/bin/", NULL}; // A list of arguments has to end with NULL
+                    int result = execve(thisPathElem->argument, parseArray+1, NULL); // Returns -1 on error
                     if(result == -1) {
                         perror("execve failed.");
                     }
                     thisPathElem = thisPathElem->next;
                 }
-
-
-
+*/
                 exit(1);
             }
         }
