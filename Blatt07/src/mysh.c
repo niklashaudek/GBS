@@ -94,6 +94,11 @@ int main(int argc, char **argv, char *envp[])
                 // hier muss die Aufgabe implementiert werden
 
                 char* envPath = getenv("PATH"); // Returns NULL if no variable with the given name exists
+                if(envPath == NULL)
+                {
+                    perror("There exists no PATH variable.");
+                    exit(-4);
+                }
                 printf("PATH: %s\n", envPath);
 
                 // Array für die einzelenen Paths in der PATH Variable (maximal 10 möglich)
@@ -126,7 +131,28 @@ int main(int argc, char **argv, char *envp[])
                 {
                     printf("pathArrayElement: %s\n", arrayPathElements[cnt]);
                 }
+                for(int argumente = 0; argumente < pathCounter; argumente++)
+                {
+                   //printf("Hier müssen die execve() aufrufe passieren.:.");
+                   // execve(arrayPathElements[argumente], );
+                }
 
+                exit(1);
+            }
+        }
+
+        if (getpid() == processIDparent)
+        {
+            struct list_elem* thisElem = prozessListe->first;
+            while (thisElem != NULL)
+            {
+                printf("Wait on kid and I'm parent: %d\n", getpid());
+                waitpid(thisElem->processID, NULL, 0);
+                thisElem = thisElem->next;
+            }
+        }
+    }
+}
 /*
                 struct list_elem* this = listPathElements->first;
                 for (int parsePath = 0; parsePath < strlen(envPath); parsePath++)
@@ -164,20 +190,3 @@ int main(int argc, char **argv, char *envp[])
                     thisPathElem = thisPathElem->next;
                 }
 */
-                exit(1);
-            }
-        }
-
-        if (getpid() == processIDparent)
-        {
-            struct list_elem* thisElem = prozessListe->first;
-            while (thisElem != NULL)
-            {
-                printf("wait on kid and I'm parent: %d\n", getpid());
-                waitpid(thisElem->processID, NULL, 0);
-                thisElem = thisElem->next;
-            }
-        }
-
-    }
-}
