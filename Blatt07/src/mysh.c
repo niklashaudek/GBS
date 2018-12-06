@@ -92,7 +92,7 @@ int main(int argc, char **argv, char *envp[])
             newProcessPid = fork();
             if (newProcessPid > 0)
             {
-                struct list_elem* pElement = list_append_processID (prozessListe, newProcessPid);
+                list_append_processID (prozessListe, newProcessPid);
             }
             if( newProcessPid == 0 )
             {

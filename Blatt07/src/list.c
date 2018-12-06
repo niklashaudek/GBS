@@ -7,7 +7,7 @@ list_t *list_init ()
     list_t* pListe = (list_t*) malloc (sizeof(list_t*));
     pListe->first = NULL;
     pListe->last = NULL;
-    pListe->size = (int) malloc(sizeof(int));
+    pListe->size = (int*) malloc(sizeof(int));
     pListe->size = 0;
     return pListe;
 }
