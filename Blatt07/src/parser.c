@@ -49,7 +49,10 @@ list_t* parser(char cmdLineInput[], char *envp[])
         switch (cmdLineInput[cmdLinePos])
         {
             case ' ':
-                if (0 != cmdLinePos) list_append(li, buildingString);
+                if (0 != cmdLinePos) 
+                {
+                    list_append(li, buildingString);
+                }
                 buildingString = buildingStringErweitern(NULL, 0); // new char array allcoation
                 buildPos = 0;
                 cmdLinePos++;
@@ -67,10 +70,10 @@ list_t* parser(char cmdLineInput[], char *envp[])
                     exit(-2);
                 }
                 switchLeft++;
-                buildingString[buildPos] = cmdLineInput[cmdLinePos];
+                buildingString[buildPos++] = cmdLineInput[cmdLinePos++];
                 buildingString = buildingStringErweitern(buildingString, strlen(buildingString));
-                buildPos++;
-                cmdLinePos++;
+                buildingString[buildPos++] = cmdLineInput[cmdLinePos++];
+                buildingString = buildingStringErweitern(buildingString, strlen(buildingString));
                 break;
             case '>':
                 if(switchRight > 0)
@@ -79,16 +82,14 @@ list_t* parser(char cmdLineInput[], char *envp[])
                     exit(-3);
                 }
                 switchRight++;
-                buildingString[buildPos] = cmdLineInput[cmdLinePos];
+                buildingString[buildPos++] = cmdLineInput[cmdLinePos++];
                 buildingString = buildingStringErweitern(buildingString, strlen(buildingString));
-                buildPos++;
-                cmdLinePos++;
+                buildingString[buildPos++] = cmdLineInput[cmdLinePos++];
+                buildingString = buildingStringErweitern(buildingString, strlen(buildingString));
                 break;
             default:
-                buildingString[buildPos] = cmdLineInput[cmdLinePos];
+                buildingString[buildPos++] = cmdLineInput[cmdLinePos++];
                 buildingString = buildingStringErweitern(buildingString, strlen(buildingString));
-                buildPos++;
-                cmdLinePos++;
                 break;
         }
         if ('\n' == cmdLineInput[cmdLinePos])

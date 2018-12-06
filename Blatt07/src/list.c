@@ -50,7 +50,6 @@ struct list_elem *list_append (list_t *list, char *argument) // fertig
         
     }
     list->size++;
-    // printf("size erhöht.\n");
     return pElement;
 }
 
@@ -75,8 +74,6 @@ struct list_elem *list_append_processID (list_t *list, int processID) // fertig
     return pElement;
 }
 
-/*
-
 int list_remove (list_t *list, struct list_elem *elem) // fertig
 {
     struct list_elem *toDeleteElement = list->first;
@@ -100,6 +97,8 @@ int list_remove (list_t *list, struct list_elem *elem) // fertig
 
     return -1; // Objekt wurde nicht gefunden
 }
+
+/*
 
 void list_finit (list_t *list) // fertig
 {

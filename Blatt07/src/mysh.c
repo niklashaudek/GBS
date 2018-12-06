@@ -1,5 +1,6 @@
 #include "list.h"
 #include <unistd.h>
+#include <fcntl.h> // For open(...)
 
 // liste in array überführen
 char** list_to_array(list_t* list) {
@@ -173,6 +174,43 @@ int main(int argc, char **argv, char *envp[])
                     printf("pathArrayElement: %s\n", arrayPathElements[cnt]);
                 }
                 */
+
+
+                // hier kommt nun die Behandlung von < oder >
+                int idx = 0;
+                for (int argCounter = 0; argCounter < cmdLineGeparst->size; argCounter++)
+                {
+                    if ('<' == parseArray[argCounter][idx]) // lesen aus Datei
+                    {
+                        while('\0' != parseArray[argCounter][idx])
+                        {
+                            parseArray[argCounter][idx] = parseArray[argCounter][idx+2];
+                            idx++;
+                        }
+                        close(0); // close STDIN
+                        int fd = open(parseArray[argCounter], O_WRONLY | O_CREAT, 0644); // Create file if not existing with rights 0644
+                        if(fd <= 0) {
+                            perror("Failed to open file \"FILE POINTER\"");
+                            return;
+                        }
+                        idx = 0;
+                    }
+                    else if ('>' == parseArray[argCounter][idx]) // schreiben in Datei
+                    {
+                        while('\0' != parseArray[argCounter][idx])
+                        {
+                            parseArray[argCounter][idx] = parseArray[argCounter][idx+2];
+                            idx++;
+                        }
+                        close(1); // close STDOUT
+                        int fd = open(parseArray[argCounter], O_RDONLY | O_CREAT, 0644); // Create file if not existing with rights 0644
+                        if(fd <= 0) {
+                            perror("Failed to open file \"FILE POINTER\"");
+                            return;
+                        }
+                        idx = 0;
+                    }
+                }
 
 
                 for (int argument = 0; argument < pathElementCounter; argument++)
