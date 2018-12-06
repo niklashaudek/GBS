@@ -7,8 +7,8 @@ list_t *list_init ()
     list_t* pListe = (list_t*) malloc (sizeof(list_t*));
     pListe->first = NULL;
     pListe->last = NULL;
-    pListe->größe = (int) malloc(sizeof(int));
-    pListe->größe = 0;
+    pListe->size = (int) malloc(sizeof(int));
+    pListe->size = 0;
     return pListe;
 }
 
@@ -49,8 +49,8 @@ struct list_elem *list_append (list_t *list, char *argument) // fertig
         list->first->next = NULL;
         
     }
-    list->größe++;
-    // printf("größe erhöht.\n");
+    list->size++;
+    // printf("size erhöht.\n");
     return pElement;
 }
 
@@ -71,7 +71,7 @@ struct list_elem *list_append_processID (list_t *list, int processID) // fertig
         list->first->next = NULL;
         
     }
-    list->größe++;
+    list->size++;
     return pElement;
 }
 

@@ -4,7 +4,7 @@
 // liste in array überführen
 char** list_to_array(list_t* list) {
 
-    int arraySize = (list->größe) + 1;
+    int arraySize = (list->size) + 1;
 
     if(arraySize == 0) 
     {
@@ -30,15 +30,11 @@ char** list_to_array(list_t* list) {
     }
 
     cmdArray[arraySize-1] = NULL;
-
-    for (int arrayTest = 0; arrayTest < arraySize; arrayTest++)
-    {
-        printf("%i: %s\n", arrayTest, cmdArray[arrayTest]);
-    }
    
     return cmdArray;
 }
 
+// Funktionen nennen, damit sie unten verwendet werden können
 list_t* parser(char cmdLineInput[], char *envp[]);
 char* buildingStringErweitern (char* oldStr, int oldStrLen);
 
@@ -70,6 +66,17 @@ int main(int argc, char **argv, char *envp[])
 
         char** parseArray = list_to_array(cmdLineGeparst);
 
+        // Das hier sind Testausgaben
+
+        /*
+        printf("Array nach Parse:\n");
+        for (int arrayTest = 0; arrayTest <= cmdLineGeparst->size; arrayTest++)
+        {
+            printf("%i: %s\n", arrayTest, parseArray[arrayTest]);
+        }
+        */
+
+
         list_t* prozessListe = list_init();
         if (( prozessListe = list_init()) == NULL)
         {
@@ -89,9 +96,19 @@ int main(int argc, char **argv, char *envp[])
             }
             if( newProcessPid == 0 )
             {
-                printf("kid: %d | parent: %d\n", getpid(), getppid());
-
-                // hier muss die Aufgabe implementiert werden
+                // das ist für den Fall in dem das Kommando schon einen Slash enthält,
+                // und wir daher den PATH nicht mehr evaluieren müssen
+                if ('/' == parseArray[0][0])
+                {
+                    char* command = parseArray[0];
+                    parseArray[0] = "";
+                    int result = execve(command, parseArray, NULL); // Returns -1 on error
+                    if(result == -1)
+                    {
+                        perror("execve failed.");
+                    }
+                    exit(1);
+                }
 
                 char* envPath = getenv("PATH"); // Returns NULL if no variable with the given name exists
                 if(envPath == NULL)
@@ -99,11 +116,10 @@ int main(int argc, char **argv, char *envp[])
                     perror("There exists no PATH variable.");
                     exit(-4);
                 }
-                printf("PATH: %s\n", envPath);
+                // printf("PATH: %s\n", envPath);
 
                 // Array für die einzelenen Paths in der PATH Variable (maximal 10 möglich)
                 char** arrayPathElements = (char**) malloc(10 * sizeof(char*));
-
                 int pathCounter = 0;
                 int pathElementCounter = 0;
                 int singlePathCounter = 0;
@@ -112,29 +128,59 @@ int main(int argc, char **argv, char *envp[])
                 {
                     if (':' != envPath[pathCounter])
                     {
-                        printf("x :\n");
                         charSinglePath[singlePathCounter] = envPath[pathCounter];
                         charSinglePath = buildingStringErweitern(charSinglePath, strlen(charSinglePath));
                         singlePathCounter++;
                     }
                     else 
                     {
-                        printf("-> :\n");
+                        charSinglePath[singlePathCounter] = '/';
+                        charSinglePath = buildingStringErweitern(charSinglePath, strlen(charSinglePath));
+                        singlePathCounter++;
+                        int x = 0;
+                        while('\0' != parseArray[0][x])
+                        {
+                            charSinglePath[singlePathCounter] = parseArray[0][x];
+                            charSinglePath = buildingStringErweitern(charSinglePath, strlen(charSinglePath));
+                            singlePathCounter++;
+                            x++;
+                        }
                         arrayPathElements[pathElementCounter] = charSinglePath;
-                        pathElementCounter++;
                         charSinglePath = buildingStringErweitern(NULL, 0);
+                        pathElementCounter++;
+                        singlePathCounter = 0;
                     }
                     pathCounter++;
                 }
+                arrayPathElements[pathElementCounter] = charSinglePath;
 
+                // erstes Element aus parseArray löschen, weil unser Tutor das auch so gemacht hat
+                parseArray[0] = "";
+
+
+                // Das hier sind Testausgaben
+
+                /*
+                printf("Array ohne leading Command:\n");
+                for (int arrayTest = 0; arrayTest <= cmdLineGeparst->size; arrayTest++)
+                {
+                    printf("%i: %s\n", arrayTest, parseArray[arrayTest]);
+                }
+                
                 for (int cnt = 0; cnt < pathElementCounter; cnt++)
                 {
                     printf("pathArrayElement: %s\n", arrayPathElements[cnt]);
                 }
-                for(int argumente = 0; argumente < pathCounter; argumente++)
+                */
+
+
+                for (int argument = 0; argument < pathElementCounter; argument++)
                 {
-                   //printf("Hier müssen die execve() aufrufe passieren.:.");
-                   // execve(arrayPathElements[argumente], );
+                    int result = execve(arrayPathElements[argument], parseArray, NULL); // Returns -1 on error
+                    if(result == -1)
+                    {
+                        perror("execve failed.");
+                    }
                 }
 
                 exit(1);
@@ -146,7 +192,7 @@ int main(int argc, char **argv, char *envp[])
             struct list_elem* thisElem = prozessListe->first;
             while (thisElem != NULL)
             {
-                printf("Wait on kid and I'm parent: %d\n", getpid());
+                // printf("Wait on kid and I'm parent: %d\n", getpid());
                 waitpid(thisElem->processID, NULL, 0);
                 thisElem = thisElem->next;
             }
