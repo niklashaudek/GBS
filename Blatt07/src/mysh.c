@@ -191,7 +191,7 @@ int main(int argc, char **argv, char *envp[])
                         int fd = open(parseArray[argCounter], O_WRONLY | O_CREAT, 0644); // Create file if not existing with rights 0644
                         if(fd <= 0) {
                             perror("Failed to open file \"FILE POINTER\"");
-                            return;
+                            exit (-1);
                         }
                         idx = 0;
                     }
@@ -206,7 +206,7 @@ int main(int argc, char **argv, char *envp[])
                         int fd = open(parseArray[argCounter], O_RDONLY | O_CREAT, 0644); // Create file if not existing with rights 0644
                         if(fd <= 0) {
                             perror("Failed to open file \"FILE POINTER\"");
-                            return;
+                            exit (-1);
                         }
                         idx = 0;
                     }
