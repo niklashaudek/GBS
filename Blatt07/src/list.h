@@ -13,6 +13,7 @@ typedef struct list {
 	struct list_elem *first;    // erstes Element in der Liste
 	struct list_elem *last;     // letztes Element in der Liste
     int size;           // zählt Elemente in der Liste
+    int pipeCounter;
 } list_t;
 
 /* function prototypes */

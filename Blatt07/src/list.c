@@ -9,6 +9,8 @@ list_t *list_init ()
     pListe->last = NULL;
     pListe->size = (int) malloc(sizeof(int));
     pListe->size = 0;
+    pListe->pipeCounter = (int) malloc(sizeof(int));
+    pListe->pipeCounter = 0;
     return pListe;
 }
 

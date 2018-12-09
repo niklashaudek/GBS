@@ -152,6 +152,16 @@
                 "isDefault": true
             },
             "problemMatcher": "$gcc"
+        },
+        {
+            "label": "Build Blatt07 myshTest",
+            "type": "shell",
+            "command": "gcc -g Blatt07/src/parser.c Blatt07/src/myshTestDatei.c Blatt07/src/list.c -o Blatt07/bin/myshTestDatei",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": "$gcc"
         }
     ]
 }

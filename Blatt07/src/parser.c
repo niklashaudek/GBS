@@ -44,6 +44,7 @@ list_t* parser(char cmdLineInput[], char *envp[])
 */
     int switchLeft = 0;
     int switchRight = 0;
+    int pipeCounter = 0;
     while ('\n' != cmdLineInput[cmdLinePos])
     {
         switch (cmdLineInput[cmdLinePos])
@@ -72,8 +73,6 @@ list_t* parser(char cmdLineInput[], char *envp[])
                 switchLeft++;
                 buildingString[buildPos++] = cmdLineInput[cmdLinePos++];
                 buildingString = buildingStringErweitern(buildingString, strlen(buildingString));
-                buildingString[buildPos++] = cmdLineInput[cmdLinePos++];
-                buildingString = buildingStringErweitern(buildingString, strlen(buildingString));
                 break;
             case '>':
                 if(switchRight > 0)
@@ -84,6 +83,9 @@ list_t* parser(char cmdLineInput[], char *envp[])
                 switchRight++;
                 buildingString[buildPos++] = cmdLineInput[cmdLinePos++];
                 buildingString = buildingStringErweitern(buildingString, strlen(buildingString));
+                break;
+            case '|':
+                pipeCounter++;
                 buildingString[buildPos++] = cmdLineInput[cmdLinePos++];
                 buildingString = buildingStringErweitern(buildingString, strlen(buildingString));
                 break;
@@ -99,5 +101,6 @@ list_t* parser(char cmdLineInput[], char *envp[])
         }
     }
 
+    li->pipeCounter = pipeCounter;
     return li;
 }

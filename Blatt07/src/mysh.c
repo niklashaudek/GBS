@@ -88,9 +88,22 @@ int main(int argc, char **argv, char *envp[])
 
         int newProcessPid = 1;
         int processIDparent = getpid();
-
+/*
+        for (int forks = 0; forks < cmdLineGeparst->pipeCounter + 1; forks++)
+        {
+            if (getpid() == processIDparent)
+            {
+                newProcessPid = fork();
+                if (newProcessPid > 0)
+                {
+                    list_append_processID (prozessListe, newProcessPid);
+                }
+            }
+        }
+*/
         if (getpid() == processIDparent)
         {
+            
             newProcessPid = fork();
             if (newProcessPid > 0)
             {
@@ -178,44 +191,80 @@ int main(int argc, char **argv, char *envp[])
 
 
                 // hier kommt nun die Behandlung von < oder >
-                int idx = 0;
+                // int idx = 0;
                 for (int argCounter = 0; argCounter < cmdLineGeparst->size; argCounter++)
                 {
-                    if ('<' == parseArray[argCounter][idx]) // lesen aus Datei
+                    if ('<' == parseArray[argCounter][0]) // lesen aus Datei
                     {
-                        while('\0' != parseArray[argCounter][idx])
-                        {
-                            parseArray[argCounter][idx] = parseArray[argCounter][idx+2];
-                            idx++;
-                        }
+                        parseArray[argCounter] = NULL;
+                        
                         close(0); // close STDIN
-                        int fd = open(parseArray[argCounter], O_WRONLY | O_CREAT, 0644); // Create file if not existing with rights 0644
-                        if(fd <= 0) {
-                            perror("Failed to open file \"FILE POINTER\"");
-                            exit(-1); // sollten das besser exit codes sein? Ansonsten braucht die main ein int als return
-                        }
-                        idx = 0;
-                    }
-                    else if ('>' == parseArray[argCounter][idx]) // schreiben in Datei
-                    {
-                        while('\0' != parseArray[argCounter][idx])
-                        {
-                            parseArray[argCounter][idx] = parseArray[argCounter][idx+2];
-                            idx++;
-                        }
-                        close(1); // close STDOUT // soll das schon für die Pipes sein? 
-                        int fd = open(parseArray[argCounter], O_RDONLY | O_CREAT, 0644); // Create file if not existing with rights 0644
-                        if(fd <= 0) {
+                        int fd = open(parseArray[++argCounter], O_RDONLY); // Create file if not existing with rights 0644
+                        
+                        if(fd < 0) {
                             perror("Failed to open file \"FILE POINTER\"");
                             exit(-1);
                         }
-                        idx = 0;
+                        parseArray[argCounter] = NULL;
+                        // idx = 0;
+                    }
+                    else if ('>' == parseArray[argCounter][0]) // schreiben in Datei
+                    {
+                        parseArray[argCounter] = NULL;
+                        
+                        close(1); // close STDOUT
+                        int fd = open(parseArray[++argCounter], O_WRONLY | O_CREAT, 0644); // Create file if not existing with rights 0644
+                        if(fd < 0) {
+                            perror("Failed to open file \"FILE POINTER\"");
+                            exit(-1);
+                        }
+                        parseArray[argCounter] = NULL;
+                        // idx = 0;
+                    }
+                    else if ('|' == parseArray[argCounter][0]) // Pipe
+                    {
+                        int fds[2];
+                        // Create a new pipe.
+                        // fds[0] is the read end
+                        // fds[1] is the write end
+                        pipe(fds);
+
+                        int pipeProcessPid = fork();
+
+                        switch(pipeProcessPid) {
+                            case -1:
+                                perror ("fork () failed");
+                                break;
+
+                            case 0: // Child:
+                            {
+                                char* someText = "Bidu Bidu Bidu...";
+                                write(fds[1], someText, strlen(someText));
+                                close(fds[1]); // Allways close pipe file descriptors again after use
+                            }
+                                break;
+
+                            default: // Parent:
+                                sleep(2);
+                                char buf[1024] = {0};
+                                read(fds[0], buf, sizeof(buf));
+                                printf("Pipe read: %s\n", buf);
+                                close(fds[0]); // Allways close pipe file descriptors again after use
+
+                                waitpid(pipeProcessPid, NULL, 0); // Make sure we wait on the child process to prevent it from getting a Zombie process
+                                break;
+                        }    
+                        
+                        argCounter++;
+                        parseArray[argCounter] = NULL;
+                        // idx = 0;
                     }
                 }
 
                 int result = 0;
                 for (int argument = 0; argument < pathElementCounter; argument++)
                 {
+                    // printf("PATH: %s\n", arrayPathElements[argument]);
                     result = execve(arrayPathElements[argument], parseArray, NULL); // Returns -1 on error
                     
                 }
@@ -239,40 +288,3 @@ int main(int argc, char **argv, char *envp[])
         }
     }
 }
-/*
-                struct list_elem* this = listPathElements->first;
-                for (int parsePath = 0; parsePath < strlen(envPath); parsePath++)
-                {
-                    if (env[parsePath] == ':')
-                    {
-                        struct list_elem* elem = list_append (listPathElements, charThisPathElement);
-                        printf("elem write: %s\n", elem->argument);
-                        printf("elem read: %s\n", this->argument);
-                        for (int i = 0; i < sizeof(charThisPathElement); i++) charThisPathElement[i] = '\0';
-                        pathElemCount = 0;
-                        intAllPathElemCounter++;
-                        elem = this->next;
-                    }
-                    else
-                    {
-                        charThisPathElement[pathElemCount] = env[parsePath];
-                        pathElemCount++;
-                    }
-                }
-*/                
-                // struct list_elem* thisPathElem = listPathElements->first;
-                // char* path = thisPathElem->argument;
-/*                for (int eachPath = 0; eachPath < intAllPathElemCounter; eachPath++)
-                {
-                    printf("This is the path before strcat(): %s\n", thisPathElem->argument);
-                    strcat(thisPathElem->argument, "/");
-                    strcat(thisPathElem->argument, parseArray[0]);
-                    printf("This is the path after strcat(): %s\n", thisPathElem->argument);
-                    //char* args[] = {"", "-l", "/bin/", NULL}; // A list of arguments has to end with NULL
-                    int result = execve(thisPathElem->argument, parseArray+1, NULL); // Returns -1 on error
-                    if(result == -1) {
-                        perror("execve failed.");
-                    }
-                    thisPathElem = thisPathElem->next;
-                }
-*/
