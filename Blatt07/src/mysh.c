@@ -237,22 +237,23 @@ int main(int argc, char **argv, char *envp[])
                                 break;
 
                             case 0: // Child:
-                            {
+                            /*
                                 char* someText = "Bidu Bidu Bidu...";
                                 write(fds[1], someText, strlen(someText));
                                 close(fds[1]); // Allways close pipe file descriptors again after use
-                            }
+                            */
                                 break;
-
                             default: // Parent:
-                                sleep(2);
+                            /*
+                                // sleep(2);
                                 char buf[1024] = {0};
                                 read(fds[0], buf, sizeof(buf));
                                 printf("Pipe read: %s\n", buf);
                                 close(fds[0]); // Allways close pipe file descriptors again after use
 
                                 waitpid(pipeProcessPid, NULL, 0); // Make sure we wait on the child process to prevent it from getting a Zombie process
-                                break;
+                            */
+                                break;    
                         }    
                         
                         argCounter++;
