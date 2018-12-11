@@ -93,7 +93,7 @@ int main (int argc, char *argv [], char *envp []) {
          * Send result back to the sender as a UDP packet.
          * (6)
          **/
-	    if (/**Replace (6)**/ <= 0) {
+	    if (1 <= 0) { // 1 MUSS ERSETZT WERDEN !!!
 		perror ("Failed to send response back to client");
 		continue;
 	    }

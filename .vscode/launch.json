@@ -212,6 +212,19 @@
             "environment": [],
             "externalConsole": true,
             "MIMode": "lldb"
+        },
+        {
+            "name": "Launch Blatt08 server",
+            "type": "cppdbg",
+            "request": "launch",
+            "preLaunchTask": "Build Blatt08 server",
+            "program": "${workspaceFolder}/Blatt08/bin/server",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "lldb"
         }
     ]
 }
