@@ -28,7 +28,7 @@ int main (int argc, char *argv [], char *envp []) {
 	 * Create an UDP socket for IPv4 communication.
 	 * (1)
 	 **/
-    if ((sd = socket(AF_INET, SOCK_DGRAM, 0)) == -1) { // AF_INET ist IPv4, SOCK_DGRAM ist TCP
+    if ((sd = socket(AF_INET, SOCK_DGRAM, 0)) == -1) { // AF_INET ist IPv4, SOCK_DGRAM ist UDP
 	perror ("Cannot create socket");
 	exit (-1);
     }
