@@ -19,7 +19,7 @@ int main (int argc, char *argv [], char *envp []) {
 	fprintf (stderr, "Usage: %s <server address>\n", argv [0]);
 	exit (-1);
     }
-    if (inet_aton (argv [1], &sin.sin_addr) == -1) {
+    if (inet_aton (argv [1], &sin.sin_addr) == -1) { // Konvertierung der IP Adresse von Dot Format in Byte Format
 	perror ("Invalid IP address");
 	exit (-1);
     }
@@ -32,8 +32,8 @@ int main (int argc, char *argv [], char *envp []) {
 	perror ("Cannot create socket");
 	exit (-1);
     }
-    sin.sin_family = AF_INET;
-    sin.sin_port   = htons (MYPORT);
+    sin.sin_family = AF_INET; // IPv4
+    sin.sin_port   = htons (MYPORT); // Port des Empfänger Systems
     while (1) {
 	printf ("> ");
 	fflush (stdout);
@@ -45,7 +45,7 @@ int main (int argc, char *argv [], char *envp []) {
 	 * Send the read buffer to the read ip address.
 	 * (2)
 	 **/
-	if (bind (sd, (struct sockaddr*) &sin, sizeof(sin)) == -1) {
+	if (sendto(sd, buffer, strlen(buffer), 0, (struct sockaddr*) &sin, sizeof (sin)) == -1) {
 	    perror ("Sending to socket failed");
 	    exit (-1);
 	}
@@ -56,7 +56,7 @@ int main (int argc, char *argv [], char *envp []) {
 	 * Poll for an answer with a timeout of 1 second.
 	 * (3)
 	 **/
-	switch (epoll() {
+	switch (poll(&pfd, 1, 1000)) {
 	case 0:
 	    printf ("Timeout.  No response received\n");
 	    break;
@@ -68,7 +68,7 @@ int main (int argc, char *argv [], char *envp []) {
 		 * Read the response into the buffer variable.
 		 * (4)
 		 **/
-	    if ((len = /**Replace (4)**/) <= 0) {
+	    if ((len = recv(sd, buffer, sizeof(buffer), 0)) <= 0) {
 		perror ("Response reception failed");
 		exit (-1);
 	    }
