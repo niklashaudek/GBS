@@ -22,7 +22,7 @@ int main (int argc, char *argv [], char *envp []) {
      * Create an UDP socket for IPv4 communication.
      * (1)
      **/
-    if ((sd = /**Replace (1)**/) == -1) {
+    if ((sd = socket(AF_INET, SOCK_DGRAM, 0)) == -1) {
 	perror ("Cannot create socket");
 	exit (-1);
     }
@@ -33,7 +33,7 @@ int main (int argc, char *argv [], char *envp []) {
      * Bind the socket to the address and port stored in sin.
      * (2)
      **/
-    if (/**Replace (2)**/) {
+    if (bind (sd, (struct sockaddr*) &sin, sizeof(sin)) == -1) {
 	perror ("Bind failed");
 	exit (-1);
     }
@@ -44,7 +44,7 @@ int main (int argc, char *argv [], char *envp []) {
      * Also store the sender in the sender variable.
      * (3)
      **/
-	if ((len = /**Replace (3)**/) == -1) {
+	if ((len = recvfrom(sd, buffer, sizeof(buffer), 0, (struct sockaddr*) &sender, &sender_len)) == -1) {
 	    perror ("Receiving from socket failed");
 	    exit (-1);
 	}
@@ -57,6 +57,8 @@ int main (int argc, char *argv [], char *envp []) {
      * (4)
      **/
     /**(4)**/
+
+    printf("Received packet from %s:%d size &d\n", inet_ntoa (sender.sin_addr), ntohs (sender.sin_port), len);
     
 	if (len > 0) {
         /**
@@ -65,6 +67,8 @@ int main (int argc, char *argv [], char *envp []) {
          **/
 
         /**(5)**/
+
+        
 	    
         /**
          * Send result back to the sender as a UDP packet.

@@ -23,11 +23,12 @@ int main (int argc, char *argv [], char *envp []) {
 	perror ("Invalid IP address");
 	exit (-1);
     }
+
 	/**
 	 * Create an UDP socket for IPv4 communication.
 	 * (1)
 	 **/
-    if ((sd = /**Replace (1)**/) == -1) {
+    if ((sd = socket(AF_INET, SOCK_DGRAM, 0)) == -1) { // AF_INET ist IPv4, SOCK_DGRAM ist TCP
 	perror ("Cannot create socket");
 	exit (-1);
     }
@@ -38,11 +39,13 @@ int main (int argc, char *argv [], char *envp []) {
 	fflush (stdout);
 	if ((fgets (buffer, sizeof (buffer), stdin)) == NULL)
 	    break;
+	
+	
 	/**
 	 * Send the read buffer to the read ip address.
 	 * (2)
 	 **/
-	if (/**Replace (2)**/ == -1) {
+	if (bind (sd, (struct sockaddr*) &sin, sizeof(sin)) == -1) {
 	    perror ("Sending to socket failed");
 	    exit (-1);
 	}
@@ -53,7 +56,7 @@ int main (int argc, char *argv [], char *envp []) {
 	 * Poll for an answer with a timeout of 1 second.
 	 * (3)
 	 **/
-	switch (/**Replace (3)**/) {
+	switch (epoll() {
 	case 0:
 	    printf ("Timeout.  No response received\n");
 	    break;
