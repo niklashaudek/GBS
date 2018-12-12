@@ -172,6 +172,16 @@
                 "isDefault": true
             },
             "problemMatcher": "$gcc"
+        },
+        {
+            "label": "Build Blatt08 server+hexdump",
+            "type": "shell",
+            "command": "gcc -g Blatt07/src/server.c Blatt08/src/list.c Blatt08/src/hexdump.c -o Blatt08/bin/server",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": "$gcc"
         }
     ]
 }
