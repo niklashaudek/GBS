@@ -4,6 +4,7 @@
 #include <ctype.h>
 #include <arpa/inet.h>
 #include <sys/time.h>
+#include <poll.h>
 #include "list.h"
 
 #define MYPORT    44445
@@ -19,7 +20,7 @@ struct timeval* time_init()
 
 int main (int argc, char *argv [], char *envp []) {
     char                buffer [1024];
-    int                 iBacklog = 10;
+    int                 iBacklog = 10; // Anzahl übrige Verbindungen
     struct sockaddr_in  sin;
     struct sockaddr_in  sender;
     int                 sd;
@@ -38,14 +39,14 @@ int main (int argc, char *argv [], char *envp []) {
         exit (-1);
     }
     
-    sd = socket(AF_INET, SOCK_STREAM, 0);
+    sd = socket(AF_INET, SOCK_STREAM, 0); // socket erzeugen, SOCK_STREAM für TCP
 
     if (sd == -1) 
-    { // SOCK_STREAM for TCP
+    {
         perror ("Cannot create socket");
         return -1;
     }
-    memset(&sin, 0, sizeof(sin)); //Slide 64 Intersystemkommunikation
+    
     sin.sin_family      = AF_INET;
     sin.sin_port        = htons (MYPORT);
     sin.sin_addr.s_addr = htonl(INADDR_ANY);
@@ -54,15 +55,55 @@ int main (int argc, char *argv [], char *envp []) {
      * (2)
      **/
     
-    int* iTestBind = bind (sd, (struct sockaddr *) &sin, sizeof(sin)); 
+    int iTestBind = bind (sd, (struct sockaddr *) &sin, sizeof(sin)); 
 
-    if (*iTestBind == -1) 
+    if (iTestBind == -1) 
     {
         perror ("Bind failed");
         return -1;
     }
     
-    int* iListen = listen(sd, iBacklog); // iBacklog gibt Anzahl an möglichen weiteren Verbindungen
+    
+
+
+
+
+
+    while (1) {
+		sender_len = sizeof(sender);
+        len = recvfrom(sd, buffer, sizeof(buffer), 0,
+				(struct sockaddr * ) & sender, & sender_len);
+		if (len == -1) {
+			perror("Receiving from socket failed");
+			exit(-1);
+		}
+		printf("Received packet from %s:%d size %d\n",
+			inet_ntoa(sender.sin_addr), ntohs(sender.sin_port), len);
+		if (len > 0) {
+			for (i = 0; i < len; i++) {
+				if (isalpha(buffer[i]))
+					buffer[i] ^= 0x20;
+				else if (isdigit(buffer[i]))
+					buffer[i] = (9 - (buffer[i] - '0')) + '0';
+			}
+			if (sendto(sd, buffer, len, 0, (struct sockaddr * ) & sender, sender_len) <= 0) {
+				perror("Failed to send response back to client");
+				continue;
+			}
+		}
+	}
+
+
+
+
+
+
+
+
+
+
+
+
 
     while(1)
     {
@@ -71,8 +112,7 @@ int main (int argc, char *argv [], char *envp []) {
         close(i); // Example from Slides for TCP
     }
 
-    if(*iListen == 0) // successful
-    {
+    
         int* iTestAccept = accept(sd, (struct sockaddr*) &sender, &sender_len);
         if(iTestAccept <= 0)
         {
@@ -87,11 +127,9 @@ int main (int argc, char *argv [], char *envp []) {
             exit(-2);
         }
         iBacklog -= 1;
-    }
-    else if(iListen == -1)
-    {
+    
 
-    }
+    
     
     struct timeval* lTime = time_init(); // Methode oben definiert
     struct list_elem* eTest = list_append(connection_list, sd, sin, *lTime);
