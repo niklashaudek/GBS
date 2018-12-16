@@ -23,6 +23,7 @@ int main (int argc, char *argv [], char *envp []) {
     int                 iBacklog = 10; // Anzahl übrige Verbindungen
     struct sockaddr_in  sin;
     struct sockaddr_in  sender;
+    struct sockaddr*    newSock = NULL;
     int                 sd;
     int                 len, i;
     socklen_t           sender_len;
@@ -104,7 +105,7 @@ int main (int argc, char *argv [], char *envp []) {
 
 
 
-
+    /*
     while(1)
     {
         i = accept(sd, NULL, NULL);
@@ -139,49 +140,48 @@ int main (int argc, char *argv [], char *envp []) {
         perror("List append returned NULL.");
         exit(-2);
     }
+    */
+    
+    // while (1) 
+    // {
+    //     sender_len = sizeof (sender);
+    //     /**
+    //      * Receive data and store it into the buffer variable.
+    //      * Also store the sender in the sender variable.
+    //      * (3)
+    //      **/
 
+    //     len = recvfrom(sd, buffer, sizeof(buffer), 0, (struct sockaddr*) &sender, &sender_len);
+    //     // recvfrom gibt Anzahl der eingelesenen Zeichen zurück
+    //     if (len == -1) {
+    //         perror ("Receiving from socket failed");
+    //         exit (-1);
+    //     }
+    //     /**
+    //      * Print the received package in the following format:
+    //      * "Received packet from %s:%d size %d\n"
+    //      * %s = sender IP
+    //      * %d = sender port
+    //      * %d = length of the received buffer
+    //      * (4)
+    //      **/
+    //     /**(4)**/
 
-
-    while (1) 
-    {
-        sender_len = sizeof (sender);
-        /**
-         * Receive data and store it into the buffer variable.
-         * Also store the sender in the sender variable.
-         * (3)
-         **/
-
-        len = recvfrom(sd, buffer, sizeof(buffer), 0, (struct sockaddr*) &sender, &sender_len);
-        // recvfrom gibt Anzahl der eingelesenen Zeichen zurück
-        if (len == -1) {
-            perror ("Receiving from socket failed");
-            exit (-1);
-        }
-        /**
-         * Print the received package in the following format:
-         * "Received packet from %s:%d size %d\n"
-         * %s = sender IP
-         * %d = sender port
-         * %d = length of the received buffer
-         * (4)
-         **/
-        /**(4)**/
-
-        printf("Received packet from %s:%d size &d\n", inet_ntoa (sender.sin_addr), ntohs (sender.sin_port), len);
+    //     printf("Received packet from %s:%d size &d\n", inet_ntoa (sender.sin_addr), ntohs (sender.sin_port), len);
         
-        if (len > 0) 
-        {
-            // So something with text or leave it
-            /**
-             * Send result back to the sender as a TCP packet.
-             * (6)
-             **/
-            if (1 <= 0) { // 1 MUSS ERSETZT WERDEN !!!
-            perror ("Failed to send response back to client");
-            continue;
-            }
-        }
-    }
-    close(sd);
+    //     if (len > 0) 
+    //     {
+    //         // So something with text or leave it
+    //         /**
+    //          * Send result back to the sender as a TCP packet.
+    //          * (6)
+    //          **/
+    //         if (1 <= 0) { // 1 MUSS ERSETZT WERDEN !!!
+    //         perror ("Failed to send response back to client");
+    //         continue;
+    //         }
+    //     }
+    
+    //close(sd);
     return 0;
 }

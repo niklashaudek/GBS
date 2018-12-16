@@ -219,7 +219,7 @@
             "request": "launch",
             "preLaunchTask": "Build Blatt08 server",
             "program": "${workspaceFolder}/Blatt08/bin/server",
-            "args": [],
+            "args": ["./server & nc localhost 44445"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
