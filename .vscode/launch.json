@@ -238,6 +238,19 @@
             "environment": [],
             "externalConsole": true,
             "MIMode": "lldb"
+        },
+        {
+            "name": "Launch Blatt09 mem",
+            "type": "cppdbg",
+            "request": "launch",
+            "preLaunchTask": "Build Blatt09 mem",
+            "program": "${workspaceFolder}/Blatt09/bin/mem",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "lldb"
         }
     ]
 }

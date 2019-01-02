@@ -182,6 +182,16 @@
                 "isDefault": true
             },
             "problemMatcher": "$gcc"
+        },
+        {
+            "label": "Build Blatt09 mem",
+            "type": "shell",
+            "command": "gcc -g Blatt09/src/mem.c Blatt09/src/memory.c Blatt09/src/memory.h Blatt09/src/list.c Blatt09/src/list.h -o Blatt09/bin/mem",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": "$gcc"
         }
     ]
 }
