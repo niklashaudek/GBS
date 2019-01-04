@@ -245,7 +245,7 @@
             "request": "launch",
             "preLaunchTask": "Build Blatt09 mem",
             "program": "${workspaceFolder}/Blatt09/bin/mem",
-            "args": [],
+            "args": ["-m", "1000", "-b", "100", "-1", "-a", "100", "-a", "100"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
