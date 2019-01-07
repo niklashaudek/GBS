@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <ctype.h>
 #include "memory.h"
 
 int main(int argc, char *argv[]) {
@@ -62,7 +63,7 @@ int main(int argc, char *argv[]) {
         exit (-5);
     }
 
-    
+
 
     int iSize = mem_init(mParam, bParam, algorithm);
     mem_dump();

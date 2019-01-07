@@ -40,9 +40,9 @@ void *mem_alloc (unsigned int size)
     if (first == g_strategy)
     {
         struct list_elem* current = memList->first;
+        struct memblock* currentMemblock = current->argument;
         for (int iIdx = 1; current != NULL; iIdx++ )
         {
-            struct memblock* currentMemblock = current->argument;
             if (currentMemblock->size - currentMemblock->in_use >= size)
             {
                 // hier was machen
@@ -54,11 +54,11 @@ void *mem_alloc (unsigned int size)
     else if (worst == g_strategy)
     {
         struct list_elem* current = memList->first;
+        struct memblock* currentMemblock = current->argument;
         int groeßterVerschnitt = 0;
         int worstPosition = 0;
         for (int iIdx = 1; current != NULL; iIdx++ )
         {
-            struct memblock* currentMemblock = current->argument;
             if (currentMemblock->size - currentMemblock->in_use - size >= groeßterVerschnitt)
             {
                 groeßterVerschnitt = currentMemblock->size - currentMemblock->in_use - size;
@@ -66,9 +66,14 @@ void *mem_alloc (unsigned int size)
             }
             current = current->next;
         }
-
-        // hier was machen
-
+        current = memList->first;
+        for (int iIdx = 1; iIdx < worstPosition; iIdx++ )
+        {
+            current = current->next;
+        }
+        currentMemblock = current->argument;
+        // hier weiter machen
+        return currentMemblock;
     }
 }
 
