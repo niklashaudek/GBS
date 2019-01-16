@@ -192,6 +192,16 @@
                 "isDefault": true
             },
             "problemMatcher": "$gcc"
+        },
+        {
+            "label": "Build Blatt11 mysh",
+            "type": "shell",
+            "command": "gcc -g Blatt11/src/parser.c Blatt11/src/mysh.c Blatt11/src/list.c -o Blatt11/bin/mysh",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": "$gcc"
         }
     ]
 }

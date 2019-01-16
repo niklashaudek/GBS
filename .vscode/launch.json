@@ -251,6 +251,19 @@
             "environment": [],
             "externalConsole": true,
             "MIMode": "lldb"
+        },
+        {
+            "name": "Launch Blatt11 mysh",
+            "type": "cppdbg",
+            "request": "launch",
+            "preLaunchTask": "Build Blatt11 mysh",
+            "program": "${workspaceFolder}/Blatt11/bin/mysh",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "lldb"
         }
     ]
 }
