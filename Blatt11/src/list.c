@@ -7,7 +7,10 @@ list_t *list_init ()
     list_t* pListe = (list_t*) malloc (sizeof(list_t*));
     pListe->first = NULL;
     pListe->last = NULL;
-    pListe->elementCount = 0;
+    pListe->size = (int) malloc(sizeof(int));
+    pListe->size = 0;
+    pListe->pipeCounter = (int) malloc(sizeof(int));
+    pListe->pipeCounter = 0;
     return pListe;
 }
 
@@ -48,7 +51,7 @@ struct list_elem *list_append (list_t *list, char *argument) // fertig
         list->first->next = NULL;
         
     }
-    list->elementCount++;
+    list->size++;
     return pElement;
 }
 
@@ -69,11 +72,9 @@ struct list_elem *list_append_processID (list_t *list, int processID) // fertig
         list->first->next = NULL;
         
     }
-    list->elementCount++;
+    list->size++;
     return pElement;
 }
-
-/*
 
 int list_remove (list_t *list, struct list_elem *elem) // fertig
 {
@@ -98,6 +99,8 @@ int list_remove (list_t *list, struct list_elem *elem) // fertig
 
     return -1; // Objekt wurde nicht gefunden
 }
+
+/*
 
 void list_finit (list_t *list) // fertig
 {
@@ -151,3 +154,14 @@ int cmp_elem (const char *str1, const char *str2) // fertig
 }
 
 */
+int get_length (list_t *list)
+{
+    int list_length = 0;
+    struct list_elem *search = list->first;
+    while(search != NULL)
+    {
+        list_length++;
+        search = search->next;
+    }
+    return list_length;
+}
